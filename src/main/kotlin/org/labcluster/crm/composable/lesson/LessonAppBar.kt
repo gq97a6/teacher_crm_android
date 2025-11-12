@@ -1,5 +1,6 @@
 package org.labcluster.crm.composable.lesson
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,15 +16,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.composable.calendar.CalendarScreen
 import org.labcluster.crm.cs
 
 @Preview
@@ -34,7 +32,10 @@ private fun Preview() = PreviewSample { LessonAppBar() }
 fun LessonAppBar(
     isMenuExpanded: Boolean = false,
     onDropdownMenuDismissed: () -> Unit = {},
-    onMenuClicked: () -> Unit = {}
+    onMenuClicked: () -> Unit = {},
+    onEditLesson: () -> Unit = {},
+    onShowTopic: () -> Unit = {},
+    onShowCourse: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -68,7 +69,7 @@ fun LessonAppBar(
                 ) {
                     DropdownMenuItem(
                         text = { Text("Edytuj lekcję") },
-                        onClick = { },
+                        onClick = onEditLesson,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Edit,
@@ -78,7 +79,7 @@ fun LessonAppBar(
                     )
                     DropdownMenuItem(
                         text = { Text("Pokaż temat") },
-                        onClick = { },
+                        onClick = onShowTopic,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Topic,
@@ -88,7 +89,7 @@ fun LessonAppBar(
                     )
                     DropdownMenuItem(
                         text = { Text("Pokaż kurs") },
-                        onClick = { },
+                        onClick = onShowCourse,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Book,

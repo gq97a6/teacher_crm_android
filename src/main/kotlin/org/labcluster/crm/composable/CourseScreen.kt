@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.composable.calendar.CalendarScreen
 import org.labcluster.crm.cs
 
 @Preview

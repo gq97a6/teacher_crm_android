@@ -54,8 +54,6 @@ fun Cat() {
 }
 
 
-
-
 @Preview
 @Composable
 private fun Preview() = PreviewSample { CalendarScreen() }

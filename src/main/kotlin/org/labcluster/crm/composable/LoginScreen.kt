@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.composable.calendar.CalendarScreen
 import org.labcluster.crm.cs
 
 @Preview
@@ -25,7 +24,10 @@ import org.labcluster.crm.cs
 private fun Preview() = PreviewSample { LoginScreen() }
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onLogin: () -> Unit = {},
+    onRegister: () -> Unit = {}
+) {
     Column {
         Column(
             Modifier
@@ -50,16 +52,21 @@ fun LoginScreen() {
                 modifier = Modifier.offset(y = (-20).dp)
             )
 
-            OutlinedButton({
-            }, Modifier
-                .fillMaxWidth(.6f)
-                .padding(top = 10.dp)) {
+            OutlinedButton(
+                onClick = onLogin,
+                modifier = Modifier
+                    .fillMaxWidth(.6f)
+                    .padding(top = 10.dp)
+            ) {
                 Text("Zaloguj się")
             }
 
-            Button({}, Modifier
-                .fillMaxWidth(.4f)
-                .padding(top = 10.dp)) {
+            Button(
+                onClick = onRegister,
+                modifier = Modifier
+                    .fillMaxWidth(.4f)
+                    .padding(top = 10.dp)
+            ) {
                 Text("Rejestracja")
             }
         }

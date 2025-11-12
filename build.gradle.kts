@@ -80,10 +80,10 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:1.9.4")
 
     //Navigation 3
-    implementation("androidx.navigation3:navigation3-runtime:1.0.0-1.0.0-alpha02")
-    implementation("androidx.navigation3:navigation3-ui:1.0.0-1.0.0-alpha02")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:1.0.0-alpha04")
-    implementation("androidx.compose.material3.adaptive:adaptive:1.2.0")
+    implementation("androidx.navigation3:navigation3-runtime:1.0.0-rc01")
+    implementation("androidx.navigation3:navigation3-ui:1.0.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:2.10.0-rc01")
+    implementation("androidx.compose.material3.adaptive:adaptive:1.3.0-alpha03")
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
@@ -97,7 +97,7 @@ dependencies {
 
     //SQLDelight
     implementation("app.cash.sqldelight:android-driver:2.1.0")
-    debugImplementation("app.cash.sqldelight:sqlite-driver:2.0.2")
+    debugImplementation("app.cash.sqldelight:sqlite-driver:2.1.0")
     implementation("app.cash.sqldelight:coroutines-extensions:2.1.0")
 
     //Shared

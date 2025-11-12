@@ -17,7 +17,6 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -31,9 +30,9 @@ import org.labcluster.crm.CalendarScreenKey
 import org.labcluster.crm.CourseScreenKey
 import org.labcluster.crm.GroupsScreenKey
 import org.labcluster.crm.LessonScreenKey
+import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.ReportScreenKey
 import org.labcluster.crm.SettingsScreenKey
-import org.labcluster.crm.PreviewSample
 
 @Preview
 @Composable
@@ -41,12 +40,12 @@ private fun Preview() = PreviewSample { MyNavigationDrawer() }
 
 @Composable
 fun MyNavigationDrawer(
-    backstack: NavBackStack? = null,
+    backstack: NavBackStack<NavKey>? = null,
     drawerState: DrawerState = DrawerState(DrawerValue.Open),
     content: @Composable () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
-    
+
     fun onClick(key: NavKey) {
         backstack?.clear()
         backstack?.add(key)

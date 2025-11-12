@@ -19,7 +19,6 @@ class CalendarViewModel(
     val startDate = MutableStateFlow(TextFieldState(""))
     val endDate = MutableStateFlow(TextFieldState(""))
     val calendar = MutableStateFlow(listOf<List<String>>())
-
     val appBarTitle = MutableStateFlow("Marzec | Kwiecień")
     val appBarSubtitle = MutableStateFlow("Marzec | Kwiecień")
 
@@ -45,7 +44,7 @@ class CalendarViewModel(
             "Niedziela"
         )[day.dayOfWeek.ordinal]
 
-        val timeFormat = LocalDateTime.Format {
+        LocalDateTime.Format {
             hour()
             char(':')
             minute()

@@ -7,16 +7,20 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import kotlinx.serialization.Serializable
+import org.labcluster.crm.composable.shared.MyNavigationDrawer
 import org.labcluster.crm.view.CalendarView
 import org.labcluster.crm.view.CourseView
 import org.labcluster.crm.view.GroupView
@@ -24,7 +28,6 @@ import org.labcluster.crm.view.LessonView
 import org.labcluster.crm.view.LoginView
 import org.labcluster.crm.view.ReportView
 import org.labcluster.crm.view.SettingView
-import org.labcluster.crm.composable.shared.MyNavigationDrawer
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +69,13 @@ class LoginScreenKey() : NavKey
 @Composable
 fun ScreenContent() {
     val backstack = rememberNavBackStack(CourseScreenKey())
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    MyNavigationDrawer(backstack) {
+    MyNavigationDrawer(backstack, drawerState) {
         NavDisplay(
             backStack = backstack,
             entryDecorators = listOf(
-                rememberSceneSetupNavEntryDecorator(),
-                rememberSavedStateNavEntryDecorator(),
+                SaveableStateHolderNavEntryDecorator(rememberSaveableStateHolder()),
                 rememberViewModelStoreNavEntryDecorator()
             ),
             transitionSpec = {
