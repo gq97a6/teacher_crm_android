@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.2.21"
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.21"
     id("com.google.devtools.ksp") version "2.3.0"
+    id("app.cash.sqldelight") version "2.1.0"
     kotlin("plugin.serialization") version "2.2.0"
 }
 
@@ -67,6 +68,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+    implementation("app.cash.sqldelight:android-driver:2.1.0")
 
     //Compose
     implementation(platform("androidx.compose:compose-bom:2025.11.00"))
@@ -93,14 +95,13 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui:1.9.4")
 
-    //Room
-    implementation("androidx.room:room-runtime:2.8.3")
-    ksp("androidx.room:room-compiler:2.8.3")
-    implementation("androidx.room:room-ktx:2.8.3")
-    testImplementation("androidx.room:room-testing:2.8.3")
+    //SQLDelight
+    implementation("app.cash.sqldelight:android-driver:2.1.0")
+    debugImplementation("app.cash.sqldelight:sqlite-driver:2.0.2")
+    implementation("app.cash.sqldelight:coroutines-extensions:2.1.0")
 
     //Shared
-    implementation("org.labcluster.crm:shared:1.0.2-SNAPSHOT")
+    implementation("org.labcluster.crm:shared:1.0.3-SNAPSHOT")
     
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.00"))
