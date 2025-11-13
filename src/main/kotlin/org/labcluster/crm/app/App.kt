@@ -5,20 +5,27 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.shared.Database
-import org.labcluster.crm.shared.Mock
-import org.labcluster.crm.shared.repository.CourseRepository.save
-import org.labcluster.crm.shared.repository.LessonRepository.save
-import org.labcluster.crm.shared.repository.StudentRepository.save
-import org.labcluster.crm.shared.repository.TeacherRepository.save
-import org.labcluster.crm.shared.repository.TopicRepository.save
+import org.labcluster.crm.shared.repository.CourseRepository
+import org.labcluster.crm.shared.repository.LessonRepository
+import org.labcluster.crm.shared.repository.StudentRepository
+import org.labcluster.crm.shared.repository.TeacherRepository
+import org.labcluster.crm.shared.repository.TopicRepository
+import org.labcluster.crm.shared.Mock as SharedMock
 
 
 class App : Application() {
-    companion object {
+    internal companion object {
         var app = App()
         var state = AppState()
+
         lateinit var db: Database
+        var courseRep = CourseRepository()
+        var studentRep = StudentRepository()
+        var lessonRep = LessonRepository()
+        var teacherRep = TeacherRepository()
+        var topicRep = TopicRepository()
     }
 
     override fun onCreate() {
@@ -27,18 +34,28 @@ class App : Application() {
 
         val driver = AndroidSqliteDriver(
             schema = Database.Schema,
-            context = baseContext,
+            context = app.baseContext,
             name = "debug.db"
         )
 
+        //Initialize database
         db = Database(driver)
 
+        //Initialize repositories
+        courseRep = CourseRepository(db)
+        studentRep = StudentRepository(db)
+        lessonRep = LessonRepository(db)
+        teacherRep = TeacherRepository(db)
+        topicRep = TopicRepository(db)
+
+        //Insert mockups
+        state = Mock.state
         CoroutineScope(Dispatchers.IO).launch {
-            Mock.courses.save(db)
-            Mock.students.save(db)
-            Mock.lessons.save(db)
-            Mock.teachers.save(db)
-            Mock.topics.save(db)
+            courseRep.insert(SharedMock.courses)
+            studentRep.insert(SharedMock.students)
+            lessonRep.insert(SharedMock.lessons)
+            teacherRep.insert(SharedMock.teachers)
+            topicRep.insert(SharedMock.topics)
         }
     }
 }

@@ -31,8 +31,10 @@ import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.shared.DropList
 import org.labcluster.crm.composable.shared.WavyDivider
 import org.labcluster.crm.cs
+import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Student
+import org.labcluster.crm.shared.model.Teacher
 import org.labcluster.crm.shared.model.Topic
 
 @Preview
@@ -41,7 +43,8 @@ private fun Preview() = PreviewSample { LessonContent() }
 
 @Composable
 fun LessonContent(
-    students: List<Student> = listOf(),
+    teacher: Teacher = Teacher("Anna", "Testova"),
+    students: List<Student> = Mock.students.shuffled().take(5),
     hasBegun: Boolean = false,
     course: Course = Course("Cloud Computing Essentials"),
     topic: String = "Why AWS is evil",
@@ -76,7 +79,7 @@ fun LessonContent(
 
         item {
             OutlinedTextField(
-                state = rememberTextFieldState("Karolina Wójcik"),
+                state = rememberTextFieldState(teacher.name + " " + teacher.surname),
                 label = { Text("Prowadzący") },
                 readOnly = true,
                 modifier = Modifier

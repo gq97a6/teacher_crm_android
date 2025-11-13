@@ -13,6 +13,8 @@ import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.lesson.LessonAppBar
 import org.labcluster.crm.composable.lesson.LessonContent
 import org.labcluster.crm.composable.lesson.LessonToolbar
+import org.labcluster.crm.objects.Mock.spanishStudent
+import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.viewmodel.LessonViewModel
 
 @Preview
@@ -22,11 +24,8 @@ private fun Preview() = PreviewSample { LessonView() }
 @Composable
 fun LessonView(vm: LessonViewModel = viewModel()) {
 
-    val students by vm.students.collectAsStateWithLifecycle()
-    val hasBegun by vm.hasBegun.collectAsStateWithLifecycle()
-    val course by vm.course.collectAsStateWithLifecycle()
-    val topics by vm.topics.collectAsStateWithLifecycle()
-    val topic by vm.topic.collectAsStateWithLifecycle()
+    val teacher by vm.state.teacher.collectAsStateWithLifecycle()
+    val lesson by vm.state.lesson.collectAsStateWithLifecycle()
     val isMenuExpanded by vm.isMenuExpanded.collectAsStateWithLifecycle()
 
     Box(Modifier.fillMaxHeight()) {
@@ -40,14 +39,15 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
                 onShowCourse = vm::onShowCourse,
             )
             LessonContent(
-                students = students,
-                hasBegun = hasBegun,
-                course = course,
-                topic = topic,
-                topics = topics,
+                teacher = teacher,
+                students = lesson.attendees,
+                hasBegun = lesson.epochBegin != null,
+                course = lesson.course ?: Course(),
+                topic = lesson.topic?.name ?: "",
+                topics = lesson.course?.topics ?: listOf(),
                 onSetTopic = vm::onSetTopic
             )
         }
-        LessonToolbar(hasBegun)
+        LessonToolbar(lesson.epochBegin != null)
     }
 }

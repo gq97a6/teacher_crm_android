@@ -3,20 +3,11 @@ package org.labcluster.crm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.labcluster.crm.shared.Mock
-import org.labcluster.crm.shared.model.Course
-import org.labcluster.crm.shared.model.Lesson
-import org.labcluster.crm.shared.model.Student
-import org.labcluster.crm.shared.model.Topic
+import org.labcluster.crm.app.App
+import org.labcluster.crm.app.AppState
 
-class LessonViewModel : ViewModel() {
+class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
-    val lesson = MutableStateFlow(Mock.lessons[0])
-    val students = MutableStateFlow(listOf<Student>())
-    val hasBegun = MutableStateFlow(false)
-    val course = MutableStateFlow(Course())
-    val topics = MutableStateFlow(listOf<Topic>())
-    val topic = MutableStateFlow("")
     val isMenuExpanded = MutableStateFlow(false)
 
     //.stateIn(
@@ -25,28 +16,15 @@ class LessonViewModel : ViewModel() {
     //    initialValue = false
     //)
 
-    init {
-        /*
-        val randomLesson = db.lessonQueries
-            .selectAll()
-            .executeAsList()
-            .map { it.toModel(db) }
-            .random()
-         */
-
-        students.value = lesson.value.attendees
-        course.value = lesson.value.course ?: Course()
-        topics.value = lesson.value.course?.topics ?: listOf()
-        topic.value = topics.value.randomOrNull()?.name ?: ""
-
-    }
-
     fun onMenuClicked() {
         isMenuExpanded.value = !isMenuExpanded.value
     }
 
     fun onSetTopic(value: String) {
-        topic.value = value
+        state.alter {
+            val topic = lesson.value.course?.topics?.find { it.name == value }
+            if (topic != null) lesson.value = lesson.value.copy(topic = topic)
+        }
     }
 
     fun onDropdownMenuDismissed() {

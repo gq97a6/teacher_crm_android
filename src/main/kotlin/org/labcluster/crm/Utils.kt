@@ -10,6 +10,8 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import org.labcluster.crm.app.App
+import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.theme.darkColorScheme
 
@@ -36,6 +38,9 @@ val cs: ColorScheme
 
 @Composable
 fun PreviewSample(scheme: ColorScheme = darkColorScheme, content: @Composable BoxScope.() -> Unit) {
+    //Mock app state
+    App.state = Mock.state
+
     Theme(scheme) {
         Box(
             Modifier

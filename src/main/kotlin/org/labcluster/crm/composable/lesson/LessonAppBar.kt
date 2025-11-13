@@ -1,6 +1,5 @@
 package org.labcluster.crm.composable.lesson
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
