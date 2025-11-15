@@ -1,30 +1,58 @@
 package org.labcluster.crm.viewmodel
 
 
+import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
+import kotlin.time.Clock
 
 class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
-    val isMenuExpanded = MutableStateFlow(false)
+    val attendance: StateFlow<List<ToggleableState>> = state.lesson.map { lesson ->
+        lesson.students.map { student ->
+            ToggleableState(student.uuid in lesson.attendance)
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
-    //.stateIn(
-    //    scope = viewModelScope,
-    //    started = SharingStarted.WhileSubscribed(5000),
-    //    initialValue = false
-    //)
+    val isEditable = MutableStateFlow(false)
+    val isMenuExpanded = MutableStateFlow(false)
 
     fun onMenuClicked() {
         isMenuExpanded.value = !isMenuExpanded.value
     }
 
-    fun onSetTopic(value: String) {
+    fun onStudentCheckbox(index: Int) {
         state.alter {
-            val topic = lesson.value.course?.topics?.find { it.name == value }
-            if (topic != null) lesson.value = lesson.value.copy(topic = topic)
+            lesson.update {
+                val student = it.students[index]
+
+                val attendance = it.attendance
+
+                val newList = if (student.uuid !in it.attendance) it.attendance + student.uuid
+                else it.attendance.filter { uuid -> uuid != student.uuid }
+
+                it.copy(attendance = newList)
+            }
         }
+
+        //attendance.update { current ->
+        //    current.mapIndexed { i, item ->
+        //        if (i == index) ToggleableState(item == ToggleableState.Off)
+        //        else item
+        //    }
+        //}
     }
 
     fun onDropdownMenuDismissed() {
@@ -41,5 +69,27 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onShowCourse() {
         isMenuExpanded.value = false
+    }
+
+    fun onStartClicked() {
+        isEditable.value = true
+    }
+
+    fun onEditClicked() {
+        isEditable.value = true
+    }
+
+    fun onCancelClicked() {
+        isEditable.value = false
+        state.alter {
+            lesson.value = lesson.value.copy(epochBegin = null)
+        }
+    }
+
+    fun onConfirmClicked() {
+        state.alter {
+            lesson.value = lesson.value.copy(epochBegin = Clock.System.now().epochSeconds)
+            isEditable.value = false
+        }
     }
 }

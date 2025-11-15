@@ -67,7 +67,7 @@ class LoginScreenKey() : NavKey
 
 @Composable
 fun ScreenContent() {
-    val backstack = rememberNavBackStack(CourseScreenKey())
+    val backstack = rememberNavBackStack(LessonScreenKey())
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     MyNavigationDrawer(backstack, drawerState) {

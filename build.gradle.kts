@@ -88,7 +88,6 @@ dependencies {
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:1.9.0")
 
     //Material 3
     implementation("androidx.compose.material3:material3:1.5.0-alpha08")
@@ -97,11 +96,12 @@ dependencies {
 
     //SQLDelight
     implementation("app.cash.sqldelight:android-driver:2.1.0")
+    implementation("androidx.room:room-ktx:2.8.3")
     debugImplementation("app.cash.sqldelight:sqlite-driver:2.1.0")
     implementation("app.cash.sqldelight:coroutines-extensions:2.1.0")
 
     //Shared
-    implementation("org.labcluster.crm:shared:1.0.6-SNAPSHOT")
+    implementation("org.labcluster.crm:shared:1.0.14-SNAPSHOT")
     
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.00"))

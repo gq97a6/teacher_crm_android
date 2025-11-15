@@ -28,14 +28,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.composable.shared.DropList
 import org.labcluster.crm.composable.shared.WavyDivider
 import org.labcluster.crm.cs
 import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Student
 import org.labcluster.crm.shared.model.Teacher
-import org.labcluster.crm.shared.model.Topic
 
 @Preview
 @Composable
@@ -45,11 +43,12 @@ private fun Preview() = PreviewSample { LessonContent() }
 fun LessonContent(
     teacher: Teacher = Teacher("Anna", "Testova"),
     students: List<Student> = Mock.students.shuffled().take(5),
+    attendance: List<ToggleableState> = List(5) { ToggleableState(false) },
     hasBegun: Boolean = false,
+    isEditable: Boolean = false,
     course: Course = Course("Cloud Computing Essentials"),
     topic: String = "Why AWS is evil",
-    topics: List<Topic> = listOf(),
-    onSetTopic: (String) -> Unit = {},
+    onStudentCheckbox: (Int) -> Unit = {}
 ) {
     LazyColumn(
         Modifier
@@ -65,15 +64,22 @@ fun LessonContent(
         }
 
         item {
-            DropList(
-                value = topic,
-                items = topics.map { it.name },
-                label = "Temat",
-                height = 400.dp,
-                onValueSet = onSetTopic,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp)
+            //DropList(
+            //    value = topic,
+            //    items = topics.map { it.name },
+            //    label = "Temat",
+            //    height = 400.dp,
+            //    onValueSet = onSetTopic,
+            //    readOnly = readOnly,
+            //    modifier = Modifier
+            //        .fillMaxWidth()
+            //        .padding(top = 5.dp)
+            //)
+            OutlinedTextField(
+                state = rememberTextFieldState(topic),
+                label = { Text("Temat") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
             )
         }
 
@@ -106,7 +112,7 @@ fun LessonContent(
                     .fillMaxWidth()
                     .padding(vertical = 5.dp)
                     .border(1.dp, cs.outline, shape = RoundedCornerShape(5.dp))
-                    .clickable(true, onClick = {})
+                    .clickable(isEditable, onClick = { onStudentCheckbox(index) })
                     .padding(15.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -135,8 +141,14 @@ fun LessonContent(
 
                 Spacer(Modifier.width(25.dp))
 
-                if (hasBegun) CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
-                    TriStateCheckbox(state = ToggleableState.On, {}, enabled = true)
+                if (hasBegun || isEditable) CompositionLocalProvider(
+                    LocalMinimumInteractiveComponentSize provides Dp.Unspecified
+                ) {
+                    TriStateCheckbox(
+                        state = attendance[index],
+                        onClick = { onStudentCheckbox(index) },
+                        enabled = isEditable
+                    )
                 }
             }
         }

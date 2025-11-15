@@ -65,6 +65,7 @@ fun DropList(
     items: List<String> = listOf(),
     onValueSet: (String) -> Unit = {},
     label: String = "",
+    readOnly: Boolean = false,
     height: Dp = 300.dp,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -78,7 +79,7 @@ fun DropList(
                 singleLine = true,
                 readOnly = true,
                 trailingIcon = {
-                    Icon(
+                    if (!readOnly) Icon(
                         imageVector = Icons.Filled.ArrowDropDown,
                         contentDescription = "",
                         modifier = Modifier.rotate(iconAngle)
@@ -102,7 +103,7 @@ fun DropList(
                     .fillMaxSize()
                     .padding(top = 8.dp)
                     .clip(MaterialTheme.shapes.extraSmall)
-                    .clickable(enabled = true) { isExpanded = true }
+                    .clickable(enabled = !readOnly) { isExpanded = true }
             )
         }
 

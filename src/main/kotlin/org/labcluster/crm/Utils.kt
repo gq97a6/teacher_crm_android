@@ -10,6 +10,8 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format.char
 import org.labcluster.crm.app.App
 import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.theme.Theme
@@ -50,4 +52,18 @@ fun PreviewSample(scheme: ColorScheme = darkColorScheme, content: @Composable Bo
             content()
         }
     }
+}
+
+val dateFormat = LocalDateTime.Format {
+    day()
+    char('.')
+    monthNumber()
+    char('.')
+    year()
+}
+
+val timeFormat = LocalDateTime.Format {
+    hour()
+    char(':')
+    minute()
 }

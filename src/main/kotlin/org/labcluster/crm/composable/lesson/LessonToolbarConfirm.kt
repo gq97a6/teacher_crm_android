@@ -1,14 +1,13 @@
 package org.labcluster.crm.composable.lesson
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Book
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Topic
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -22,48 +21,41 @@ import org.labcluster.crm.PreviewSample
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { LessonToolbar() }
-
-@Composable
-fun BoxScope.LessonToolbar(hasBegun: Boolean = false) {
-
-    HorizontalFloatingToolbar(
-        expanded = false,
-        modifier = Modifier
+private fun Preview() = PreviewSample {
+    Box(
+        Modifier
             .align(Alignment.BottomCenter)
             .padding(bottom = 30.dp)
     ) {
-        TextButton({}) {
+        LessonToolbarConfirm()
+    }
+}
+
+@Composable
+fun BoxScope.LessonToolbarConfirm(
+    onConfirmClicked: () -> Unit = {},
+    onCancelClicked: () -> Unit = {}
+) {
+    HorizontalFloatingToolbar(expanded = false) {
+        TextButton(onConfirmClicked) {
             Icon(
-                imageVector = if (hasBegun) Icons.Outlined.Edit
-                else Icons.Outlined.PlayCircle,
+                imageVector = Icons.Outlined.Check,
                 contentDescription = ""
             )
             Spacer(Modifier.width(10.dp))
             Text(
-                if (hasBegun) "Edytuj" else "Start",
+                "Akceptuj",
                 modifier = Modifier
             )
         }
         Spacer(Modifier.width(5.dp))
-        TextButton({}) {
+        TextButton(onCancelClicked) {
             Icon(
-                Icons.Outlined.Topic, ""
+                Icons.Outlined.Close, ""
             )
             Spacer(Modifier.width(10.dp))
             Text(
-                "Temat",
-                modifier = Modifier
-            )
-        }
-        Spacer(Modifier.width(5.dp))
-        TextButton({}) {
-            Icon(
-                Icons.Outlined.Book, ""
-            )
-            Spacer(Modifier.width(10.dp))
-            Text(
-                "Kurs",
+                "Anuluj",
                 modifier = Modifier
             )
         }

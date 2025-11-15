@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.shared.Database
 import org.labcluster.crm.shared.repository.CourseRepository
+import org.labcluster.crm.shared.repository.GroupRepository
 import org.labcluster.crm.shared.repository.LessonRepository
 import org.labcluster.crm.shared.repository.StudentRepository
 import org.labcluster.crm.shared.repository.TeacherRepository
@@ -22,6 +23,7 @@ class App : Application() {
 
         lateinit var db: Database
         var courseRep = CourseRepository()
+        var groupRep = GroupRepository()
         var studentRep = StudentRepository()
         var lessonRep = LessonRepository()
         var teacherRep = TeacherRepository()
@@ -43,6 +45,7 @@ class App : Application() {
 
         //Initialize repositories
         courseRep = CourseRepository(db)
+        groupRep = GroupRepository(db)
         studentRep = StudentRepository(db)
         lessonRep = LessonRepository(db)
         teacherRep = TeacherRepository(db)
