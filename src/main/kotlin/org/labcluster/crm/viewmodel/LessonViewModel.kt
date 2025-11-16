@@ -28,11 +28,6 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     )
 
     val isEditable = MutableStateFlow(false)
-    val isMenuExpanded = MutableStateFlow(false)
-
-    fun onMenuClicked() {
-        isMenuExpanded.value = !isMenuExpanded.value
-    }
 
     fun onStudentCheckbox(index: Int) {
         state.alter {
@@ -47,12 +42,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
         }
     }
 
-    fun onDropdownMenuDismissed() {
-        isMenuExpanded.value = false
-    }
-
     fun onShowTopic() {
-        isMenuExpanded.value = false
         Toast.makeText(
             App.app.baseContext,
             state.lesson.value.topic?.name,
@@ -61,7 +51,6 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     }
 
     fun onShowCourse() {
-        isMenuExpanded.value = false
         Toast.makeText(
             App.app.baseContext,
             state.lesson.value.course?.name,

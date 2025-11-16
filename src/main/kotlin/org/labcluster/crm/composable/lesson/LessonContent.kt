@@ -64,17 +64,6 @@ fun LessonContent(
         }
 
         item {
-            //DropList(
-            //    value = topic,
-            //    items = topics.map { it.name },
-            //    label = "Temat",
-            //    height = 400.dp,
-            //    onValueSet = onSetTopic,
-            //    readOnly = readOnly,
-            //    modifier = Modifier
-            //        .fillMaxWidth()
-            //        .padding(top = 5.dp)
-            //)
             OutlinedTextField(
                 state = rememberTextFieldState(topic),
                 label = { Text("Temat") },

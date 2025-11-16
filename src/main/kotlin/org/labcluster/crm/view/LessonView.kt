@@ -40,7 +40,6 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
 
     val attendance by vm.attendance.collectAsStateWithLifecycle()
     val isEditable by vm.isEditable.collectAsStateWithLifecycle()
-    val isMenuExpanded by vm.isMenuExpanded.collectAsStateWithLifecycle()
 
     Box(Modifier.fillMaxHeight()) {
         Column {
@@ -48,9 +47,6 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
                 lessonEpochStart = lesson.epochStart,
                 lessonEpochEnd = lesson.epochStart + lesson.duration,
                 timeZone = timeZone,
-                isMenuExpanded = isMenuExpanded,
-                onDropdownMenuDismissed = vm::onDropdownMenuDismissed,
-                onMenuClicked = vm::onMenuClicked,
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
             )

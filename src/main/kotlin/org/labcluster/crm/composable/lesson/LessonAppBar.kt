@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Topic
@@ -25,7 +24,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -53,9 +54,6 @@ fun LessonAppBar(
     lessonEpochStart: Long = System.currentTimeMillis() / 1000 - 3600 - 1,
     lessonEpochEnd: Long = System.currentTimeMillis() / 1000 - 1,
     timeZone: TimeZone = TimeZone.of("Europe/Warsaw"),
-    isMenuExpanded: Boolean = false,
-    onDropdownMenuDismissed: () -> Unit = {},
-    onMenuClicked: () -> Unit = {},
     onShowTopic: () -> Unit = {},
     onShowCourse: () -> Unit = {}
 ) {
@@ -71,6 +69,7 @@ fun LessonAppBar(
 
     val clock = remember { Clock.systemUTC() }
     val isLive = clock.instant().epochSecond in lessonEpochStart..lessonEpochEnd
+    var isMenuExpanded by remember { mutableStateOf(false) }
 
     //12.03.2025
     val title by remember {
@@ -128,7 +127,7 @@ fun LessonAppBar(
         },
         actions = {
             Box(modifier = Modifier) {
-                IconButton(onClick = onMenuClicked) {
+                IconButton(onClick = { isMenuExpanded = !isMenuExpanded }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = "More options",
@@ -138,12 +137,15 @@ fun LessonAppBar(
 
                 DropdownMenu(
                     expanded = isMenuExpanded,
-                    onDismissRequest = onDropdownMenuDismissed,
+                    onDismissRequest = { isMenuExpanded = false },
                     offset = DpOffset(x = (-10).dp, y = 0.dp)
                 ) {
                     DropdownMenuItem(
                         text = { Text("Pokaż temat") },
-                        onClick = onShowTopic,
+                        onClick = {
+                            isMenuExpanded = false
+                            onShowTopic()
+                        },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Topic,
@@ -153,7 +155,10 @@ fun LessonAppBar(
                     )
                     DropdownMenuItem(
                         text = { Text("Pokaż kurs") },
-                        onClick = onShowCourse,
+                        onClick = {
+                            isMenuExpanded = false
+                            onShowCourse()
+                        },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Book,
@@ -165,11 +170,11 @@ fun LessonAppBar(
             }
         },
         navigationIcon = {
-            Icon(
-                Icons.Filled.ArrowBackIosNew,
-                contentDescription = "",
-                modifier = Modifier.padding(horizontal = 10.dp)
-            )
+            //Icon(
+            //    Icons.Filled.ArrowBackIosNew,
+            //    contentDescription = "",
+            //    modifier = Modifier.padding(horizontal = 10.dp)
+            //)
         }
     )
 }
