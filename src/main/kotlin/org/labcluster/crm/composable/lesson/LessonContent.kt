@@ -68,7 +68,9 @@ fun LessonContent(
                 state = rememberTextFieldState(topic),
                 label = { Text("Temat") },
                 readOnly = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
             )
         }
 
@@ -79,14 +81,14 @@ fun LessonContent(
                 readOnly = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 5.dp)
+                    .padding(top = 10.dp)
             )
         }
 
         item {
             WavyDivider(
                 modifier = Modifier
-                    .padding(top = 15.dp)
+                    .padding(top = 20.dp)
                     .padding(bottom = 10.dp)
                     .height(10.dp),
                 thickness = 3.dp,
@@ -97,9 +99,9 @@ fun LessonContent(
         items(students.size) { index ->
             Row(
                 Modifier
-                    .heightIn(70.dp)
+                    .heightIn(72.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 5.dp)
+                    .padding(vertical = 8.dp)
                     .border(1.dp, cs.outline, shape = RoundedCornerShape(5.dp))
                     .clickable(isEditable, onClick = { onStudentCheckbox(index) })
                     .padding(15.dp),

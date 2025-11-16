@@ -37,13 +37,16 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import kotlinx.datetime.toLocalDateTime
 import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.cs
 import org.labcluster.crm.dateFormat
+import org.labcluster.crm.shared.Mock
+import org.labcluster.crm.shared.epochEnd
+import org.labcluster.crm.shared.model.Lesson
+import org.labcluster.crm.shared.timeEnd
+import org.labcluster.crm.shared.timeStart
 import org.labcluster.crm.timeFormat
-import java.time.Clock
-import kotlin.time.Instant
+import kotlin.time.Clock
 
 @Preview
 @Composable
@@ -51,8 +54,7 @@ private fun Preview() = PreviewSample { LessonAppBar() }
 
 @Composable
 fun LessonAppBar(
-    lessonEpochStart: Long = System.currentTimeMillis() / 1000 - 3600 - 1,
-    lessonEpochEnd: Long = System.currentTimeMillis() / 1000 - 1,
+    lesson: Lesson = Mock.lessons.random(),
     timeZone: TimeZone = TimeZone.of("Europe/Warsaw"),
     onShowTopic: () -> Unit = {},
     onShowCourse: () -> Unit = {}
@@ -67,34 +69,27 @@ fun LessonAppBar(
         )
     )
 
-    val clock = remember { Clock.systemUTC() }
-    val isLive = clock.instant().epochSecond in lessonEpochStart..lessonEpochEnd
+    val isLive = remember {
+        Clock.System.now().epochSeconds in lesson.epochStart..lesson.epochEnd()
+    }
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     //12.03.2025
     val title by remember {
         derivedStateOf {
-            val instant = Instant.fromEpochSeconds(lessonEpochStart)
-            val date = instant.toLocalDateTime(timeZone)
-            date.format(dateFormat)
+            lesson.timeStart(timeZone).format(dateFormat)
         }
     }
 
     //Czwartek - 10:00 - 11:35
     val subtitle by remember {
         derivedStateOf {
-            val instantStart = Instant.fromEpochSeconds(lessonEpochStart)
-            val instantEnd = Instant.fromEpochSeconds(lessonEpochEnd)
-
-            val timeStart = instantStart.toLocalDateTime(timeZone)
-            val timeEnd = instantEnd.toLocalDateTime(timeZone)
-
             buildString {
                 append("Czwartek")
                 append(" - ")
-                append(timeStart.format(timeFormat))
+                append(lesson.timeStart(timeZone).format(timeFormat))
                 append(" - ")
-                append(timeEnd.format(timeFormat))
+                append(lesson.timeEnd(timeZone).format(timeFormat))
             }
         }
     }

@@ -44,8 +44,7 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
     Box(Modifier.fillMaxHeight()) {
         Column {
             LessonAppBar(
-                lessonEpochStart = lesson.epochStart,
-                lessonEpochEnd = lesson.epochStart + lesson.duration,
+                lesson = lesson,
                 timeZone = timeZone,
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
