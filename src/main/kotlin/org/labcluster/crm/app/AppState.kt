@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.TimeZone
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
@@ -14,6 +15,8 @@ import org.labcluster.crm.shared.model.Teacher
 import org.labcluster.crm.shared.model.Topic
 
 class AppState {
+    val timeZone = MutableStateFlow(TimeZone.currentSystemDefault())
+
     val topic = MutableStateFlow(Topic())
     val student = MutableStateFlow(Student())
     val teacher = MutableStateFlow(Teacher())

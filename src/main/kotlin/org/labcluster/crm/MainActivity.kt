@@ -1,5 +1,9 @@
 package org.labcluster.crm
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -18,7 +22,10 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
+import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
 import org.labcluster.crm.view.CalendarView
 import org.labcluster.crm.view.CourseView
@@ -29,6 +36,17 @@ import org.labcluster.crm.view.ReportView
 import org.labcluster.crm.view.SettingView
 
 class MainActivity : ComponentActivity() {
+
+    private val timeZoneReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == Intent.ACTION_TIMEZONE_CHANGED) {
+                state.alter {
+                    timeZone.value = TimeZone.currentSystemDefault()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +55,16 @@ class MainActivity : ComponentActivity() {
         composeConstruct {
             ScreenContent()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(timeZoneReceiver, IntentFilter(Intent.ACTION_TIMEZONE_CHANGED))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(timeZoneReceiver)
     }
 }
 

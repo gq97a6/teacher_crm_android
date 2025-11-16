@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +33,7 @@ import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Teacher
 import org.labcluster.crm.timeFormat
 import org.labcluster.crm.viewmodel.LessonViewModel
+import java.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
@@ -47,48 +46,21 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
 
     val group by vm.state.group.collectAsStateWithLifecycle()
     val lesson by vm.state.lesson.collectAsStateWithLifecycle()
+    val timeZone by vm.state.timeZone.collectAsStateWithLifecycle()
 
     val attendance by vm.attendance.collectAsStateWithLifecycle()
     val isEditable by vm.isEditable.collectAsStateWithLifecycle()
     val isMenuExpanded by vm.isMenuExpanded.collectAsStateWithLifecycle()
 
-    //12.03.2025
-    val title by remember {
-        derivedStateOf {
-            val instant = Instant.fromEpochSeconds(lesson.epochStart)
-            val date = instant.toLocalDateTime(UTC)
-            date.format(dateFormat)
-        }
-    }
-
-    //Czwartek - 10:00 - 11:35
-    val subtitle by remember {
-        derivedStateOf {
-            val instantStart = Instant.fromEpochSeconds(lesson.epochStart)
-            val instantEnd = instantStart + lesson.duration.seconds
-
-            val timeStart = instantStart.toLocalDateTime(UTC)
-            val timeEnd = instantEnd.toLocalDateTime(UTC)
-
-            buildString {
-                append("Czwartek")
-                append(" - ")
-                append(timeStart.format(timeFormat))
-                append(" - ")
-                append(timeEnd.format(timeFormat))
-            }
-        }
-    }
-
     Box(Modifier.fillMaxHeight()) {
         Column {
             LessonAppBar(
-                title = title,
-                subtitle = subtitle,
+                lessonEpochStart = lesson.epochStart,
+                lessonEpochEnd = lesson.epochStart + lesson.duration,
+                timeZone = timeZone,
                 isMenuExpanded = isMenuExpanded,
                 onDropdownMenuDismissed = vm::onDropdownMenuDismissed,
                 onMenuClicked = vm::onMenuClicked,
-                onEditLesson = vm::onEditLesson,
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
             )

@@ -145,7 +145,7 @@ fun LessonContent(
                     LocalMinimumInteractiveComponentSize provides Dp.Unspecified
                 ) {
                     TriStateCheckbox(
-                        state = attendance[index],
+                        state = attendance.getOrNull(index) ?: ToggleableState.Indeterminate,
                         onClick = { onStudentCheckbox(index) },
                         enabled = isEditable
                     )

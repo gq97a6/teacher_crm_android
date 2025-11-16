@@ -1,6 +1,7 @@
 package org.labcluster.crm.viewmodel
 
 
+import android.widget.Toast
 import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.TimeZone.Companion.UTC
+import kotlinx.datetime.atTime
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
 import kotlin.time.Clock
@@ -38,37 +43,34 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
             lesson.update {
                 val student = it.students[index]
 
-                val attendance = it.attendance
-
                 val newList = if (student.uuid !in it.attendance) it.attendance + student.uuid
                 else it.attendance.filter { uuid -> uuid != student.uuid }
 
                 it.copy(attendance = newList)
             }
         }
-
-        //attendance.update { current ->
-        //    current.mapIndexed { i, item ->
-        //        if (i == index) ToggleableState(item == ToggleableState.Off)
-        //        else item
-        //    }
-        //}
     }
 
     fun onDropdownMenuDismissed() {
         isMenuExpanded.value = false
     }
 
-    fun onEditLesson() {
-        isMenuExpanded.value = false
-    }
-
     fun onShowTopic() {
         isMenuExpanded.value = false
+        Toast.makeText(
+            App.app.baseContext,
+            state.lesson.value.topic?.name,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     fun onShowCourse() {
         isMenuExpanded.value = false
+        Toast.makeText(
+            App.app.baseContext,
+            state.lesson.value.course?.name,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     fun onStartClicked() {
@@ -82,7 +84,10 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     fun onCancelClicked() {
         isEditable.value = false
         state.alter {
-            lesson.value = lesson.value.copy(epochBegin = null)
+            lesson.value = lesson.value.copy(
+                epochBegin = null,
+                attendance = listOf()
+            )
         }
     }
 
