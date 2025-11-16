@@ -126,8 +126,8 @@ fun <T : Any> entryProvider(key: T): NavEntry<NavKey> = when (key) {
     is CourseScreenKey -> NavEntry(key = key) { CourseView() }
     is GroupsScreenKey -> NavEntry(key = key) { GroupView() }
     is CalendarScreenKey -> NavEntry(key = key) { CalendarView() }
-    is ReportScreenKey -> NavEntry(key = key) { ReportView() }
     is SettingsScreenKey -> NavEntry(key = key) { SettingView() }
+    //is ReportScreenKey -> NavEntry(key = key) { SettingView() }
     is LoginScreenKey -> NavEntry(key = key) { LoginView() }
     else -> throw Error()
 }
