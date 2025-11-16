@@ -10,32 +10,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.datetime.TimeZone.Companion.UTC
-import kotlinx.datetime.format
-import kotlinx.datetime.toLocalDateTime
 import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.lesson.LessonAppBar
 import org.labcluster.crm.composable.lesson.LessonContent
 import org.labcluster.crm.composable.lesson.LessonToolbarConfirm
 import org.labcluster.crm.composable.lesson.LessonToolbarEdit
 import org.labcluster.crm.composable.lesson.LessonToolbarStart
-import org.labcluster.crm.dateFormat
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Teacher
-import org.labcluster.crm.timeFormat
 import org.labcluster.crm.viewmodel.LessonViewModel
-import java.time.Clock
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.Instant
 
 @Preview
 @Composable
