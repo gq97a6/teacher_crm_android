@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ fun ComponentActivity.composeConstruct(
         Theme(isDark) {
             Box(
                 Modifier
+                    .imePadding()
                     .fillMaxSize()
                     .background(cs.background)
             ) {
