@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,17 +27,21 @@ import org.labcluster.crm.cs
 private fun Preview() = PreviewSample { SettingScreen() }
 
 @Composable
-fun SettingScreen() {
-
-    val name = rememberTextFieldState("Mariusz")
-    val surname = rememberTextFieldState("Wysocki")
-    val contact1 = rememberTextFieldState("Piła 64-920 Dabrowskiego 4")
-    val phone = rememberTextFieldState("576 398 281")
-    val pesel = rememberTextFieldState("95010759833")
-    val bank = rememberTextFieldState("PL 36 9159 1023 8834 0255 4368 5287")
-    val nip = rememberTextFieldState("8232155393")
-    val contact2 = rememberTextFieldState("Piła 64-920 Dabrowskiego 4")
-
+fun SettingScreen(
+    name: TextFieldState = TextFieldState("Mariusz"),
+    surname: TextFieldState = TextFieldState("Wysocki"),
+    contact1: TextFieldState = TextFieldState("Piła 64-920 Dabrowskiego 4"),
+    contact2: TextFieldState = TextFieldState("Piła 64-920 Dabrowskiego 4"),
+    phone: TextFieldState = TextFieldState("576 398 281"),
+    pesel: TextFieldState = TextFieldState("95010759833"),
+    bank: TextFieldState = TextFieldState("PL 36 9159 1023 8834 0255 4368 5287"),
+    nip: TextFieldState = TextFieldState("PL1234567890"),
+    currentPassword: TextFieldState = TextFieldState(""),
+    newPassword1: TextFieldState = TextFieldState(""),
+    newPassword2: TextFieldState = TextFieldState(""),
+    onSaveClicked: () -> Unit = {},
+    onChangePasswordClicked: () -> Unit = {},
+) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -46,6 +51,7 @@ fun SettingScreen() {
         Spacer(Modifier.height(20.dp))
 
         Text("Dane", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
+
         WavyDivider(
             modifier = Modifier
                 .padding(top = 1.dp)
@@ -54,31 +60,27 @@ fun SettingScreen() {
             thickness = 1.5.dp
         )
 
-        OutlinedTextField(name, Modifier.fillMaxWidth(), label = { Text("Imię") })
+        OutlinedTextField(
+            state = name,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Imię") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(surname, Modifier.fillMaxWidth(), label = { Text("Nazwisko") })
+        OutlinedTextField(
+            state = surname,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Nazwisko") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(contact1, Modifier.fillMaxWidth(), label = { Text("Adres") })
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(phone, Modifier.fillMaxWidth(), label = { Text("Numer telefonu") })
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(pesel, Modifier.fillMaxWidth(), label = { Text("PESEL") })
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(bank, Modifier.fillMaxWidth(), label = { Text("Numer konta bankowego") })
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(nip, Modifier.fillMaxWidth(), label = { Text("NIP") })
+        OutlinedTextField(
+            state = contact1,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Adres") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
@@ -89,7 +91,43 @@ fun SettingScreen() {
 
         Spacer(Modifier.height(8.dp))
 
-        ElevatedButton({}, Modifier.fillMaxWidth()) { Text("Zapisz") }
+        OutlinedTextField(
+            state = phone,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Numer telefonu") }
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        OutlinedTextField(
+            state = pesel,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("PESEL") }
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        OutlinedTextField(
+            state = bank,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Numer konta bankowego") }
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        OutlinedTextField(
+            state = nip,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("NIP") }
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        ElevatedButton(
+            onClick = onSaveClicked,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false
+        ) { Text("Zapisz") }
 
         Spacer(Modifier.height(15.dp))
         Text("Zmiana hasła", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
@@ -101,28 +139,31 @@ fun SettingScreen() {
             thickness = 1.5.dp
         )
 
-        OutlinedTextField(
-            rememberTextFieldState(""),
-            Modifier.fillMaxWidth(),
-            label = { Text("Obecne hasło") })
+        OutlinedSecureTextField(
+            state = currentPassword,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Obecne hasło") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(
-            rememberTextFieldState(""),
-            Modifier.fillMaxWidth(),
-            label = { Text("Nowe hasło") })
+        OutlinedSecureTextField(
+            state = newPassword1,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Nowe hasło") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(
-            rememberTextFieldState(""),
-            Modifier.fillMaxWidth(),
-            label = { Text("Nowe hasło") })
+        OutlinedSecureTextField(
+            state = newPassword2,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Nowe hasło") }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        ElevatedButton({}, Modifier.fillMaxWidth()) { Text("Zmień hasło") }
+        ElevatedButton(onChangePasswordClicked, Modifier.fillMaxWidth()) { Text("Zmień hasło") }
 
         Spacer(Modifier.height(20.dp))
     }
