@@ -12,11 +12,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.char
-import org.labcluster.crm.app.App
+import kotlinx.datetime.toLocalDateTime
+import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.theme.darkColorScheme
+import kotlin.time.Clock
 
 fun ComponentActivity.composeConstruct(
     isDark: Boolean = true,
@@ -43,7 +47,7 @@ val cs: ColorScheme
 @Composable
 fun PreviewSample(scheme: ColorScheme = darkColorScheme, content: @Composable BoxScope.() -> Unit) {
     //Mock app state
-    App.state = Mock.state
+    state = Mock.state
 
     Theme(scheme) {
         Box(
@@ -54,6 +58,26 @@ fun PreviewSample(scheme: ColorScheme = darkColorScheme, content: @Composable Bo
             content()
         }
     }
+}
+
+val dayFormat = LocalDateTime.Format {
+    dayOfWeek(
+        DayOfWeekNames(
+            "Poniedziałek",
+            "Wtorek",
+            "Środa",
+            "Czwartek",
+            "Piątek",
+            "Sobota",
+            "Niedziela"
+        )
+    )
+}
+
+val shortDateFormat = LocalDateTime.Format {
+    day()
+    char('.')
+    monthNumber()
 }
 
 val dateFormat = LocalDateTime.Format {
@@ -69,3 +93,22 @@ val timeFormat = LocalDateTime.Format {
     char(':')
     minute()
 }
+
+val months = listOf(
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień"
+)
+
+val currentDateTime = Clock.System.now().toLocalDateTime(state.timeZone.value)
+
+fun Month.format() = months[this.ordinal]
