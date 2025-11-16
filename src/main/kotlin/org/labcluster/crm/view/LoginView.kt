@@ -13,5 +13,5 @@ private fun Preview() = PreviewSample { LoginView() }
 
 @Composable
 fun LoginView(vm: LoginViewModel = viewModel()) {
-    LoginScreen({}, {})
+    LoginScreen(vm::onLogin, vm::onRegister)
 }
