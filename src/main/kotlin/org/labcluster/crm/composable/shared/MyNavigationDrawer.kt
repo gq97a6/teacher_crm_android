@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.ReportProblem
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DrawerState
@@ -27,12 +26,11 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import kotlinx.coroutines.launch
 import org.labcluster.crm.CalendarScreenKey
-import org.labcluster.crm.CourseScreenKey
 import org.labcluster.crm.GroupsScreenKey
 import org.labcluster.crm.LessonScreenKey
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.ReportScreenKey
 import org.labcluster.crm.SettingsScreenKey
+import org.labcluster.crm.TopicScreenKey
 
 @Preview
 @Composable
@@ -66,10 +64,10 @@ fun MyNavigationDrawer(
                     ) { onClick(LessonScreenKey()) }
 
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is CourseScreenKey,
+                        selected = backstack?.last() is TopicScreenKey,
                         icon = Book,
-                        label = "Kurs"
-                    ) { onClick(CourseScreenKey()) }
+                        label = "Temat"
+                    ) { onClick(TopicScreenKey()) }
 
                     MyNavigationDrawerItem(
                         selected = backstack?.last() is GroupsScreenKey,

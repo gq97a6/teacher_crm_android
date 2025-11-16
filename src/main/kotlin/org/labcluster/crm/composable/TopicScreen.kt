@@ -27,10 +27,10 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CourseScreen() }
+private fun Preview() = PreviewSample { TopicScreen() }
 
 @Composable
-fun CourseScreen() {
+fun TopicScreen() {
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     Column(Modifier.fillMaxSize()) {

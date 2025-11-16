@@ -27,12 +27,11 @@ import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
 import org.labcluster.crm.view.CalendarView
-import org.labcluster.crm.view.CourseView
 import org.labcluster.crm.view.GroupView
 import org.labcluster.crm.view.LessonView
 import org.labcluster.crm.view.LoginView
-import org.labcluster.crm.view.ReportView
 import org.labcluster.crm.view.SettingView
+import org.labcluster.crm.view.TopicView
 
 class MainActivity : ComponentActivity() {
 
@@ -75,7 +74,7 @@ private fun Preview() = PreviewSample { ScreenContent() }
 class LessonScreenKey() : NavKey
 
 @Serializable
-class CourseScreenKey() : NavKey
+class TopicScreenKey() : NavKey
 
 @Serializable
 class GroupsScreenKey() : NavKey
@@ -123,7 +122,7 @@ fun ScreenContent() {
 
 fun <T : Any> entryProvider(key: T): NavEntry<NavKey> = when (key) {
     is LessonScreenKey -> NavEntry(key = key) { LessonView() }
-    is CourseScreenKey -> NavEntry(key = key) { CourseView() }
+    is TopicScreenKey -> NavEntry(key = key) { TopicView() }
     is GroupsScreenKey -> NavEntry(key = key) { GroupView() }
     is CalendarScreenKey -> NavEntry(key = key) { CalendarView() }
     is SettingsScreenKey -> NavEntry(key = key) { SettingView() }

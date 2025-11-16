@@ -8,8 +8,8 @@ import org.labcluster.crm.viewmodel.CourseViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CourseView() }
+private fun Preview() = PreviewSample { TopicView() }
 
 @Composable
-fun CourseView(vm: CourseViewModel = viewModel()) {
+fun TopicView(vm: CourseViewModel = viewModel()) {
 }
