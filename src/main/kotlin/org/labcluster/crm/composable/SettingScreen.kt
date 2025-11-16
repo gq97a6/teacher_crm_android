@@ -125,8 +125,7 @@ fun SettingScreen(
 
         ElevatedButton(
             onClick = onSaveClicked,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = false
+            modifier = Modifier.fillMaxWidth()
         ) { Text("Zapisz") }
 
         Spacer(Modifier.height(15.dp))
