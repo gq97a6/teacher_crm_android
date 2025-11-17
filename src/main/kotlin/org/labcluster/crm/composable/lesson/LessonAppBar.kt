@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,13 +39,12 @@ import kotlinx.datetime.format
 import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.cs
 import org.labcluster.crm.dateFormat
+import org.labcluster.crm.dayFormat
 import org.labcluster.crm.shared.Mock
-import org.labcluster.crm.shared.epochEnd
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeEnd
 import org.labcluster.crm.shared.timeStart
 import org.labcluster.crm.timeFormat
-import kotlin.time.Clock
 
 @Preview
 @Composable
@@ -56,6 +54,7 @@ private fun Preview() = PreviewSample { LessonAppBar() }
 fun LessonAppBar(
     lesson: Lesson = Mock.lessons.random(),
     timeZone: TimeZone = TimeZone.of("Europe/Warsaw"),
+    isLive: Boolean = false,
     onShowTopic: () -> Unit = {},
     onShowCourse: () -> Unit = {}
 ) {
@@ -69,28 +68,21 @@ fun LessonAppBar(
         )
     )
 
-    val isLive = remember {
-        Clock.System.now().epochSeconds in lesson.epochStart..lesson.epochEnd()
-    }
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     //12.03.2025
-    val title by remember {
-        derivedStateOf {
-            lesson.timeStart(timeZone).format(dateFormat)
-        }
-    }
+    val title = remember { lesson.timeStart(timeZone).format(dateFormat) }
 
-    //Czwartek - 10:00 - 11:35
-    val subtitle by remember {
-        derivedStateOf {
-            buildString {
-                append("Czwartek")
+    //Friday - 10:00 - 11:35
+    val subtitle = remember {
+        buildString {
+            lesson.timeStart(timeZone).run {
+                append(format(dayFormat))
                 append(" - ")
-                append(lesson.timeStart(timeZone).format(timeFormat))
-                append(" - ")
-                append(lesson.timeEnd(timeZone).format(timeFormat))
+                append(format(timeFormat))
             }
+            append(" - ")
+            append(lesson.timeEnd(timeZone).format(timeFormat))
         }
     }
 

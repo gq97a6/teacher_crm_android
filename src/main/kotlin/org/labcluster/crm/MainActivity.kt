@@ -22,7 +22,6 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
@@ -34,17 +33,6 @@ import org.labcluster.crm.view.SettingView
 import org.labcluster.crm.view.TopicView
 
 class MainActivity : ComponentActivity() {
-
-    private val timeZoneReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == Intent.ACTION_TIMEZONE_CHANGED) {
-                state.alter {
-                    timeZone.value = TimeZone.currentSystemDefault()
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,12 +45,24 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(timeZoneReceiver, IntentFilter(Intent.ACTION_TIMEZONE_CHANGED))
+        IntentFilter().apply {
+            addAction(Intent.ACTION_TIMEZONE_CHANGED)
+            addAction(Intent.ACTION_TIME_CHANGED)
+            addAction(Intent.ACTION_DATE_CHANGED)
+        }.let { registerReceiver(timeChangedReceiver, it) }
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(timeZoneReceiver)
+        unregisterReceiver(timeChangedReceiver)
+    }
+
+    private val timeChangedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            state.alter {
+                chronos.notifyTimeChanged()
+            }
+        }
     }
 }
 
@@ -81,9 +81,6 @@ class GroupsScreenKey() : NavKey
 
 @Serializable
 class CalendarScreenKey() : NavKey
-
-@Serializable
-class ReportScreenKey() : NavKey
 
 @Serializable
 class SettingsScreenKey() : NavKey

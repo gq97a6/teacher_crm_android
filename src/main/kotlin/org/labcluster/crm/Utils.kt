@@ -11,16 +11,15 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.Month
 import kotlinx.datetime.format.DayOfWeekNames
+import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
-import kotlinx.datetime.toLocalDateTime
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.objects.Mock
 import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.theme.darkColorScheme
-import kotlin.time.Clock
 
 fun ComponentActivity.composeConstruct(
     isDark: Boolean = true,
@@ -74,6 +73,25 @@ val dayFormat = LocalDateTime.Format {
     )
 }
 
+val monthFormat = LocalDate.Format {
+    monthName(
+        MonthNames(
+            "Styczeń",
+            "Luty",
+            "Marzec",
+            "Kwiecień",
+            "Maj",
+            "Czerwiec",
+            "Lipiec",
+            "Sierpień",
+            "Wrzesień",
+            "Październik",
+            "Listopad",
+            "Grudzień"
+        )
+    )
+}
+
 val shortDateFormat = LocalDateTime.Format {
     day()
     char('.')
@@ -93,22 +111,3 @@ val timeFormat = LocalDateTime.Format {
     char(':')
     minute()
 }
-
-val months = listOf(
-    "Styczeń",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Lipiec",
-    "Sierpień",
-    "Wrzesień",
-    "Październik",
-    "Listopad",
-    "Grudzień"
-)
-
-val currentDateTime = Clock.System.now().toLocalDateTime(state.timeZone.value)
-
-fun Month.format() = months[this.ordinal]

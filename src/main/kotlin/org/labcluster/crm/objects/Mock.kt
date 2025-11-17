@@ -22,6 +22,9 @@ object Mock {
         teacher.value = Mock.teachers.random()
         course.value = Mock.courses.random()
         group.value = Mock.groups.random()
-        lesson.value = Mock.lessons.random()
+        lesson.value = Mock.lessons.random().copy(
+            epochStart = (System.currentTimeMillis() / 1000) - 1000,
+            duration = 1030
+        )
     }
 }

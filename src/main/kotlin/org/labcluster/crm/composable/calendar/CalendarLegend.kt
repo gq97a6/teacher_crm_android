@@ -5,8 +5,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +20,17 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarLegend() }
+private fun Preview() = PreviewSample {
+    Column {
+        CalendarAppBar(
+            title = "Legenda",
+            subtitle = null,
+            showNavigationIcon = true,
+            onLegendClicked = { }
+        )
+        CalendarLegend()
+    }
+}
 
 @Composable
 fun CalendarLegend() {
@@ -28,28 +39,36 @@ fun CalendarLegend() {
             .fillMaxWidth()
             .padding(15.dp)
     ) {
-        Text("Legenda", fontSize = 40.sp, fontWeight = FontWeight.Black, color = cs.tertiary)
-        HorizontalDivider(Modifier.padding(top = 5.dp))
-
-        Spacer(Modifier.height(15.dp))
-
         Text(
             "Zaplanowana lekcja",
             fontSize = 20.sp,
-            fontWeight = FontWeight.Black,
+            fontWeight = FontWeight.Medium,
             color = cs.primary
         )
-        FilterChip(false, { }, { Text("11:45 - 13:20") }, Modifier.padding(end = 10.dp))
 
+        Spacer(Modifier.height(5.dp))
+        OutlinedButton({}) { Text("11:45 - 13:20") }
         Spacer(Modifier.height(15.dp))
 
         Text(
             "Rozpoczęta lekcja",
             fontSize = 20.sp,
-            fontWeight = FontWeight.Black,
+            fontWeight = FontWeight.Medium,
             color = cs.primary
         )
-        FilterChip(true, { }, { Text("11:45 - 13:20") }, Modifier.padding(end = 10.dp))
 
+        Spacer(Modifier.height(5.dp))
+        FilledTonalButton({}) { Text("11:45 - 13:20") }
+        Spacer(Modifier.height(15.dp))
+
+        Text(
+            "Trwająca lekcja",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            color = cs.primary
+        )
+
+        Spacer(Modifier.height(5.dp))
+        Button({}) { Text("11:45 - 13:20") }
     }
 }

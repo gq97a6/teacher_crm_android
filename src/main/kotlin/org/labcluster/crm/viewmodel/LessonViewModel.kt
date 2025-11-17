@@ -28,6 +28,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     )
 
     val isEditable = MutableStateFlow(false)
+    val clock = state.chronos.clock(viewModelScope)
 
     fun onStudentCheckbox(index: Int) {
         state.alter {

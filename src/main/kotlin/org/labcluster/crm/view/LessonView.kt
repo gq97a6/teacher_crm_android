@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,12 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.datetime.toInstant
 import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.lesson.LessonAppBar
 import org.labcluster.crm.composable.lesson.LessonContent
 import org.labcluster.crm.composable.lesson.LessonToolbarConfirm
 import org.labcluster.crm.composable.lesson.LessonToolbarEdit
 import org.labcluster.crm.composable.lesson.LessonToolbarStart
+import org.labcluster.crm.shared.epochEnd
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Teacher
 import org.labcluster.crm.viewmodel.LessonViewModel
@@ -36,16 +39,21 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
 
     val group by vm.state.group.collectAsStateWithLifecycle()
     val lesson by vm.state.lesson.collectAsStateWithLifecycle()
-    val timeZone by vm.state.timeZone.collectAsStateWithLifecycle()
-
+    val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
+    val clock by vm.clock.collectAsStateWithLifecycle()
     val attendance by vm.attendance.collectAsStateWithLifecycle()
     val isEditable by vm.isEditable.collectAsStateWithLifecycle()
+
+    val isLive by derivedStateOf {
+        clock.toInstant(timeZone).epochSeconds in lesson.epochStart..lesson.epochEnd()
+    }
 
     Box(Modifier.fillMaxHeight()) {
         Column {
             LessonAppBar(
                 lesson = lesson,
                 timeZone = timeZone,
+                isLive = isLive,
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
             )
