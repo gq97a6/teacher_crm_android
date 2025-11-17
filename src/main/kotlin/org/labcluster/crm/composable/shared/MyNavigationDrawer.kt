@@ -81,12 +81,6 @@ fun MyNavigationDrawer(
                         label = "Kalendarz"
                     ) { onClick(CalendarScreenKey()) }
 
-                    //MyNavigationDrawerItem(
-                    //    selected = backstack?.last() is ReportScreenKey,
-                    //    icon = ReportProblem,
-                    //    label = "Zgłoszenia"
-                    //) { onClick(ReportScreenKey()) }
-
                     MyNavigationDrawerItem(
                         selected = backstack?.last() is SettingsScreenKey,
                         icon = Tune,
