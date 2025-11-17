@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.labcluster.crm.PreviewSample
-import org.labcluster.crm.composable.SettingScreen
+import org.labcluster.crm.composable.setting.SettingScreen
 import org.labcluster.crm.viewmodel.SettingViewModel
 
 @Preview

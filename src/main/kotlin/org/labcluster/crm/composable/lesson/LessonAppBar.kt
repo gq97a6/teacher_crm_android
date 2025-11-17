@@ -155,13 +155,6 @@ fun LessonAppBar(
                     )
                 }
             }
-        },
-        navigationIcon = {
-            //Icon(
-            //    Icons.Filled.ArrowBackIosNew,
-            //    contentDescription = "",
-            //    modifier = Modifier.padding(horizontal = 10.dp)
-            //)
         }
     )
 }

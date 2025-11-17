@@ -1,4 +1,4 @@
-package org.labcluster.crm.composable
+package org.labcluster.crm.composable.setting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

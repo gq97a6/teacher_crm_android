@@ -1,4 +1,4 @@
-package org.labcluster.crm.composable
+package org.labcluster.crm.composable.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

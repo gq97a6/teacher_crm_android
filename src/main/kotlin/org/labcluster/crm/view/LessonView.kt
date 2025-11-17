@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,8 +45,10 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
     val attendance by vm.attendance.collectAsStateWithLifecycle()
     val isEditable by vm.isEditable.collectAsStateWithLifecycle()
 
-    val isLive by derivedStateOf {
-        clock.toInstant(timeZone).epochSeconds in lesson.epochStart..lesson.epochEnd()
+    val isLive by remember {
+        derivedStateOf {
+            clock.toInstant(timeZone).epochSeconds in lesson.epochStart..lesson.epochEnd()
+        }
     }
 
     Box(Modifier.fillMaxHeight()) {
