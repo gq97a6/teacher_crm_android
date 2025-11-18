@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.app.App
+import org.labcluster.crm.composable.shared.PreviewSample
 import org.labcluster.crm.cs
 import org.labcluster.crm.dayFormat
 import org.labcluster.crm.shared.Mock
@@ -48,12 +48,7 @@ fun CalendarContent(
         }
     }
 
-    LazyColumn(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 15.dp)
-            .padding(top = 10.dp)
-    ) {
+    LazyColumn(Modifier.fillMaxSize()) {
         lessons.forEach { (time, lessons) ->
             item {
                 Row(

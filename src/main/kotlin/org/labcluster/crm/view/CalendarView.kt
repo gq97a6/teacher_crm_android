@@ -2,29 +2,31 @@ package org.labcluster.crm.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.calendar.CalendarAppBar
 import org.labcluster.crm.composable.calendar.CalendarContent
 import org.labcluster.crm.composable.calendar.CalendarLegend
 import org.labcluster.crm.composable.calendar.CalendarToolbar
+import org.labcluster.crm.composable.shared.PreviewSample
 import org.labcluster.crm.viewmodel.CalendarViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarView() }
+private fun Preview() = PreviewSample(false) { CalendarView() }
 
 @Composable
-fun CalendarView(vm: CalendarViewModel = viewModel()) {
+fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
 
     val lessons by vm.lessons.collectAsStateWithLifecycle()
     val isLegendShown by vm.isLegendShown.collectAsStateWithLifecycle()
@@ -36,8 +38,9 @@ fun CalendarView(vm: CalendarViewModel = viewModel()) {
 
     BackHandler(isLegendShown, vm::onCloseLegend)
 
-    Box(Modifier.fillMaxHeight()) {
-        Column {
+    Scaffold(
+        modifier = Modifier,
+        topBar = {
             CalendarAppBar(
                 title = if (isLegendShown) "Legenda" else title,
                 subtitle = if (isLegendShown) null else subTitle,
@@ -45,6 +48,13 @@ fun CalendarView(vm: CalendarViewModel = viewModel()) {
                 onLegendClicked = vm::onLegendClicked,
                 onNavigationClicked = vm::onCloseLegend
             )
+        }
+    ) { paddingValues ->
+        Box(
+            Modifier
+                .padding(paddingValues)
+                .padding(horizontal = 15.dp)
+        ) {
             if (isLegendShown) CalendarLegend()
             else CalendarContent(
                 lessons = lessons,
@@ -52,12 +62,13 @@ fun CalendarView(vm: CalendarViewModel = viewModel()) {
                 onLessonClicked = vm::onLessonClicked
             )
         }
-        if (!isLegendShown) CalendarToolbar(
-            onPreviousClicked = vm::onPreviousClicked,
-            onCurrentSelected = vm::onCurrentSelected,
-            onNextClicked = vm::onNextClicked
-        )
     }
+
+    if (!isLegendShown) CalendarToolbar(
+        onPreviousClicked = vm::onPreviousClicked,
+        onCurrentSelected = vm::onCurrentSelected,
+        onNextClicked = vm::onNextClicked
+    )
 }
 
 

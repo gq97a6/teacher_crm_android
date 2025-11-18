@@ -6,18 +6,25 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -25,6 +32,8 @@ import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
+import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.view.CalendarView
 import org.labcluster.crm.view.GroupView
 import org.labcluster.crm.view.LessonView
@@ -35,11 +44,16 @@ import org.labcluster.crm.view.TopicView
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
+        enableEdgeToEdge()
         actionBar?.hide()
-        composeConstruct {
-            ScreenContent()
+
+        setContent {
+            Theme(isSystemInDarkTheme()) {
+                Box(Modifier.background(cs.background)) {
+                    ScreenContent()
+                }
+            }
         }
     }
 
@@ -89,7 +103,7 @@ class SettingsScreenKey() : NavKey
 class LoginScreenKey() : NavKey
 
 @Composable
-fun ScreenContent() {
+fun BoxScope.ScreenContent() {
     val backstack = rememberNavBackStack(LessonScreenKey())
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -98,7 +112,8 @@ fun ScreenContent() {
             backStack = backstack,
             entryDecorators = listOf(
                 SaveableStateHolderNavEntryDecorator(rememberSaveableStateHolder()),
-                rememberViewModelStoreNavEntryDecorator()
+                rememberViewModelStoreNavEntryDecorator(),
+                NavEntryDecorator { Box { it.Content() } } //Required even if context is BoxScope
             ),
             transitionSpec = {
                 ContentTransform(
@@ -117,7 +132,7 @@ fun ScreenContent() {
     }
 }
 
-fun <T : Any> entryProvider(key: T): NavEntry<NavKey> = when (key) {
+fun <T> BoxScope.entryProvider(key: T): NavEntry<NavKey> = when (key) {
     is LessonScreenKey -> NavEntry(key = key) { LessonView() }
     is TopicScreenKey -> NavEntry(key = key) { TopicView() }
     is GroupsScreenKey -> NavEntry(key = key) { GroupView() }

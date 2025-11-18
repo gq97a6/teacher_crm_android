@@ -2,7 +2,6 @@ package org.labcluster.crm.composable.topic
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewSample
 import org.labcluster.crm.cs
 import org.labcluster.crm.objects.Mock.lorem
 import kotlin.random.Random
@@ -22,9 +21,7 @@ private fun Preview() = PreviewSample { TopicContent() }
 
 @Composable
 fun TopicContent() {
-    LazyColumn(
-        Modifier.padding(horizontal = 20.dp)
-    ) {
+    LazyColumn {
         items(20) {
             Text(
                 text = lorem.take(11),

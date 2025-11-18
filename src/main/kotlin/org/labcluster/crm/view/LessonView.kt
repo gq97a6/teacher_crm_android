@@ -6,9 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.datetime.toInstant
-import org.labcluster.crm.PreviewSample
 import org.labcluster.crm.composable.lesson.LessonAppBar
 import org.labcluster.crm.composable.lesson.LessonContent
 import org.labcluster.crm.composable.lesson.LessonToolbarConfirm
 import org.labcluster.crm.composable.lesson.LessonToolbarEdit
 import org.labcluster.crm.composable.lesson.LessonToolbarStart
+import org.labcluster.crm.composable.shared.PreviewSample
 import org.labcluster.crm.shared.epochEnd
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Teacher
@@ -33,10 +33,10 @@ import org.labcluster.crm.viewmodel.LessonViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { LessonView() }
+private fun Preview() = PreviewSample(false) { LessonView() }
 
 @Composable
-fun LessonView(vm: LessonViewModel = viewModel()) {
+fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
     val group by vm.state.group.collectAsStateWithLifecycle()
     val lesson by vm.state.lesson.collectAsStateWithLifecycle()
@@ -51,8 +51,9 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
         }
     }
 
-    Box(Modifier.fillMaxHeight()) {
-        Column {
+    Scaffold(
+        modifier = Modifier,
+        topBar = {
             LessonAppBar(
                 lesson = lesson,
                 timeZone = timeZone,
@@ -60,6 +61,13 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
             )
+        }
+    ) { paddingValues ->
+        Box(
+            Modifier
+                .padding(paddingValues)
+                .padding(horizontal = 15.dp)
+        ) {
             LessonContent(
                 teacher = group.teacher ?: Teacher(),
                 students = lesson.students,
@@ -71,53 +79,53 @@ fun LessonView(vm: LessonViewModel = viewModel()) {
                 onStudentCheckbox = vm::onStudentCheckbox
             )
         }
+    }
 
-        //Has begin and is not being edited (10)
-        AnimatedVisibility(
-            visible = lesson.epochBegin != null && !isEditable,
-            enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 30.dp)
-        ) {
-            LessonToolbarEdit(
-                onEditClicked = vm::onEditClicked,
-                onTopicClicked = vm::onShowTopic,
-                onCourseClicked = vm::onShowCourse
-            )
-        }
+    //Has begin and is not being edited (10)
+    AnimatedVisibility(
+        visible = lesson.epochBegin != null && !isEditable,
+        enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 30.dp)
+    ) {
+        LessonToolbarEdit(
+            onEditClicked = vm::onEditClicked,
+            onTopicClicked = vm::onShowTopic,
+            onCourseClicked = vm::onShowCourse
+        )
+    }
 
-        //Has not begin and not being edited (00)
-        AnimatedVisibility(
-            visible = lesson.epochBegin == null && !isEditable,
-            enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 30.dp)
-        ) {
-            LessonToolbarStart(
-                onStartClicked = vm::onStartClicked,
-                onTopicClicked = vm::onShowTopic,
-                onCourseClicked = vm::onShowCourse
-            )
-        }
+    //Has not begin and not being edited (00)
+    AnimatedVisibility(
+        visible = lesson.epochBegin == null && !isEditable,
+        enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 30.dp)
+    ) {
+        LessonToolbarStart(
+            onStartClicked = vm::onStartClicked,
+            onTopicClicked = vm::onShowTopic,
+            onCourseClicked = vm::onShowCourse
+        )
+    }
 
-        //Has not begin but is being edited (01)
-        //Has begin and is being edited (11)
-        AnimatedVisibility(
-            visible = isEditable,
-            enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 30.dp)
-        ) {
-            LessonToolbarConfirm(
-                onConfirmClicked = vm::onConfirmClicked,
-                onCancelClicked = vm::onCancelClicked
-            )
-        }
+    //Has not begin but is being edited (01)
+    //Has begin and is being edited (11)
+    AnimatedVisibility(
+        visible = isEditable,
+        enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 30.dp)
+    ) {
+        LessonToolbarConfirm(
+            onConfirmClicked = vm::onConfirmClicked,
+            onCancelClicked = vm::onCancelClicked
+        )
     }
 }

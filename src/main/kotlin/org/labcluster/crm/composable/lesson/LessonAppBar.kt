@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import org.labcluster.crm.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewSample
 import org.labcluster.crm.cs
 import org.labcluster.crm.dateFormat
 import org.labcluster.crm.dayFormat
@@ -48,7 +48,7 @@ import org.labcluster.crm.timeFormat
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { LessonAppBar() }
+private fun Preview() = PreviewSample(isContent = false) { LessonAppBar() }
 
 @Composable
 fun LessonAppBar(
