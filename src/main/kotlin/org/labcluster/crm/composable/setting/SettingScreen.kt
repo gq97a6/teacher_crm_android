@@ -1,6 +1,7 @@
 package org.labcluster.crm.composable.setting
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,17 +50,19 @@ fun SettingScreen(
             .padding(15.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(Modifier.height(20.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Dane", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
 
-        Text("Dane", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
+            WavyDivider(
+                modifier = Modifier
+                    .padding(start = 10.dp)
+                    .height(10.dp),
+                thickness = 3.dp,
+                wavelength = 25.dp
+            )
+        }
 
-        WavyDivider(
-            modifier = Modifier
-                .padding(top = 1.dp)
-                .padding(bottom = 10.dp)
-                .height(5.dp),
-            thickness = 1.5.dp
-        )
+        Spacer(Modifier.height(5.dp))
 
         OutlinedTextField(
             state = name,
@@ -128,15 +132,19 @@ fun SettingScreen(
             modifier = Modifier.fillMaxWidth()
         ) { Text("Zapisz") }
 
-        Spacer(Modifier.height(15.dp))
-        Text("Zmiana hasła", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
-        WavyDivider(
-            modifier = Modifier
-                .padding(top = 1.dp)
-                .padding(bottom = 10.dp)
-                .height(5.dp),
-            thickness = 1.5.dp
-        )
+        Spacer(Modifier.height(30.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Zmiana hasła", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
+
+            WavyDivider(
+                modifier = Modifier
+                    .padding(start = 10.dp)
+                    .height(10.dp),
+                thickness = 3.dp,
+                wavelength = 25.dp
+            )
+        }
+        Spacer(Modifier.height(5.dp))
 
         OutlinedSecureTextField(
             state = currentPassword,
