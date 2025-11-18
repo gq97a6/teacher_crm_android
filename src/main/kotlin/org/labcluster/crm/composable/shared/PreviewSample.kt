@@ -48,7 +48,7 @@ fun PreviewSample(
                     },
                     subtitle = {
                         Text(
-                            "subtitle",
+                            "Subtitle",
                             fontWeight = FontWeight.Black,
                             color = cs.primary
                         )
