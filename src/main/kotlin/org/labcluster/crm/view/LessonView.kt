@@ -25,7 +25,7 @@ import org.labcluster.crm.composable.lesson.LessonContent
 import org.labcluster.crm.composable.lesson.LessonToolbarConfirm
 import org.labcluster.crm.composable.lesson.LessonToolbarEdit
 import org.labcluster.crm.composable.lesson.LessonToolbarStart
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.shared.epochEnd
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Teacher
@@ -33,7 +33,7 @@ import org.labcluster.crm.viewmodel.LessonViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(false) { LessonView() }
+private fun Preview() = PreviewScaffold(false) { LessonView() }
 
 @Composable
 fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.cs
 import org.labcluster.crm.objects.Mock.lorem
 import kotlin.random.Random
@@ -19,7 +19,7 @@ import kotlin.random.Random
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { TopicContent(it) }
+private fun Preview() = PreviewScaffold { TopicContent(it) }
 
 @Composable
 fun TopicContent(paddingValues: PaddingValues = PaddingValues()) {

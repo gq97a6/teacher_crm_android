@@ -26,7 +26,7 @@ import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.theme.darkColorScheme
 
 @Composable
-fun PreviewSample(
+fun PreviewScaffold(
     showAppBar: Boolean = true,
     scheme: ColorScheme = darkColorScheme,
     content: @Composable BoxScope.(PaddingValues) -> Unit

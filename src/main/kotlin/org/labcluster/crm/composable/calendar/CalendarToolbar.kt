@@ -18,11 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarToolbar() }
+private fun Preview() = PreviewScaffold { CalendarToolbar() }
 
 @Composable
 fun BoxScope.CalendarToolbar(

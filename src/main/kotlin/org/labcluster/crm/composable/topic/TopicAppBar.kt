@@ -25,12 +25,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(showAppBar = false) { TopicAppBar() }
+private fun Preview() = PreviewScaffold(showAppBar = false) { TopicAppBar() }
 
 @Composable
 fun TopicAppBar(

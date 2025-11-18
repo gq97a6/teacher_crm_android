@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.composable.shared.WavyDivider
 import org.labcluster.crm.cs
 import org.labcluster.crm.shared.Mock
@@ -38,7 +38,7 @@ import org.labcluster.crm.shared.model.Teacher
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { LessonContent(it) }
+private fun Preview() = PreviewScaffold { LessonContent(it) }
 
 @Composable
 fun LessonContent(

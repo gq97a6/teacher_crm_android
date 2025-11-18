@@ -20,14 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.cs
 import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Group
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(showAppBar = false) { GroupAppBar() }
+private fun Preview() = PreviewScaffold(showAppBar = false) { GroupAppBar() }
 
 @Composable
 fun GroupAppBar(group: Group = Mock.groups.random()) {

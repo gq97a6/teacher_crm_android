@@ -32,7 +32,7 @@ import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.theme.Theme
 import org.labcluster.crm.view.CalendarView
 import org.labcluster.crm.view.GroupView
@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() = PreviewSample { ScreenContent() }
+private fun Preview() = PreviewScaffold { ScreenContent() }
 
 @Serializable
 class LessonScreenKey() : NavKey

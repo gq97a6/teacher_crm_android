@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.composable.shared.WavyDivider
 import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { SettingScreen(it) }
+private fun Preview() = PreviewScaffold { SettingScreen(it) }
 
 @Composable
 fun SettingScreen(

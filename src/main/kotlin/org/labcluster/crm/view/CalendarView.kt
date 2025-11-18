@@ -17,12 +17,12 @@ import org.labcluster.crm.composable.calendar.CalendarAppBar
 import org.labcluster.crm.composable.calendar.CalendarContent
 import org.labcluster.crm.composable.calendar.CalendarLegend
 import org.labcluster.crm.composable.calendar.CalendarToolbar
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.viewmodel.CalendarViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(false) { CalendarView() }
+private fun Preview() = PreviewScaffold(false) { CalendarView() }
 
 @Composable
 fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {

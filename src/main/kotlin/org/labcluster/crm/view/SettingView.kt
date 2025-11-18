@@ -12,13 +12,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.labcluster.crm.composable.setting.SettingScreen
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.cs
 import org.labcluster.crm.viewmodel.SettingViewModel
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(false) { SettingView() }
+private fun Preview() = PreviewScaffold(false) { SettingView() }
 
 @Composable
 fun SettingView(vm: SettingViewModel = viewModel()) {

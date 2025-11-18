@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import org.labcluster.crm.app.App
-import org.labcluster.crm.composable.shared.PreviewSample
+import org.labcluster.crm.composable.shared.PreviewScaffold
 import org.labcluster.crm.cs
 import org.labcluster.crm.dayFormat
 import org.labcluster.crm.shared.Mock
@@ -35,7 +35,7 @@ import org.labcluster.crm.timeFormat
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarContent(it) }
+private fun Preview() = PreviewScaffold { CalendarContent(it) }
 
 @Composable
 fun CalendarContent(
