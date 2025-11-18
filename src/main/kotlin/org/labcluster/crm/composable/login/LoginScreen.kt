@@ -21,7 +21,7 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(isContent = false) { LoginScreen() }
+private fun Preview() = PreviewSample(showAppBar = false) { LoginScreen() }
 
 @Composable
 fun LoginScreen(

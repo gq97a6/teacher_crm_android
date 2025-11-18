@@ -49,7 +49,7 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample {
+private fun Preview() = PreviewSample(showAppBar = false) {
     DropList(
         value = "Option 10",
         items = List(30) { "Option ${it + 1}" },

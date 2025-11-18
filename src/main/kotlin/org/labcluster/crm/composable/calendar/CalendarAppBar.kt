@@ -27,7 +27,7 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(isContent = false) { CalendarAppBar() }
+private fun Preview() = PreviewSample(showAppBar = false) { CalendarAppBar() }
 
 @Composable
 fun CalendarAppBar(

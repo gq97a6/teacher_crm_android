@@ -1,7 +1,6 @@
 package org.labcluster.crm.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,25 +44,21 @@ fun SettingView(vm: SettingViewModel = viewModel()) {
                     )
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
     ) { paddingValues ->
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 15.dp)
-        ) {
-            SettingScreen(
-                name = name,
-                surname = surname,
-                contact1 = contact1,
-                contact2 = contact2,
-                phone = phone,
-                pesel = pesel,
-                bank = bank,
-                nip = nip,
-                onSaveClicked = vm::onSavedClicked,
-                onChangePasswordClicked = vm::onChangePasswordClicked,
-            )
-        }
+        SettingScreen(
+            paddingValues = paddingValues,
+            name = name,
+            surname = surname,
+            contact1 = contact1,
+            contact2 = contact2,
+            phone = phone,
+            pesel = pesel,
+            bank = bank,
+            nip = nip,
+            onSaveClicked = vm::onSavedClicked,
+            onChangePasswordClicked = vm::onChangePasswordClicked,
+        )
     }
 }

@@ -1,7 +1,9 @@
 package org.labcluster.crm.composable.topic
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +19,11 @@ import kotlin.random.Random
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { TopicContent() }
+private fun Preview() = PreviewSample { TopicContent(it) }
 
 @Composable
-fun TopicContent() {
-    LazyColumn {
+fun TopicContent(paddingValues: PaddingValues = PaddingValues()) {
+    LazyColumn(Modifier.padding(paddingValues)) {
         items(20) {
             Text(
                 text = lorem.take(11),

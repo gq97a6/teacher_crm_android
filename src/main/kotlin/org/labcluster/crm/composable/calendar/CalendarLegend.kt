@@ -1,9 +1,11 @@
 package org.labcluster.crm.composable.calendar
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedButton
@@ -19,11 +21,13 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarLegend() }
+private fun Preview() = PreviewSample { CalendarLegend(it) }
 
 @Composable
-fun CalendarLegend() {
-    Column(Modifier.fillMaxWidth()) {
+fun CalendarLegend(paddingValues: PaddingValues = PaddingValues()) {
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(paddingValues)) {
         Text(
             "Zaplanowana lekcja",
             fontSize = 20.sp,

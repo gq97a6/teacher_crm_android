@@ -3,6 +3,7 @@ package org.labcluster.crm.composable.lesson
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,10 +38,11 @@ import org.labcluster.crm.shared.model.Teacher
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { LessonContent() }
+private fun Preview() = PreviewSample { LessonContent(it) }
 
 @Composable
 fun LessonContent(
+    paddingValues: PaddingValues = PaddingValues(),
     teacher: Teacher = Teacher("Anna", "Testova"),
     students: List<Student> = Mock.students.shuffled().take(5),
     attendance: List<ToggleableState> = List(5) { ToggleableState(false) },
@@ -50,7 +52,7 @@ fun LessonContent(
     topic: String = "Why AWS is evil",
     onStudentCheckbox: (Int) -> Unit = {}
 ) {
-    LazyColumn {
+    LazyColumn(Modifier.padding(paddingValues)) {
         item {
             OutlinedTextField(
                 state = rememberTextFieldState(course.name),

@@ -5,8 +5,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -61,24 +61,20 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
                 onShowTopic = vm::onShowTopic,
                 onShowCourse = vm::onShowCourse,
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
     ) { paddingValues ->
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 15.dp)
-        ) {
-            LessonContent(
-                teacher = group.teacher ?: Teacher(),
-                students = lesson.students,
-                attendance = attendance,
-                hasBegun = lesson.epochBegin != null,
-                isEditable = isEditable,
-                course = lesson.course ?: Course(),
-                topic = lesson.topic?.name ?: "",
-                onStudentCheckbox = vm::onStudentCheckbox
-            )
-        }
+        LessonContent(
+            paddingValues = paddingValues,
+            teacher = group.teacher ?: Teacher(),
+            students = lesson.students,
+            attendance = attendance,
+            hasBegun = lesson.epochBegin != null,
+            isEditable = isEditable,
+            course = lesson.course ?: Course(),
+            topic = lesson.topic?.name ?: "",
+            onStudentCheckbox = vm::onStudentCheckbox
+        )
     }
 
     //Has begin and is not being edited (10)

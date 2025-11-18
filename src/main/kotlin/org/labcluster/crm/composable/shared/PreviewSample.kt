@@ -3,9 +3,10 @@ package org.labcluster.crm.composable.shared
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ColorScheme
@@ -26,10 +27,9 @@ import org.labcluster.crm.theme.darkColorScheme
 
 @Composable
 fun PreviewSample(
-    isContent: Boolean = true,
     showAppBar: Boolean = true,
     scheme: ColorScheme = darkColorScheme,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.(PaddingValues) -> Unit
 ) {
     //Mock app state
     state = Mock.state
@@ -38,7 +38,7 @@ fun PreviewSample(
         Scaffold(
             modifier = Modifier,
             topBar = {
-                if (isContent && showAppBar) TopAppBar(
+                if (showAppBar) TopAppBar(
                     title = {
                         Text(
                             "Title",
@@ -65,17 +65,17 @@ fun PreviewSample(
                         }
                     }
                 )
-            }
+            },
+            contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
         ) { paddingValues ->
             Box(
                 modifier = Modifier
                     .imePadding()
                     .fillMaxSize()
                     .background(cs.background)
-                    .padding(paddingValues)
-                    .padding(horizontal = if (isContent) 15.dp else 0.dp),
-                content = content
-            )
+            ) {
+                content(paddingValues)
+            }
         }
     }
 }

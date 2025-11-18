@@ -30,7 +30,7 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(isContent = false) { TopicAppBar() }
+private fun Preview() = PreviewSample(showAppBar = false) { TopicAppBar() }
 
 @Composable
 fun TopicAppBar(

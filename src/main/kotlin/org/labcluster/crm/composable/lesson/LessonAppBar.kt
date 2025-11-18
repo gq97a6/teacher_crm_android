@@ -48,7 +48,7 @@ import org.labcluster.crm.timeFormat
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample(isContent = false) { LessonAppBar() }
+private fun Preview() = PreviewSample(showAppBar = false) { LessonAppBar() }
 
 @Composable
 fun LessonAppBar(

@@ -1,6 +1,7 @@
 package org.labcluster.crm.composable.calendar
 
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,10 +35,11 @@ import org.labcluster.crm.timeFormat
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { CalendarContent() }
+private fun Preview() = PreviewSample { CalendarContent(it) }
 
 @Composable
 fun CalendarContent(
+    paddingValues: PaddingValues = PaddingValues(),
     lessons: List<Lesson> = Mock.lessons,
     timeZone: TimeZone = App.state.chronos.timeZone.value,
     onLessonClicked: (Lesson) -> Unit = {},
@@ -48,7 +50,9 @@ fun CalendarContent(
         }
     }
 
-    LazyColumn(Modifier.fillMaxSize()) {
+    LazyColumn(Modifier
+        .fillMaxSize()
+        .padding(paddingValues)) {
         lessons.forEach { (time, lessons) ->
             item {
                 Row(

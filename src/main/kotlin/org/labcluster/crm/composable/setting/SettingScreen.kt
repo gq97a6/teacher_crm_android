@@ -1,6 +1,7 @@
 package org.labcluster.crm.composable.setting
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,10 +27,11 @@ import org.labcluster.crm.cs
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { SettingScreen() }
+private fun Preview() = PreviewSample { SettingScreen(it) }
 
 @Composable
 fun SettingScreen(
+    paddingValues: PaddingValues = PaddingValues(),
     name: TextFieldState = TextFieldState("Mariusz"),
     surname: TextFieldState = TextFieldState("Wysocki"),
     contact1: TextFieldState = TextFieldState("Piła 64-920 Dabrowskiego 4"),
@@ -47,6 +49,7 @@ fun SettingScreen(
     Column(
         Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

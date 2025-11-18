@@ -1,7 +1,6 @@
 package org.labcluster.crm.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,14 +27,9 @@ fun TopicView(vm: TopicViewModel = viewModel()) {
         modifier = Modifier,
         topBar = {
             TopicAppBar(title = topic.name)
-        }
+        },
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
     ) { paddingValues ->
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 15.dp)
-        ) {
-            TopicContent()
-        }
+        TopicContent(paddingValues)
     }
 }

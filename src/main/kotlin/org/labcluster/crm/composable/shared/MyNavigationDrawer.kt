@@ -33,7 +33,7 @@ import org.labcluster.crm.TopicScreenKey
 
 @Preview
 @Composable
-private fun Preview() = PreviewSample { MyNavigationDrawer() }
+private fun Preview() = PreviewSample(showAppBar = false) { MyNavigationDrawer() }
 
 @Composable
 fun MyNavigationDrawer(
