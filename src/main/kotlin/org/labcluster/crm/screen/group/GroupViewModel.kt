@@ -10,7 +10,6 @@ class GroupViewModel(val state: AppState = App.state) : ViewModel() {
     fun lessonOnClick(lessonClicked: Lesson) {
         state.alter {
             lesson.value = lessonClicked
-            backstack.value.clear()
             backstack.value += LessonViewKey()
         }
     }
