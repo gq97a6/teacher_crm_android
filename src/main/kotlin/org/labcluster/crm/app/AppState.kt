@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.labcluster.crm.GroupViewKey
+import org.labcluster.crm.CalendarViewKey
 import org.labcluster.crm.chronos.Chronos
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Group
@@ -17,7 +17,7 @@ import org.labcluster.crm.shared.model.Topic
 
 open class AppState {
     open val chronos = Chronos()
-    open val backstack = MutableStateFlow(NavBackStack<NavKey>(GroupViewKey()))
+    open val backstack = MutableStateFlow(NavBackStack<NavKey>(CalendarViewKey()))
 
     open val topic = MutableStateFlow(Topic())
     open val student = MutableStateFlow(Student())
