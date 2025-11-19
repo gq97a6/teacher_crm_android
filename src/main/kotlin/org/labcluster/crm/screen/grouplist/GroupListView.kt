@@ -48,9 +48,9 @@ fun GroupListView(vm: GroupListViewModel = viewModel()) {
                         onClick = vm::groupOnClick
                     )
                 }
-                item {
-                    Spacer(Modifier.height(100.dp))
-                }
+            }
+            item {
+                Spacer(Modifier.height(100.dp))
             }
         }
     }
