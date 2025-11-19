@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.cs
 
 @Preview
@@ -46,7 +46,7 @@ fun TopicAppBar(
                 color = cs.tertiary,
                 maxLines = 1,
                 modifier = Modifier
-                    .fillMaxWidth(.9f)
+                    .fillMaxWidth(.97f)
                     .basicMarquee(
                         spacing = MarqueeSpacing(10.dp),
                         velocity = 60.dp

@@ -1,4 +1,4 @@
-package org.labcluster.crm.composable.shared
+package org.labcluster.crm.composable
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,11 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import kotlinx.coroutines.launch
-import org.labcluster.crm.CalendarScreenKey
-import org.labcluster.crm.GroupsScreenKey
-import org.labcluster.crm.LessonScreenKey
-import org.labcluster.crm.SettingsScreenKey
-import org.labcluster.crm.TopicScreenKey
+import org.labcluster.crm.CalendarViewKey
+import org.labcluster.crm.GroupListViewKey
+import org.labcluster.crm.GroupViewKey
+import org.labcluster.crm.LessonViewKey
+import org.labcluster.crm.SettingViewKey
+import org.labcluster.crm.TopicViewKey
 
 @Preview
 @Composable
@@ -57,34 +58,34 @@ fun MyNavigationDrawer(
                 Spacer(Modifier.weight(1f))
                 Icons.Outlined.apply {
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is LessonScreenKey,
+                        selected = backstack?.last() is LessonViewKey,
                         icon = School,
                         label = "Lekcja"
-                    ) { onClick(LessonScreenKey()) }
+                    ) { onClick(LessonViewKey()) }
 
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is TopicScreenKey,
+                        selected = backstack?.last() is TopicViewKey,
                         icon = Book,
                         label = "Temat"
-                    ) { onClick(TopicScreenKey()) }
+                    ) { onClick(TopicViewKey()) }
 
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is GroupsScreenKey,
+                        selected = backstack?.last() is GroupViewKey,
                         icon = Group,
                         label = "Grupy"
-                    ) { onClick(GroupsScreenKey()) }
+                    ) { onClick(GroupListViewKey()) }
 
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is CalendarScreenKey,
+                        selected = backstack?.last() is CalendarViewKey,
                         icon = CalendarMonth,
                         label = "Kalendarz"
-                    ) { onClick(CalendarScreenKey()) }
+                    ) { onClick(CalendarViewKey()) }
 
                     MyNavigationDrawerItem(
-                        selected = backstack?.last() is SettingsScreenKey,
+                        selected = backstack?.last() is SettingViewKey,
                         icon = Tune,
                         label = "Ustawienia"
-                    ) { onClick(SettingsScreenKey()) }
+                    ) { onClick(SettingViewKey()) }
 
                 }
                 Spacer(Modifier.weight(1f))

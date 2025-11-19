@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.calendar.compose.CalendarAppBar
 import org.labcluster.crm.screen.calendar.compose.CalendarContent
 import org.labcluster.crm.screen.calendar.compose.CalendarLegend
@@ -47,7 +47,7 @@ fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
                 onNavigationClicked = vm::onCloseLegend
             )
         },
-        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
         if (isLegendShown) CalendarLegend(paddingValues)
         else CalendarContent(

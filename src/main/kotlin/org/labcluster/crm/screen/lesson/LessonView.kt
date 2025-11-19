@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.datetime.toInstant
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.lesson.compose.LessonAppBar
 import org.labcluster.crm.screen.lesson.compose.LessonContent
 import org.labcluster.crm.screen.lesson.compose.LessonToolbarConfirm
@@ -61,7 +61,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
                 onShowCourse = vm::onShowCourse,
             )
         },
-        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
         LessonContent(
             paddingValues = paddingValues,

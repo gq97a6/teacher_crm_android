@@ -1,4 +1,4 @@
-package org.labcluster.crm.composable.shared
+package org.labcluster.crm.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

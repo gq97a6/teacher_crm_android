@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.topic.compose.TopicAppBar
 import org.labcluster.crm.screen.topic.compose.TopicContent
 
@@ -27,7 +27,7 @@ fun TopicView(vm: TopicViewModel = viewModel()) {
         topBar = {
             TopicAppBar(title = topic.name)
         },
-        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
         TopicContent(paddingValues)
     }

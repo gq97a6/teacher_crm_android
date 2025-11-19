@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,14 +29,14 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
-import org.labcluster.crm.composable.shared.MyNavigationDrawer
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.MyNavigationDrawer
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.calendar.CalendarView
 import org.labcluster.crm.screen.group.GroupView
+import org.labcluster.crm.screen.grouplist.GroupListView
 import org.labcluster.crm.screen.lesson.LessonView
 import org.labcluster.crm.screen.login.LoginView
 import org.labcluster.crm.screen.setting.SettingView
@@ -85,26 +87,29 @@ class MainActivity : ComponentActivity() {
 private fun Preview() = PreviewScaffold { ScreenContent() }
 
 @Serializable
-class LessonScreenKey() : NavKey
+class LessonViewKey() : NavKey
 
 @Serializable
-class TopicScreenKey() : NavKey
+class TopicViewKey() : NavKey
 
 @Serializable
-class GroupsScreenKey() : NavKey
+class GroupListViewKey() : NavKey
 
 @Serializable
-class CalendarScreenKey() : NavKey
+class GroupViewKey() : NavKey
 
 @Serializable
-class SettingsScreenKey() : NavKey
+class CalendarViewKey() : NavKey
 
 @Serializable
-class LoginScreenKey() : NavKey
+class SettingViewKey() : NavKey
+
+@Serializable
+class LoginViewKey() : NavKey
 
 @Composable
 fun BoxScope.ScreenContent() {
-    val backstack = rememberNavBackStack(GroupsScreenKey())
+    val backstack by state.backstack.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     MyNavigationDrawer(backstack, drawerState) {
@@ -133,11 +138,12 @@ fun BoxScope.ScreenContent() {
 }
 
 fun <T> BoxScope.entryProvider(key: T): NavEntry<NavKey> = when (key) {
-    is LessonScreenKey -> NavEntry(key = key) { LessonView() }
-    is TopicScreenKey -> NavEntry(key = key) { TopicView() }
-    is GroupsScreenKey -> NavEntry(key = key) { GroupView() }
-    is CalendarScreenKey -> NavEntry(key = key) { CalendarView() }
-    is SettingsScreenKey -> NavEntry(key = key) { SettingView() }
-    is LoginScreenKey -> NavEntry(key = key) { LoginView() }
+    is LessonViewKey -> NavEntry(key = key) { LessonView() }
+    is TopicViewKey -> NavEntry(key = key) { TopicView() }
+    is GroupViewKey -> NavEntry(key = key) { GroupView() }
+    is GroupListViewKey -> NavEntry(key = key) { GroupListView() }
+    is CalendarViewKey -> NavEntry(key = key) { CalendarView() }
+    is SettingViewKey -> NavEntry(key = key) { SettingView() }
+    is LoginViewKey -> NavEntry(key = key) { LoginView() }
     else -> throw Error()
 }

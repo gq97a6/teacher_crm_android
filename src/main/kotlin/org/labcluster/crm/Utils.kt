@@ -13,18 +13,32 @@ val cs: ColorScheme
     @Composable
     get() = MaterialTheme.colorScheme
 
+val polishDayOfWeekNames = DayOfWeekNames(
+    "Poniedziałek",
+    "Wtorek",
+    "Środa",
+    "Czwartek",
+    "Piątek",
+    "Sobota",
+    "Niedziela"
+)
+
 val dayFormat = LocalDateTime.Format {
-    dayOfWeek(
-        DayOfWeekNames(
-            "Poniedziałek",
-            "Wtorek",
-            "Środa",
-            "Czwartek",
-            "Piątek",
-            "Sobota",
-            "Niedziela"
-        )
-    )
+    dayOfWeek(polishDayOfWeekNames)
+}
+
+val polishDayOfWeekShortNames = DayOfWeekNames(
+    "Pon",
+    "Wto",
+    "Śro",
+    "Czw",
+    "Pią",
+    "Sob",
+    "Nie"
+)
+
+val shortDayFormat = LocalDateTime.Format {
+    dayOfWeek(polishDayOfWeekShortNames)
 }
 
 val monthFormat = LocalDate.Format {

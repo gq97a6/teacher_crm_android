@@ -1,4 +1,4 @@
-package org.labcluster.crm.screen.group.compose
+package org.labcluster.crm.screen.grouplist.compose
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -11,14 +11,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import kotlinx.datetime.TimeZone
 import org.labcluster.crm.app.App
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
 
 @Preview
 @Composable
-private fun Preview() = PreviewScaffold { GroupList(it) }
+private fun Preview() = PreviewScaffold(false) { GroupList(it) }
 
 @Composable
 fun GroupList(
@@ -38,7 +38,7 @@ fun GroupList(
                 GroupListEntry(
                     horizontalPadding = horizontal,
                     group = it.key,
-                    lesson = it.value.first(),
+                    nextLesson = it.value.firstOrNull { it.epochBegin == null } ?: Lesson(),
                     timeZone = timeZone,
                     onClick = groupOnClick
                 )

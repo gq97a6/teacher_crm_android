@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.cs
 import org.labcluster.crm.screen.setting.compose.SettingScreen
 
@@ -44,7 +44,7 @@ fun SettingView(vm: SettingViewModel = viewModel()) {
                 }
             )
         },
-        contentWindowInsets = WindowInsets(left = 15.dp, right = 10.dp)
+        contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
         SettingScreen(
             paddingValues = paddingValues,

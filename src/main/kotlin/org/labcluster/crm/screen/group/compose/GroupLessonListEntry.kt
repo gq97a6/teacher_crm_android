@@ -1,5 +1,7 @@
 package org.labcluster.crm.screen.group.compose
 
+import androidx.compose.foundation.MarqueeSpacing
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,11 +25,11 @@ import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import org.labcluster.crm.app.App
-import org.labcluster.crm.composable.shared.PreviewSimple
+import org.labcluster.crm.composable.PreviewSimple
 import org.labcluster.crm.cs
+import org.labcluster.crm.dateFormat
 import org.labcluster.crm.dayFormat
 import org.labcluster.crm.shared.Mock
-import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeEnd
 import org.labcluster.crm.shared.timeStart
@@ -35,17 +37,15 @@ import org.labcluster.crm.timeFormat
 
 @Preview
 @Composable
-private fun Preview() = PreviewSimple { GroupListEntry() }
+private fun Preview() = PreviewSimple { GroupLessonListEntry() }
 
 @Composable
-fun GroupListEntry(
+fun GroupLessonListEntry(
     horizontalPadding: Dp = 15.dp,
-    group: Group = Mock.groups.random(),
     lesson: Lesson = Mock.lessons.random(),
     timeZone: TimeZone = App.state.chronos.timeZone.value,
-    onClick: (Group) -> Unit = {}
+    onClick: (Lesson) -> Unit = {}
 ) {
-
     val dayText = remember {
         lesson.timeStart(timeZone).format(dayFormat)
     }
@@ -58,6 +58,10 @@ fun GroupListEntry(
         }
     }
 
+    val dateText = remember {
+        lesson.timeStart(timeZone).format(dateFormat)
+    }
+
     Box {
         Column(
             modifier = Modifier
@@ -68,13 +72,19 @@ fun GroupListEntry(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = lesson.course?.name ?: "Lekcja nie należy do kursu",
+                text = lesson.topic?.name ?: "Brak tematu lekcji",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = cs.tertiary
+                color = cs.tertiary,
+                modifier = Modifier
+                    .fillMaxWidth(.97f)
+                    .basicMarquee(
+                        spacing = MarqueeSpacing(10.dp),
+                        velocity = 60.dp
+                    )
             )
             Text(
-                text = lesson.topic?.name ?: "Brak tematu lekcji",
+                text = dateText,
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 color = cs.primary
@@ -96,8 +106,8 @@ fun GroupListEntry(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(110.dp)
-                .clickable { onClick(group) }
+                .height(80.dp)
+                .clickable { onClick(lesson) }
         )
     }
 }
