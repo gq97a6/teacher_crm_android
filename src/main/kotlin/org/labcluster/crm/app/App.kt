@@ -5,7 +5,7 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.labcluster.crm.objects.Mock
+import org.labcluster.crm.Mock
 import org.labcluster.crm.shared.Database
 import org.labcluster.crm.shared.repository.CourseRepository
 import org.labcluster.crm.shared.repository.GroupRepository

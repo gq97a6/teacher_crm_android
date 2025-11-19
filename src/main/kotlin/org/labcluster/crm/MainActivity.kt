@@ -33,13 +33,13 @@ import kotlinx.serialization.Serializable
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.shared.MyNavigationDrawer
 import org.labcluster.crm.composable.shared.PreviewScaffold
+import org.labcluster.crm.screen.calendar.CalendarView
+import org.labcluster.crm.screen.group.GroupView
+import org.labcluster.crm.screen.lesson.LessonView
+import org.labcluster.crm.screen.login.LoginView
+import org.labcluster.crm.screen.setting.SettingView
+import org.labcluster.crm.screen.topic.TopicView
 import org.labcluster.crm.theme.Theme
-import org.labcluster.crm.view.CalendarView
-import org.labcluster.crm.view.GroupView
-import org.labcluster.crm.view.LessonView
-import org.labcluster.crm.view.LoginView
-import org.labcluster.crm.view.SettingView
-import org.labcluster.crm.view.TopicView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class LoginScreenKey() : NavKey
 
 @Composable
 fun BoxScope.ScreenContent() {
-    val backstack = rememberNavBackStack(LessonScreenKey())
+    val backstack = rememberNavBackStack(GroupsScreenKey())
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     MyNavigationDrawer(backstack, drawerState) {
