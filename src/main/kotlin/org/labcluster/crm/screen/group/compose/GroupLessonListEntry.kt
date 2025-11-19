@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -62,13 +63,17 @@ fun GroupLessonListEntry(
         lesson.timeStart(timeZone).format(dateFormat)
     }
 
-    Box {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(110.dp)
+    ) {
         Column(
             modifier = Modifier
                 .padding(top = 5.dp)
                 .padding(vertical = 5.dp)
                 .padding(horizontal = horizontalPadding)
-                .fillMaxWidth(),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
             Text(
@@ -105,8 +110,7 @@ fun GroupLessonListEntry(
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
+                .fillMaxSize()
                 .clickable { onClick(lesson) }
         )
     }
