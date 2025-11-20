@@ -37,7 +37,6 @@ private fun Preview() = PreviewScaffold(false) { LessonView() }
 @Composable
 fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
-    val group by vm.state.group.collectAsStateWithLifecycle()
     val lesson by vm.state.lesson.collectAsStateWithLifecycle()
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
     val clock by vm.clock.collectAsStateWithLifecycle()
@@ -65,7 +64,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
     ) { paddingValues ->
         LessonContent(
             paddingValues = paddingValues,
-            teacher = group.teacher ?: Teacher(),
+            teacher = lesson.teacher1 ?: Teacher(),
             students = lesson.students,
             attendance = attendance,
             hasBegun = lesson.epochBegin != null,
