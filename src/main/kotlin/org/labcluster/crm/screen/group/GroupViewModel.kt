@@ -27,7 +27,7 @@ class GroupViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onBackClicked() {
         state.alter {
-            backstack.value.removeLast()
+            backstack.value.dropLast(1)
         }
     }
 }
