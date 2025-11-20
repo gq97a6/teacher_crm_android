@@ -11,18 +11,11 @@ object Mock {
     )
 
     val state = AppState().apply {
-        topics.value = Mock.topics
-        students.value = Mock.students
-        teachers.value = Mock.teachers
-        courses.value = Mock.courses
-        lessons.value = Mock.lessons
-        groups.value = Mock.groups
-        topic.value = Mock.topics.random()
-        student.value = Mock.students.random()
-        teacher.value = Mock.teachers.random()
-        course.value = Mock.courses.random()
-        group.value = Mock.groups.random()
-        lesson.value = Mock.lessons.random().copy(
+        group.lessons.value = Mock.lessons
+        groupList.groups.value = Mock.groups
+        topic.topic.value = Mock.topics.random()
+        group.group.value = Mock.groups.random()
+        lesson.lesson.value = Mock.lessons.random().copy(
             epochStart = (System.currentTimeMillis() / 1000) - 1000,
             duration = 1030
         )

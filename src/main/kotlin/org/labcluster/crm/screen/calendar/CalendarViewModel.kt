@@ -13,13 +13,20 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
 import org.labcluster.crm.monthFormat
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeStart
 
+@Open
 class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
+
+    @Open
+    class State() {
+        val lessons = MutableStateFlow(listOf<Lesson>())
+    }
 
     val isLegendShown = MutableStateFlow(false)
     val date = MutableStateFlow(LocalDate.fromEpochDays(1))
@@ -27,7 +34,7 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     //Create filtered lessons state that is dependent on multiple flows
     val lessons: StateFlow<List<Lesson>> = combine(
-        state.lessons,
+        state.calendar.lessons,
         date,
         state.chronos.timeZone
     ) { lessonsList, selectedDate, currentTimeZone ->
@@ -66,7 +73,7 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onLessonClicked(lessonClicked: Lesson) {
         state.alter {
-            lesson.value = lessonClicked
+            lesson.lesson.value = lessonClicked
         }
     }
 

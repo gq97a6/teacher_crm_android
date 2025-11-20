@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp") version "2.3.0"
     id("app.cash.sqldelight") version "2.1.0"
     kotlin("plugin.serialization") version "2.2.0"
+    kotlin("plugin.allopen") version "2.2.21"
 }
 
 android {
@@ -61,6 +62,10 @@ android {
             freeCompilerArgs.add("-opt-in=kotlinx.coroutines.DelicateCoroutinesApi")
         }
     }
+}
+
+allOpen {
+    annotation("org.labcluster.crm.Open")
 }
 
 //noinspection UseTomlInstead

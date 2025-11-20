@@ -7,31 +7,24 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.labcluster.crm.CalendarViewKey
+import org.labcluster.crm.Open
 import org.labcluster.crm.chronos.Chronos
-import org.labcluster.crm.shared.model.Course
-import org.labcluster.crm.shared.model.Group
-import org.labcluster.crm.shared.model.Lesson
-import org.labcluster.crm.shared.model.Student
-import org.labcluster.crm.shared.model.Teacher
-import org.labcluster.crm.shared.model.Topic
+import org.labcluster.crm.screen.calendar.CalendarViewModel
+import org.labcluster.crm.screen.group.GroupViewModel
+import org.labcluster.crm.screen.grouplist.GroupListViewModel
+import org.labcluster.crm.screen.lesson.LessonViewModel
+import org.labcluster.crm.screen.topic.TopicViewModel
 
-open class AppState {
-    open val chronos = Chronos()
-    open val backstack = MutableStateFlow(NavBackStack<NavKey>(CalendarViewKey()))
+@Open
+class AppState {
+    val chronos = Chronos()
+    val backstack = MutableStateFlow(NavBackStack<NavKey>(CalendarViewKey()))
 
-    open val topic = MutableStateFlow(Topic())
-    open val student = MutableStateFlow(Student())
-    open val teacher = MutableStateFlow(Teacher())
-    open val course = MutableStateFlow(Course())
-    open val lesson = MutableStateFlow(Lesson())
-    open val group = MutableStateFlow(Group())
-
-    open val topics = MutableStateFlow(listOf<Topic>())
-    open val students = MutableStateFlow(listOf<Student>())
-    open val teachers = MutableStateFlow(listOf<Teacher>())
-    open val courses = MutableStateFlow(listOf<Course>())
-    open val lessons = MutableStateFlow(listOf<Lesson>())
-    open val groups = MutableStateFlow(listOf<Group>())
+    val calendar = CalendarViewModel.State()
+    val group = GroupViewModel.State()
+    val groupList = GroupListViewModel.State()
+    val lesson = LessonViewModel.State()
+    val topic = TopicViewModel.State()
 
     private val aLock = Mutex(false)
     fun alter(action: suspend AppState.() -> Unit) {

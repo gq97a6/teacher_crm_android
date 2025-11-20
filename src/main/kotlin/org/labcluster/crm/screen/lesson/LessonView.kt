@@ -37,7 +37,7 @@ private fun Preview() = PreviewScaffold(false) { LessonView() }
 @Composable
 fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
-    val lesson by vm.state.lesson.collectAsStateWithLifecycle()
+    val lesson by vm.state.lesson.lesson.collectAsStateWithLifecycle()
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
     val clock by vm.clock.collectAsStateWithLifecycle()
     val attendance by vm.attendance.collectAsStateWithLifecycle()

@@ -28,7 +28,7 @@ private fun Preview() = PreviewScaffold(false) { TopicView() }
 @Composable
 fun TopicView(vm: TopicViewModel = viewModel()) {
 
-    val topic by vm.state.topic.collectAsState()
+    val topic by vm.state.topic.topic.collectAsState()
 
     Scaffold(
         modifier = Modifier,

@@ -28,8 +28,8 @@ private fun Preview() = PreviewScaffold(false) { GroupView() }
 
 @Composable
 fun GroupView(vm: GroupViewModel = viewModel()) {
-    val group by vm.state.group.collectAsState()
-    val lessons by vm.state.lessons.collectAsState()
+    val group by vm.state.group.group.collectAsState()
+    val lessons by vm.state.group.lessons.collectAsState()
     val timeZone by vm.state.chronos.timeZone.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
