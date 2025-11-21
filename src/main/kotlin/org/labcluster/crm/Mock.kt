@@ -2,14 +2,8 @@ package org.labcluster.crm
 
 import org.labcluster.crm.app.AppState
 import org.labcluster.crm.shared.Mock
-import org.labcluster.crm.shared.model.Student
 
 object Mock {
-    val spanishStudent = Student(
-        "Juan Antonio José",
-        "García Fernández López Martínez Sánchez"
-    )
-
     val state = AppState().apply {
         group.lessons.value = Mock.lessons
         groupList.groups.value = Mock.groups

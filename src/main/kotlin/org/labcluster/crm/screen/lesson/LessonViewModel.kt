@@ -1,5 +1,6 @@
-package org.labcluster.crm.screen.lesson
+@file:UseContextualSerialization(MutableStateFlow::class)
 
+package org.labcluster.crm.screen.lesson
 
 import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
@@ -20,6 +23,7 @@ import kotlin.time.Clock
 class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
     @Open
+    @Serializable
     class State() {
         val lesson = MutableStateFlow(Lesson())
     }

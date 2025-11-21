@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.labcluster.crm.CalendarViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.chronos.Chronos
@@ -16,8 +18,15 @@ import org.labcluster.crm.screen.lesson.LessonViewModel
 import org.labcluster.crm.screen.topic.TopicViewModel
 
 @Open
+@Serializable
 class AppState {
+    @Transient
+    var dumpPath: String? = null
+
+    @Transient
     val chronos = Chronos()
+
+    @Transient
     val backstack = MutableStateFlow(NavBackStack<NavKey>(CalendarViewKey()))
 
     val calendar = CalendarViewModel.State()
@@ -26,6 +35,7 @@ class AppState {
     val lesson = LessonViewModel.State()
     val topic = TopicViewModel.State()
 
+    @Transient
     private val aLock = Mutex(false)
     fun alter(action: suspend AppState.() -> Unit) {
         runBlocking {

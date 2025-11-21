@@ -37,7 +37,7 @@ android {
         }
 
         debug {
-            isDebuggable = false
+            isDebuggable = true
         }
     }
 
@@ -108,7 +108,7 @@ dependencies {
 
     //Shared
     implementation("org.labcluster.crm:shared:1.0.19-SNAPSHOT")
-    
+
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.00"))
     androidTestImplementation("androidx.test.ext:junit:1.3.0")

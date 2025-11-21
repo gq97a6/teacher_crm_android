@@ -1,7 +1,11 @@
+@file:UseContextualSerialization(MutableStateFlow::class)
+
 package org.labcluster.crm.screen.group
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.LessonViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
@@ -13,6 +17,7 @@ import org.labcluster.crm.shared.model.Lesson
 class GroupViewModel(val state: AppState = App.state) : ViewModel() {
 
     @Open
+    @Serializable
     class State() {
         val group = MutableStateFlow(Group())
         val lessons = MutableStateFlow(listOf<Lesson>())

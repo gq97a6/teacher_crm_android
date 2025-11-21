@@ -1,3 +1,5 @@
+@file:UseContextualSerialization(MutableStateFlow::class)
+
 package org.labcluster.crm.screen.grouplist
 
 import androidx.lifecycle.ViewModel
@@ -7,6 +9,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.GroupViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
@@ -19,6 +23,7 @@ import org.labcluster.crm.shared.model.Lesson
 class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
 
     @Open
+    @Serializable
     class State() {
         val groups = MutableStateFlow(listOf<Group>())
     }

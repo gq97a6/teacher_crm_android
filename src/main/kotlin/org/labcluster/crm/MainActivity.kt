@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -31,6 +32,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
+import org.labcluster.crm.Storage.dumpToFile
 import org.labcluster.crm.app.App.Companion.state
 import org.labcluster.crm.composable.MyNavigationDrawer
 import org.labcluster.crm.composable.PreviewScaffold
@@ -71,6 +73,11 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         unregisterReceiver(timeChangedReceiver)
+
+        Log.i("DUPA", "DUMP!")
+        state.dumpPath?.ifBlank { null }?.let {
+            state.dumpToFile(it)
+        }
     }
 
     private val timeChangedReceiver = object : BroadcastReceiver() {

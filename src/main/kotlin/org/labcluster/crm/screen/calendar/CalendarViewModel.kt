@@ -1,3 +1,5 @@
+@file:UseContextualSerialization(MutableStateFlow::class)
+
 package org.labcluster.crm.screen.calendar
 
 import androidx.lifecycle.ViewModel
@@ -13,6 +15,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
@@ -24,6 +28,7 @@ import org.labcluster.crm.shared.timeStart
 class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     @Open
+    @Serializable
     class State() {
         val lessons = MutableStateFlow(listOf<Lesson>())
     }

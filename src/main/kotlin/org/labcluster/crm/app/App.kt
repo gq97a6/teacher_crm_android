@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.labcluster.crm.Mock
+import org.labcluster.crm.Storage.getFromFile
 import org.labcluster.crm.shared.Database
 import org.labcluster.crm.shared.repository.CourseRepository
 import org.labcluster.crm.shared.repository.GroupRepository
@@ -34,6 +35,7 @@ class App : Application() {
         super.onCreate()
         app = this
 
+        //Initialize driver
         val driver = AndroidSqliteDriver(
             schema = Database.Schema,
             context = app.baseContext,
@@ -51,8 +53,7 @@ class App : Application() {
         teacherRep = TeacherRepository(db)
         topicRep = TopicRepository(db)
 
-        //Insert mockups
-        state = Mock.state
+        //Insert database mockups
         CoroutineScope(Dispatchers.IO).launch {
             courseRep.insert(SharedMock.courses)
             studentRep.insert(SharedMock.students)
@@ -60,5 +61,12 @@ class App : Application() {
             teacherRep.insert(SharedMock.teachers)
             topicRep.insert(SharedMock.topics)
         }
+
+        //Configure path to state dump
+        val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
+
+        //Recover state dump or create new one
+        state = getFromFile(dumpPath) ?: Mock.state
+        state.dumpPath = dumpPath
     }
 }
