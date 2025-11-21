@@ -107,7 +107,7 @@ dependencies {
     implementation("app.cash.sqldelight:coroutines-extensions:2.1.0")
 
     //Shared
-    implementation("org.labcluster.crm:shared:1.0.19-SNAPSHOT")
+    implementation("org.labcluster.crm:shared:1.0.20-SNAPSHOT")
 
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.00"))
