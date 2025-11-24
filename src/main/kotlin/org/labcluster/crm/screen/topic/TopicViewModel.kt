@@ -17,6 +17,7 @@ class TopicViewModel(val state: AppState = App.state) : ViewModel() {
     @Open
     @Serializable
     class State() {
+        val isTopicSet = MutableStateFlow(false)
         val topic = MutableStateFlow(Topic())
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Book
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -35,6 +36,7 @@ fun CalendarAppBar(
     subtitle: String? = "10 lekcji",
     showNavigationIcon: Boolean = false,
     onLegendClicked: () -> Unit = {},
+    onRefreshClicked: () -> Unit = {},
     onNavigationClicked: () -> Unit = {}
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
@@ -78,6 +80,19 @@ fun CalendarAppBar(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Book,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Odśwież") },
+                        onClick = {
+                            isMenuExpanded = false
+                            onRefreshClicked()
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Refresh,
                                 contentDescription = ""
                             )
                         }

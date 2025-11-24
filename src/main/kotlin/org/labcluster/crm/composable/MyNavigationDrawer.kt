@@ -17,11 +17,13 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import kotlinx.coroutines.launch
@@ -31,6 +33,8 @@ import org.labcluster.crm.GroupViewKey
 import org.labcluster.crm.LessonViewKey
 import org.labcluster.crm.SettingViewKey
 import org.labcluster.crm.TopicViewKey
+import org.labcluster.crm.app.App
+import org.labcluster.crm.app.AppState
 
 @Preview
 @Composable
@@ -40,9 +44,14 @@ private fun Preview() = PreviewScaffold(showAppBar = false) { MyNavigationDrawer
 fun MyNavigationDrawer(
     backstack: NavBackStack<NavKey>? = null,
     drawerState: DrawerState = DrawerState(DrawerValue.Open),
+    state: AppState = App.state,
     content: @Composable () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
+
+    val isLessonSet by state.lesson.isLessonSet.collectAsStateWithLifecycle()
+    val isTopicSet by state.topic.isTopicSet.collectAsStateWithLifecycle()
+    val isGroupSet by state.group.isGroupSet.collectAsStateWithLifecycle()
 
     fun onClick(key: NavKey) {
         backstack?.clear()
@@ -57,19 +66,19 @@ fun MyNavigationDrawer(
             ModalDrawerSheet(Modifier.fillMaxWidth(.52f)) {
                 Spacer(Modifier.weight(1f))
                 Icons.Outlined.apply {
-                    MyNavigationDrawerItem(
+                    if (isLessonSet) MyNavigationDrawerItem(
                         selected = backstack?.last() is LessonViewKey,
                         icon = School,
                         label = "Lekcja"
                     ) { onClick(LessonViewKey()) }
 
-                    MyNavigationDrawerItem(
+                    if (isTopicSet) MyNavigationDrawerItem(
                         selected = backstack?.last() is TopicViewKey,
                         icon = Book,
                         label = "Temat"
                     ) { onClick(TopicViewKey()) }
 
-                    MyNavigationDrawerItem(
+                    if (isGroupSet) MyNavigationDrawerItem(
                         selected = backstack?.last() is GroupViewKey,
                         icon = Group,
                         label = "Grupy"

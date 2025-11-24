@@ -2,10 +2,6 @@ package org.labcluster.crm.app
 
 import android.app.Application
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.labcluster.crm.Mock
 import org.labcluster.crm.Storage.getFromFile
 import org.labcluster.crm.shared.Database
 import org.labcluster.crm.shared.repository.CourseRepository
@@ -14,7 +10,6 @@ import org.labcluster.crm.shared.repository.LessonRepository
 import org.labcluster.crm.shared.repository.StudentRepository
 import org.labcluster.crm.shared.repository.TeacherRepository
 import org.labcluster.crm.shared.repository.TopicRepository
-import org.labcluster.crm.shared.Mock as SharedMock
 
 
 class App : Application() {
@@ -53,20 +48,19 @@ class App : Application() {
         teacherRep = TeacherRepository(db)
         topicRep = TopicRepository(db)
 
-        //Insert database mockups
-        CoroutineScope(Dispatchers.IO).launch {
-            courseRep.insert(SharedMock.courses)
-            studentRep.insert(SharedMock.students)
-            lessonRep.insert(SharedMock.lessons)
-            teacherRep.insert(SharedMock.teachers)
-            topicRep.insert(SharedMock.topics)
-        }
-
         //Configure path to state dump
         val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
 
         //Recover state dump or create new one
-        state = getFromFile(dumpPath) ?: Mock.state
+        state = getFromFile(dumpPath) ?: AppState()
         state.dumpPath = dumpPath
     }
 }
+
+//login
+//check your groups
+//check topics
+//check calendar
+//start/edit lessons
+
+//auth endpoint

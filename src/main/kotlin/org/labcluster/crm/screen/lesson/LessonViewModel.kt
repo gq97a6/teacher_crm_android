@@ -25,6 +25,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     @Open
     @Serializable
     class State() {
+        val isLessonSet = MutableStateFlow(false)
         val lesson = MutableStateFlow(Lesson())
     }
 
@@ -86,6 +87,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
                 it.copy(epochBegin = Clock.System.now().epochSeconds)
             }
             isEditable.value = false
+            //save lessons to local and push to remote
         }
     }
 }

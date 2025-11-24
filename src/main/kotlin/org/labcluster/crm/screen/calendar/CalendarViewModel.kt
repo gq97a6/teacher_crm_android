@@ -4,12 +4,14 @@ package org.labcluster.crm.screen.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -21,6 +23,7 @@ import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
 import org.labcluster.crm.monthFormat
+import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeStart
 
@@ -33,6 +36,7 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
         val lessons = MutableStateFlow(listOf<Lesson>())
     }
 
+    val isLoadingShown = MutableStateFlow(false)
     val isLegendShown = MutableStateFlow(false)
     val date = MutableStateFlow(LocalDate.fromEpochDays(1))
     val clock = state.chronos.clock(viewModelScope)
@@ -70,6 +74,17 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onLegendClicked() {
         isLegendShown.value = true
+    }
+
+    fun onRefreshClicked() {
+        viewModelScope.launch {
+            isLoadingShown.value = true
+            delay(2000)
+            state.alter {
+                calendar.lessons.value = Mock.lessons
+            }
+            isLoadingShown.value = false
+        }
     }
 
     fun onCloseLegend() {

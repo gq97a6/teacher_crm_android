@@ -17,6 +17,7 @@ import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.calendar.compose.CalendarAppBar
 import org.labcluster.crm.screen.calendar.compose.CalendarContent
 import org.labcluster.crm.screen.calendar.compose.CalendarLegend
+import org.labcluster.crm.screen.calendar.compose.CalendarLoading
 import org.labcluster.crm.screen.calendar.compose.CalendarToolbar
 
 @Preview
@@ -28,6 +29,7 @@ fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
 
     val lessons by vm.lessons.collectAsStateWithLifecycle()
     val isLegendShown by vm.isLegendShown.collectAsStateWithLifecycle()
+    val isLoadingShown by vm.isLoadingShown.collectAsStateWithLifecycle()
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
     val title by vm.title.collectAsStateWithLifecycle()
     val subTitle by remember {
@@ -44,12 +46,14 @@ fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
                 subtitle = if (isLegendShown) null else subTitle,
                 showNavigationIcon = isLegendShown,
                 onLegendClicked = vm::onLegendClicked,
+                onRefreshClicked = vm::onRefreshClicked,
                 onNavigationClicked = vm::onCloseLegend
             )
         },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
-        if (isLegendShown) CalendarLegend(paddingValues)
+        if (isLoadingShown) CalendarLoading(paddingValues)
+        else if (isLegendShown) CalendarLegend(paddingValues)
         else CalendarContent(
             paddingValues = paddingValues,
             lessons = lessons,

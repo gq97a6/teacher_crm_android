@@ -19,6 +19,7 @@ class GroupViewModel(val state: AppState = App.state) : ViewModel() {
     @Open
     @Serializable
     class State() {
+        val isGroupSet = MutableStateFlow(false)
         val group = MutableStateFlow(Group())
         val lessons = MutableStateFlow(listOf<Lesson>())
     }
