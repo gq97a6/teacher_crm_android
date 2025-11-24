@@ -51,8 +51,10 @@ fun MyNavigationDrawer(
 
     val isLessonSet by state.lesson.isLessonSet.collectAsStateWithLifecycle()
     val isTopicSet by state.topic.isTopicSet.collectAsStateWithLifecycle()
+    val isNavigationEnabled by state.isNavigationEnabled.collectAsStateWithLifecycle()
 
     fun onClick(key: NavKey) {
+        if (!isNavigationEnabled) return
         backstack?.clear()
         backstack?.add(key)
         scope.launch { drawerState.close() }
@@ -60,6 +62,7 @@ fun MyNavigationDrawer(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = isNavigationEnabled,
         content = content,
         drawerContent = {
             ModalDrawerSheet(Modifier.fillMaxWidth(.52f)) {

@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.labcluster.crm.composable.Loading
 import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.grouplist.compose.GroupListAppBar
 import org.labcluster.crm.screen.grouplist.compose.GroupListEntry
@@ -28,16 +30,18 @@ private fun Preview() = PreviewScaffold(false) { GroupListView() }
 fun GroupListView(vm: GroupListViewModel = viewModel()) {
     val timeZone by vm.state.chronos.timeZone.collectAsState()
     val groupsWithNextLesson by vm.groupsWithNextLesson.collectAsState()
+    val isLoadingShown by vm.isLoadingShown.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
-        topBar = { GroupListAppBar() },
+        topBar = { GroupListAppBar(vm::onRefreshClicked) },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
         val topPadding = remember { paddingValues.calculateTopPadding() }
         val horizontal = remember { paddingValues.calculateStartPadding(LayoutDirection.Ltr) }
 
-        LazyColumn(Modifier.padding(top = topPadding)) {
+        if (isLoadingShown) Loading()
+        else LazyColumn(Modifier.padding(top = topPadding)) {
             groupsWithNextLesson.forEach { (group, lesson) ->
                 item {
                     GroupListEntry(

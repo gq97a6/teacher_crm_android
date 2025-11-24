@@ -4,11 +4,13 @@ package org.labcluster.crm.screen.grouplist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.GroupViewKey
@@ -28,6 +30,8 @@ class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
         val groups = MutableStateFlow(listOf<Group>())
     }
 
+    val isLoadingShown = MutableStateFlow(false)
+
     val groupsWithNextLesson: StateFlow<Map<Group, Lesson>> = state.groupList.groups.map { groups ->
         groups.associateWith {
             Mock.lessons.shuffled().random()
@@ -42,7 +46,18 @@ class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
         state.alter {
             group.group.value = clickedGroup
             group.lessons.value = Mock.lessons.shuffled().take(10)
-            backstack.value += GroupViewKey()
+            backstack.value.add(GroupViewKey())
+        }
+    }
+
+    fun onRefreshClicked() {
+        viewModelScope.launch {
+            isLoadingShown.value = true
+            delay(2000)
+            state.alter {
+                groupList.groups.value = Mock.groups
+            }
+            isLoadingShown.value = false
         }
     }
 }

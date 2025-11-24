@@ -1,4 +1,4 @@
-package org.labcluster.crm.screen.calendar.compose
+package org.labcluster.crm.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,14 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.composable.PreviewScaffold
 
 @Preview
 @Composable
-private fun Preview() = PreviewScaffold { CalendarLoading(it) }
+private fun Preview() = PreviewScaffold { Loading(it) }
 
 @Composable
-fun CalendarLoading(paddingValues: PaddingValues = PaddingValues()) {
+fun Loading(paddingValues: PaddingValues = PaddingValues()) {
     Box(
         modifier = Modifier
             .padding(paddingValues)

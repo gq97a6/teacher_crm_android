@@ -2,12 +2,13 @@ package org.labcluster.crm.screen.login.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,20 +53,20 @@ fun LoginScreen(
 
         OutlinedButton(
             onClick = onLogin,
-            modifier = Modifier
-                .fillMaxWidth(.6f)
-                .padding(top = 10.dp)
+            shape = ShapeDefaults.ExtraExtraLarge,
+            contentPadding = PaddingValues(40.dp),
+            modifier = Modifier.padding(top = 10.dp)
         ) {
             Text("Zaloguj się")
         }
 
-        Button(
-            onClick = onRegister,
-            modifier = Modifier
-                .fillMaxWidth(.4f)
-                .padding(top = 10.dp)
-        ) {
-            Text("Rejestracja")
-        }
+        //Button(
+        //    onClick = onRegister,
+        //    modifier = Modifier
+        //        .fillMaxWidth(.4f)
+        //        .padding(top = 10.dp)
+        //) {
+        //    Text("Rejestracja")
+        //}
     }
 }

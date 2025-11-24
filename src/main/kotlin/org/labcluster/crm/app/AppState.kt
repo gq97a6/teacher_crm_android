@@ -29,6 +29,9 @@ class AppState {
     @Transient
     val backstack = MutableStateFlow(NavBackStack<NavKey>(LoginViewKey()))
 
+    @Transient
+    val isNavigationEnabled = MutableStateFlow(false)
+
     val calendar = CalendarViewModel.State()
     val group = GroupViewModel.State()
     val groupList = GroupListViewModel.State()

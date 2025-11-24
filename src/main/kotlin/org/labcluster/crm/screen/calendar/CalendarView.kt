@@ -13,11 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.labcluster.crm.composable.Loading
 import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.calendar.compose.CalendarAppBar
 import org.labcluster.crm.screen.calendar.compose.CalendarContent
 import org.labcluster.crm.screen.calendar.compose.CalendarLegend
-import org.labcluster.crm.screen.calendar.compose.CalendarLoading
 import org.labcluster.crm.screen.calendar.compose.CalendarToolbar
 
 @Preview
@@ -52,7 +52,7 @@ fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
         },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
-        if (isLoadingShown) CalendarLoading(paddingValues)
+        if (isLoadingShown) Loading(paddingValues)
         else if (isLegendShown) CalendarLegend(paddingValues)
         else CalendarContent(
             paddingValues = paddingValues,
