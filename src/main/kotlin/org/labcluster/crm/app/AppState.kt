@@ -8,8 +8,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.labcluster.crm.CalendarViewKey
 import org.labcluster.crm.Open
+import org.labcluster.crm.SplashViewKey
 import org.labcluster.crm.chronos.Chronos
 import org.labcluster.crm.screen.calendar.CalendarViewModel
 import org.labcluster.crm.screen.group.GroupViewModel
@@ -27,7 +27,7 @@ class AppState {
     val chronos = Chronos()
 
     @Transient
-    val backstack = MutableStateFlow(NavBackStack<NavKey>(CalendarViewKey()))
+    val backstack = MutableStateFlow(NavBackStack<NavKey>(SplashViewKey()))
 
     val calendar = CalendarViewModel.State()
     val group = GroupViewModel.State()

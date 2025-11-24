@@ -19,5 +19,9 @@ class TopicViewModel(val state: AppState = App.state) : ViewModel() {
     class State() {
         val isTopicSet = MutableStateFlow(false)
         val topic = MutableStateFlow(Topic())
+        fun setTopic(topic: Topic) {
+            this.topic.value = topic
+            isTopicSet.value = true
+        }
     }
 }

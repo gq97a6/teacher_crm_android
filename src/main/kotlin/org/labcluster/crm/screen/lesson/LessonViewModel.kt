@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.Open
@@ -27,6 +26,11 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     class State() {
         val isLessonSet = MutableStateFlow(false)
         val lesson = MutableStateFlow(Lesson())
+
+        fun setLesson(lesson: Lesson) {
+            this.lesson.value = lesson
+            isLessonSet.value = true
+        }
     }
 
     val attendance: StateFlow<List<ToggleableState>> = state.lesson.lesson.map { lesson ->
@@ -44,13 +48,13 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onStudentCheckbox(index: Int) {
         state.alter {
-            lesson.lesson.update {
+            lesson.lesson.value.let {
                 val student = it.students[index]
 
                 val newList = if (student.uuid !in it.attendance) it.attendance + student.uuid
                 else it.attendance.filter { uuid -> uuid != student.uuid }
 
-                it.copy(attendance = newList)
+                lesson.setLesson(it.copy(attendance = newList))
             }
         }
     }
@@ -72,20 +76,22 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     fun onCancelClicked() {
         isEditable.value = false
         state.alter {
-            lesson.lesson.update {
-                it.copy(
+            lesson.setLesson(
+                lesson.lesson.value.copy(
                     epochBegin = null,
                     attendance = listOf()
                 )
-            }
+            )
         }
     }
 
     fun onConfirmClicked() {
         state.alter {
-            lesson.lesson.update {
-                it.copy(epochBegin = Clock.System.now().epochSeconds)
-            }
+            lesson.setLesson(
+                lesson.lesson.value.copy(
+                    epochBegin = Clock.System.now().epochSeconds
+                )
+            )
             isEditable.value = false
             //save lessons to local and push to remote
         }

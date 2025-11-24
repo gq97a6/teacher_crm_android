@@ -7,11 +7,13 @@ object Mock {
     val state = AppState().apply {
         group.lessons.value = Mock.lessons
         groupList.groups.value = Mock.groups
-        topic.topic.value = Mock.topics.random()
+        topic.setTopic(Mock.topics.random())
         group.group.value = Mock.groups.random()
-        lesson.lesson.value = Mock.lessons.random().copy(
-            epochStart = (System.currentTimeMillis() / 1000) - 1000,
-            duration = 1030
+        lesson.setLesson(
+            Mock.lessons.random().copy(
+                epochStart = (System.currentTimeMillis() / 1000) - 1000,
+                duration = 1030
+            )
         )
     }
 

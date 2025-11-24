@@ -42,6 +42,7 @@ import org.labcluster.crm.screen.grouplist.GroupListView
 import org.labcluster.crm.screen.lesson.LessonView
 import org.labcluster.crm.screen.login.LoginView
 import org.labcluster.crm.screen.setting.SettingView
+import org.labcluster.crm.screen.splash.SplashView
 import org.labcluster.crm.screen.topic.TopicView
 import org.labcluster.crm.theme.Theme
 
@@ -114,12 +115,19 @@ class SettingViewKey() : NavKey
 @Serializable
 class LoginViewKey() : NavKey
 
+@Serializable
+class SplashViewKey() : NavKey
+
 @Composable
 fun BoxScope.ScreenContent() {
     val backstack by state.backstack.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    MyNavigationDrawer(backstack, drawerState) {
+    MyNavigationDrawer(
+        backstack,
+        drawerState,
+        gesturesEnabled = backstack.first() !is SplashViewKey
+    ) {
         NavDisplay(
             backStack = backstack,
             entryDecorators = listOf(
@@ -145,6 +153,7 @@ fun BoxScope.ScreenContent() {
 }
 
 fun <T> BoxScope.entryProvider(key: T): NavEntry<NavKey> = when (key) {
+    is SplashViewKey -> NavEntry(key = key) { SplashView() }
     is LessonViewKey -> NavEntry(key = key) { LessonView() }
     is TopicViewKey -> NavEntry(key = key) { TopicView() }
     is GroupViewKey -> NavEntry(key = key) { GroupView() }

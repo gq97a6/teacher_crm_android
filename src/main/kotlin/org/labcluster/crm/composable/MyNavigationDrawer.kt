@@ -45,13 +45,13 @@ fun MyNavigationDrawer(
     backstack: NavBackStack<NavKey>? = null,
     drawerState: DrawerState = DrawerState(DrawerValue.Open),
     state: AppState = App.state,
+    gesturesEnabled: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
 
     val isLessonSet by state.lesson.isLessonSet.collectAsStateWithLifecycle()
     val isTopicSet by state.topic.isTopicSet.collectAsStateWithLifecycle()
-    val isGroupSet by state.group.isGroupSet.collectAsStateWithLifecycle()
 
     fun onClick(key: NavKey) {
         backstack?.clear()
@@ -62,6 +62,7 @@ fun MyNavigationDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         content = content,
+        gesturesEnabled = gesturesEnabled,
         drawerContent = {
             ModalDrawerSheet(Modifier.fillMaxWidth(.52f)) {
                 Spacer(Modifier.weight(1f))
@@ -78,7 +79,7 @@ fun MyNavigationDrawer(
                         label = "Temat"
                     ) { onClick(TopicViewKey()) }
 
-                    if (isGroupSet) MyNavigationDrawerItem(
+                    MyNavigationDrawerItem(
                         selected = backstack?.last() is GroupViewKey,
                         icon = Group,
                         label = "Grupy"

@@ -19,6 +19,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseContextualSerialization
+import org.labcluster.crm.LessonViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
@@ -93,7 +94,8 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onLessonClicked(lessonClicked: Lesson) {
         state.alter {
-            lesson.lesson.value = lessonClicked
+            lesson.setLesson(lessonClicked)
+            state.backstack.value.add(LessonViewKey())
         }
     }
 

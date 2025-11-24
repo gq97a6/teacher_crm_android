@@ -28,47 +28,44 @@ fun LoginScreen(
     onLogin: () -> Unit = {},
     onRegister: () -> Unit = {}
 ) {
-    Column {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .weight(1f)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    Column(
+        Modifier
+            .fillMaxSize()
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            "Lorem",
+            fontSize = 85.sp,
+            fontWeight = FontWeight.Black,
+            color = cs.primary,
+            modifier = Modifier
+        )
+        Text(
+            "Ipsum",
+            fontSize = 85.sp,
+            fontWeight = FontWeight.Bold,
+            color = cs.tertiary,
+            modifier = Modifier.offset(y = (-20).dp)
+        )
+
+        OutlinedButton(
+            onClick = onLogin,
+            modifier = Modifier
+                .fillMaxWidth(.6f)
+                .padding(top = 10.dp)
         ) {
-            Text(
-                "Lorem",
-                fontSize = 85.sp,
-                fontWeight = FontWeight.Black,
-                color = cs.primary,
-                modifier = Modifier
-            )
-            Text(
-                "Ipsum",
-                fontSize = 85.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.tertiary,
-                modifier = Modifier.offset(y = (-20).dp)
-            )
+            Text("Zaloguj się")
+        }
 
-            OutlinedButton(
-                onClick = onLogin,
-                modifier = Modifier
-                    .fillMaxWidth(.6f)
-                    .padding(top = 10.dp)
-            ) {
-                Text("Zaloguj się")
-            }
-
-            Button(
-                onClick = onRegister,
-                modifier = Modifier
-                    .fillMaxWidth(.4f)
-                    .padding(top = 10.dp)
-            ) {
-                Text("Rejestracja")
-            }
+        Button(
+            onClick = onRegister,
+            modifier = Modifier
+                .fillMaxWidth(.4f)
+                .padding(top = 10.dp)
+        ) {
+            Text("Rejestracja")
         }
     }
 }
