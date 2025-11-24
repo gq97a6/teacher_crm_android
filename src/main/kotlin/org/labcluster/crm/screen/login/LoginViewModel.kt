@@ -14,6 +14,7 @@ class LoginViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onLogin() {
         state.alter {
+            backstack.value.clear()
             backstack.value.add(CalendarViewKey())
             isNavigationEnabled.value = true
         }

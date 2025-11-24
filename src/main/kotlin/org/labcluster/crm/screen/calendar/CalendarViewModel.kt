@@ -24,7 +24,6 @@ import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
 import org.labcluster.crm.monthFormat
-import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeStart
 
@@ -82,7 +81,7 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
             isLoadingShown.value = true
             delay(2000)
             state.alter {
-                calendar.lessons.value = Mock.lessons
+                calendar.lessons.value = listOf()
             }
             isLoadingShown.value = false
         }

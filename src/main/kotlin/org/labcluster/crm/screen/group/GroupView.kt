@@ -8,7 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,7 +32,7 @@ fun GroupView(vm: GroupViewModel = viewModel()) {
     val lessons by vm.state.group.lessons.collectAsState()
     val timeZone by vm.state.chronos.timeZone.collectAsState()
 
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
         modifier = Modifier,

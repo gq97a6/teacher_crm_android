@@ -17,7 +17,6 @@ import org.labcluster.crm.GroupViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
 import org.labcluster.crm.app.AppState
-import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
 
@@ -34,7 +33,7 @@ class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
 
     val groupsWithNextLesson: StateFlow<Map<Group, Lesson>> = state.groupList.groups.map { groups ->
         groups.associateWith {
-            Mock.lessons.shuffled().random()
+            Lesson()
         }
     }.stateIn(
         scope = viewModelScope,
@@ -45,7 +44,7 @@ class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
     fun groupOnClick(clickedGroup: Group) {
         state.alter {
             group.group.value = clickedGroup
-            group.lessons.value = Mock.lessons.shuffled().take(10)
+            group.lessons.value = listOf()
             backstack.value.add(GroupViewKey())
         }
     }
@@ -55,7 +54,7 @@ class GroupListViewModel(val state: AppState = App.state) : ViewModel() {
             isLoadingShown.value = true
             delay(2000)
             state.alter {
-                groupList.groups.value = Mock.groups
+                groupList.groups.value = listOf()
             }
             isLoadingShown.value = false
         }
