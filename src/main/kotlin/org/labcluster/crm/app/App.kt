@@ -2,6 +2,9 @@ package org.labcluster.crm.app
 
 import android.app.Application
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.labcluster.crm.Storage.getFromFile
 import org.labcluster.crm.shared.Database
 import org.labcluster.crm.shared.repository.CourseRepository
@@ -30,30 +33,32 @@ class App : Application() {
         super.onCreate()
         app = this
 
-        //Initialize driver
-        val driver = AndroidSqliteDriver(
-            schema = Database.Schema,
-            context = app.baseContext,
-            name = "debug.db"
-        )
+        CoroutineScope(Dispatchers.IO).launch {
+            //Initialize driver
+            val driver = AndroidSqliteDriver(
+                schema = Database.Schema,
+                context = app.baseContext,
+                name = "debug.db"
+            )
 
-        //Initialize database
-        db = Database(driver)
+            //Initialize database
+            db = Database(driver)
 
-        //Initialize repositories
-        courseRep = CourseRepository(db)
-        groupRep = GroupRepository(db)
-        studentRep = StudentRepository(db)
-        lessonRep = LessonRepository(db)
-        teacherRep = TeacherRepository(db)
-        topicRep = TopicRepository(db)
+            //Initialize repositories
+            courseRep = CourseRepository(db)
+            groupRep = GroupRepository(db)
+            studentRep = StudentRepository(db)
+            lessonRep = LessonRepository(db)
+            teacherRep = TeacherRepository(db)
+            topicRep = TopicRepository(db)
 
-        //Configure path to state dump
-        val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
+            //Configure path to state dump
+            val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
 
-        //Recover state dump or create new one
-        state = getFromFile(dumpPath) ?: AppState()
-        state.dumpPath = dumpPath
+            //Recover state dump or create new one
+            state = getFromFile(dumpPath) ?: AppState()
+            state.dumpPath = dumpPath
+        }
     }
 }
 
