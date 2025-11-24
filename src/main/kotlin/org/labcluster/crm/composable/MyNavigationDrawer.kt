@@ -45,7 +45,6 @@ fun MyNavigationDrawer(
     backstack: NavBackStack<NavKey>? = null,
     drawerState: DrawerState = DrawerState(DrawerValue.Open),
     state: AppState = App.state,
-    gesturesEnabled: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
@@ -62,7 +61,6 @@ fun MyNavigationDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         content = content,
-        gesturesEnabled = gesturesEnabled,
         drawerContent = {
             ModalDrawerSheet(Modifier.fillMaxWidth(.52f)) {
                 Spacer(Modifier.weight(1f))
