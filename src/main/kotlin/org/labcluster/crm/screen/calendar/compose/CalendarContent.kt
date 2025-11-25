@@ -50,9 +50,11 @@ fun CalendarContent(
         }
     }
 
-    LazyColumn(Modifier
-        .fillMaxSize()
-        .padding(paddingValues)) {
+    LazyColumn(
+        Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ) {
         lessons.forEach { (time, lessons) ->
             item {
                 Row(

@@ -25,9 +25,11 @@ private fun Preview() = PreviewScaffold { CalendarLegend(it) }
 
 @Composable
 fun CalendarLegend(paddingValues: PaddingValues = PaddingValues()) {
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(paddingValues)) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(paddingValues)
+    ) {
         Text(
             "Zaplanowana lekcja",
             fontSize = 20.sp,

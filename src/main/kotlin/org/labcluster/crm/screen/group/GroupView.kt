@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -14,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.labcluster.crm.composable.PreviewScaffold
 import org.labcluster.crm.screen.group.compose.GroupAppBar
@@ -28,9 +28,9 @@ private fun Preview() = PreviewScaffold(false) { GroupView() }
 
 @Composable
 fun GroupView(vm: GroupViewModel = viewModel()) {
-    val group by vm.state.group.group.collectAsState()
-    val lessons by vm.state.group.lessons.collectAsState()
-    val timeZone by vm.state.chronos.timeZone.collectAsState()
+    val group by vm.state.group.group.collectAsStateWithLifecycle()
+    val lessons by vm.state.group.lessons.collectAsStateWithLifecycle()
+    val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
