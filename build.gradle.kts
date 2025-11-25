@@ -109,6 +109,11 @@ dependencies {
     //Shared
     implementation("org.labcluster.crm:shared:1.0.22-SNAPSHOT")
 
+    //Ktor
+    implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
+    implementation("io.ktor:ktor-client-android:3.3.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.2")
+
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.01"))
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
