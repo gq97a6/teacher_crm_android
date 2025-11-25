@@ -42,6 +42,7 @@ import org.labcluster.crm.screen.grouplist.GroupListView
 import org.labcluster.crm.screen.lesson.LessonView
 import org.labcluster.crm.screen.login.LoginView
 import org.labcluster.crm.screen.setting.SettingView
+import org.labcluster.crm.screen.splash.SplashView
 import org.labcluster.crm.screen.topic.TopicView
 import org.labcluster.crm.theme.Theme
 
@@ -114,6 +115,9 @@ class SettingViewKey() : NavKey
 @Serializable
 class LoginViewKey() : NavKey
 
+@Serializable
+class SplashViewKey() : NavKey
+
 @Composable
 fun BoxScope.ScreenContent() {
     val backstack by state.backstack.collectAsState()
@@ -155,5 +159,6 @@ fun <T> BoxScope.entryProvider(key: T): NavEntry<NavKey> = when (key) {
     is CalendarViewKey -> NavEntry(key = key) { CalendarView() }
     is SettingViewKey -> NavEntry(key = key) { SettingView() }
     is LoginViewKey -> NavEntry(key = key) { LoginView() }
+    is SplashViewKey -> NavEntry(key = key) { SplashView() }
     else -> throw Error()
 }

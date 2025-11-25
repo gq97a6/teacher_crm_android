@@ -9,6 +9,11 @@ object Mock {
         groupList.groups.value = Mock.groups
         topic.setTopic(Mock.topics.random())
         group.group.value = Mock.groups.random()
+
+        groupList.lessons.value = Mock.groups.map { it.uuid }.associateWith {
+            Mock.lessons.random()
+        }
+
         lesson.setLesson(
             Mock.lessons.random().copy(
                 epochStart = (System.currentTimeMillis() / 1000) - 1000,

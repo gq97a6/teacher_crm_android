@@ -8,13 +8,14 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.labcluster.crm.LoginViewKey
 import org.labcluster.crm.Open
+import org.labcluster.crm.SplashViewKey
 import org.labcluster.crm.chronos.Chronos
 import org.labcluster.crm.screen.calendar.CalendarViewModel
 import org.labcluster.crm.screen.group.GroupViewModel
 import org.labcluster.crm.screen.grouplist.GroupListViewModel
 import org.labcluster.crm.screen.lesson.LessonViewModel
+import org.labcluster.crm.screen.login.LoginViewModel
 import org.labcluster.crm.screen.topic.TopicViewModel
 
 @Open
@@ -27,16 +28,21 @@ class AppState {
     val chronos = Chronos()
 
     @Transient
-    val backstack = MutableStateFlow(NavBackStack<NavKey>(LoginViewKey()))
+    val backstack = MutableStateFlow(NavBackStack<NavKey>(SplashViewKey()))
 
     @Transient
     val isNavigationEnabled = MutableStateFlow(false)
 
+    //Screen related global state
     val calendar = CalendarViewModel.State()
     val group = GroupViewModel.State()
     val groupList = GroupListViewModel.State()
     val lesson = LessonViewModel.State()
     val topic = TopicViewModel.State()
+    val login = LoginViewModel.State()
+
+    //Api persistent state
+    val apiState = AppApi.State()
 
     @Transient
     private val aLock = Mutex(false)

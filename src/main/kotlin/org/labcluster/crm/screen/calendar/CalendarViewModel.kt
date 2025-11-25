@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -22,6 +23,7 @@ import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.LessonViewKey
 import org.labcluster.crm.Open
 import org.labcluster.crm.app.App
+import org.labcluster.crm.app.App.Companion.api
 import org.labcluster.crm.app.AppState
 import org.labcluster.crm.monthFormat
 import org.labcluster.crm.shared.model.Lesson
@@ -79,10 +81,14 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
     fun onRefreshClicked() {
         viewModelScope.launch {
             isLoadingShown.value = true
-            delay(2000)
-            state.alter {
-                calendar.lessons.value = listOf()
+
+            state.calendar.lessons.update {
+                api.fetchTeacherTimetable(
+                    teacherUuid = state.login.teacher.value.uuid
+                )
             }
+
+            delay(1000)
             isLoadingShown.value = false
         }
     }

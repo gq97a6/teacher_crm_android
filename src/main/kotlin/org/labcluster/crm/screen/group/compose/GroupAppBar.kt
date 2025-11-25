@@ -54,7 +54,7 @@ fun GroupAppBar(
     TopAppBar(
         title = {
             Text(
-                nextLesson.course?.name ?: "Lekcja nie należy do kursu",
+                nextLesson.course?.name ?: "Nie znaleziono kursu",
                 fontWeight = FontWeight.Black,
                 color = cs.tertiary,
                 maxLines = 1,

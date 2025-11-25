@@ -44,7 +44,7 @@ private fun Preview() = PreviewSimple { GroupListEntry() }
 fun GroupListEntry(
     horizontalPadding: Dp = 15.dp,
     group: Group = Mock.groups.random(),
-    nextLesson: Lesson = Mock.lessons.random(),
+    nextLesson: Lesson? = Mock.lessons.random(),
     timeZone: TimeZone = App.state.chronos.timeZone.value,
     onClick: (Group) -> Unit = {}
 ) {
@@ -69,7 +69,7 @@ fun GroupListEntry(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = nextLesson.course?.name ?: "Lekcja nie należy do kursu",
+                text = nextLesson?.course?.name ?: "Nie znaleziono kursu",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = cs.tertiary,
@@ -79,7 +79,7 @@ fun GroupListEntry(
                 )
             )
             Text(
-                text = nextLesson.topic?.name ?: "Brak tematu lekcji",
+                text = nextLesson?.topic?.name ?: "Nie znaleziono tematu lekcji",
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 color = cs.primary,

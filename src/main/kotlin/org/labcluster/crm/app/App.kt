@@ -1,71 +1,91 @@
 package org.labcluster.crm.app
 
 import android.app.Application
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.labcluster.crm.CalendarViewKey
+import org.labcluster.crm.LoginViewKey
 import org.labcluster.crm.Storage.getFromFile
-import org.labcluster.crm.shared.Database
-import org.labcluster.crm.shared.repository.CourseRepository
-import org.labcluster.crm.shared.repository.GroupRepository
-import org.labcluster.crm.shared.repository.LessonRepository
-import org.labcluster.crm.shared.repository.StudentRepository
-import org.labcluster.crm.shared.repository.TeacherRepository
-import org.labcluster.crm.shared.repository.TopicRepository
+import org.labcluster.crm.shared.model.Lesson
 
 
 class App : Application() {
     internal companion object {
         var app = App()
         var state = AppState()
-
-        lateinit var db: Database
-        var courseRep = CourseRepository()
-        var groupRep = GroupRepository()
-        var studentRep = StudentRepository()
-        var lessonRep = LessonRepository()
-        var teacherRep = TeacherRepository()
-        var topicRep = TopicRepository()
+        var api = AppApi(state)
     }
 
     override fun onCreate() {
         super.onCreate()
         app = this
 
+        //Configure path to state dump
+        val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
+
+        //Recover state dump or create new one
+        state = getFromFile(dumpPath) ?: AppState()
+        state.dumpPath = dumpPath
+        api = AppApi(state)
+
         CoroutineScope(Dispatchers.IO).launch {
-            //Initialize driver
-            val driver = AndroidSqliteDriver(
-                schema = Database.Schema,
-                context = app.baseContext,
-                name = "debug.db"
-            )
+            val minDuration = launch { delay(1000) }
+            onColdStart()
+            minDuration.join()
 
-            //Initialize database
-            db = Database(driver)
+            val isAuthorized = state.login.isAuthorized.value
+            if (isAuthorized) {
+                state.backstack.value.clear()
+                state.isNavigationEnabled.value = true
+                state.backstack.value.add(CalendarViewKey())
+            } else {
+                state.backstack.value.clear()
+                state.backstack.value.add(LoginViewKey())
+            }
+        }
+    }
 
-            //Initialize repositories
-            courseRep = CourseRepository(db)
-            groupRep = GroupRepository(db)
-            studentRep = StudentRepository(db)
-            lessonRep = LessonRepository(db)
-            teacherRep = TeacherRepository(db)
-            topicRep = TopicRepository(db)
+    fun onColdStart() {
+        //Fetch update
+        if (state.login.isAuthorized.value) {
+            val currentTeacherUuid = state.login.teacher.value.uuid
+            val fetchedGroups = api.fetchGroupsTaughtBy(currentTeacherUuid)
+            state.groupList.groups.value = fetchedGroups
 
-            //Configure path to state dump
-            val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
-
-            //Recover state dump or create new one
-            state = getFromFile(dumpPath) ?: AppState()
-            state.dumpPath = dumpPath
+            val newLessonMap = mutableMapOf<String, Lesson?>()
+            fetchedGroups.forEach { group ->
+                val nextLesson = api.fetchGroupNextLesson(group.uuid)
+                newLessonMap[group.uuid] = nextLesson
+            }
+            state.groupList.lessons.value = newLessonMap
         }
     }
 }
 
-//login
-//check your groups
-//check topics
-//check calendar
-//start/edit lessons
+/*
+Calendar
+- check incoming lessons
 
-//auth endpoint
+Group
+- check lessons for a group
+- check list of students in that group
+- go to a lesson of a group
+
+GroupList
+- check list of group
+- go to a group
+
+Lesson
+- check attendance
+- start lesson
+- edit attendance
+- check list of students
+- go to topic
+- check lesson info
+
+Login
+- auth via keycloak
+
+ */

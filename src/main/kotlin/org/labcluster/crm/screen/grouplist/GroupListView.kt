@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,7 +30,8 @@ private fun Preview() = PreviewScaffold(false) { GroupListView() }
 @Composable
 fun GroupListView(vm: GroupListViewModel = viewModel()) {
     val timeZone by vm.state.chronos.timeZone.collectAsState()
-    val groupsWithNextLesson by vm.groupsWithNextLesson.collectAsState()
+    val groups by vm.state.groupList.groups.collectAsState()
+    val lessons by vm.state.groupList.lessons.collectAsState()
     val isLoadingShown by vm.isLoadingShown.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -42,16 +44,14 @@ fun GroupListView(vm: GroupListViewModel = viewModel()) {
 
         if (isLoadingShown) Loading()
         else LazyColumn(Modifier.padding(top = topPadding)) {
-            groupsWithNextLesson.forEach { (group, lesson) ->
-                item {
-                    GroupListEntry(
-                        horizontalPadding = horizontal,
-                        group = group,
-                        nextLesson = lesson,
-                        timeZone = timeZone,
-                        onClick = vm::groupOnClick
-                    )
-                }
+            items(groups) { group ->
+                GroupListEntry(
+                    horizontalPadding = horizontal,
+                    group = group,
+                    nextLesson = lessons[group.uuid],
+                    timeZone = timeZone,
+                    onClick = vm::groupOnClick
+                )
             }
             item {
                 Spacer(Modifier.height(100.dp))

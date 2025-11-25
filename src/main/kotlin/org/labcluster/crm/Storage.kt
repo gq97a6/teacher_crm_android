@@ -8,14 +8,14 @@ import java.io.FileReader
 
 object Storage {
 
-    val appJson = Json {
+    val serializer = Json {
         serializersModule = SerializersModule {
             contextual(MutableStateFlow::class) { args -> StateFlowSerializer(args[0]) }
         }
     }
 
-    inline fun <reified T> T.prepareSave(serializer: Json = appJson): String = try {
-        appJson.encodeToString(this)
+    inline fun <reified T> T.prepareSave(serializer: Json = Storage.serializer): String = try {
+        serializer.encodeToString(this)
     } catch (e: Exception) {
         ""
     }
@@ -37,7 +37,7 @@ object Storage {
 
     inline fun <reified T> getFromFile(
         path: String = "",
-        serializer: Json = appJson,
+        serializer: Json = Storage.serializer,
         save: String = getSave(path)
     ): T? = try {
         serializer.decodeFromString(save)

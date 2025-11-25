@@ -37,7 +37,7 @@ android {
         }
 
         debug {
-            isDebuggable = false
+            isDebuggable = true
         }
     }
 
@@ -107,7 +107,7 @@ dependencies {
     implementation("app.cash.sqldelight:coroutines-extensions:2.2.1")
 
     //Shared
-    implementation("org.labcluster.crm:shared:1.0.21-SNAPSHOT")
+    implementation("org.labcluster.crm:shared:1.0.22-SNAPSHOT")
 
     //Tests
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.11.01"))
@@ -117,4 +117,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     testImplementation("junit:junit:4.13.2")
+}
+
+afterEvaluate {
+    tasks.named("assembleDebug") { dependsOn("testDebugUnitTest") }
+    tasks.named("assembleRelease") { dependsOn("testReleaseUnitTest") }
 }

@@ -20,7 +20,7 @@ fun Loading(paddingValues: PaddingValues = PaddingValues()) {
     Box(
         modifier = Modifier
             .padding(paddingValues)
-            .padding(bottom = 100.dp)
+            .padding(bottom = 80.dp)
             .fillMaxSize(),
     ) {
         CircularWavyProgressIndicator(Modifier.align(Alignment.Center))
