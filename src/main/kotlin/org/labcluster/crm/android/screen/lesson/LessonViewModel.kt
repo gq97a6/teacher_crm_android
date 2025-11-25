@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.android.Open
+import org.labcluster.crm.android.Storage.deepCopy
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.shared.model.Lesson
@@ -48,14 +49,19 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onStudentCheckbox(index: Int) {
         state.alter {
-            lesson.lesson.value.let {
-                val student = it.students[index]
+            val lesson = lesson.lesson.value
+            val student = lesson.students[index]
 
-                val newList = if (student.uuid !in it.attendance) it.attendance + student.uuid
-                else it.attendance.filter { uuid -> uuid != student.uuid }
+            //Build new attendance list
+            val newList = if (student.uuid !in lesson.attendance) lesson.attendance + student.uuid
+            else lesson.attendance.filter { uuid -> uuid != student.uuid }
 
-                lesson.setLesson(it.copy(attendance = newList))
-            }
+            //Create new lesson
+            val newLesson = lesson.deepCopy() ?: return@alter
+            newLesson.attendance = newList
+
+            //Apply change
+            this.lesson.setLesson(newLesson)
         }
     }
 
@@ -76,22 +82,19 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     fun onCancelClicked() {
         isEditable.value = false
         state.alter {
-            lesson.setLesson(
-                lesson.lesson.value.copy(
-                    epochBegin = null,
-                    attendance = listOf()
-                )
-            )
+            val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
+            newLesson.epochBegin = null
+            newLesson.attendance = listOf()
+            lesson.setLesson(newLesson)
         }
     }
 
     fun onConfirmClicked() {
         state.alter {
-            lesson.setLesson(
-                lesson.lesson.value.copy(
-                    epochBegin = Clock.System.now().epochSeconds
-                )
-            )
+            val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
+            newLesson.epochBegin = Clock.System.now().epochSeconds
+            lesson.setLesson(newLesson)
+
             isEditable.value = false
             //save lessons to local and push to remote
         }

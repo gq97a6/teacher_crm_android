@@ -15,10 +15,10 @@ object Mock {
         }
 
         lesson.setLesson(
-            Mock.lessons.random().copy(
-                epochStart = (System.currentTimeMillis() / 1000) - 1000,
+            Mock.lessons.random().apply {
+                epochStart = (System.currentTimeMillis() / 1000) - 1000
                 duration = 1030
-            )
+            }
         )
     }
 

@@ -14,6 +14,13 @@ object Storage {
         }
     }
 
+    inline fun <reified T> T.deepCopy(serializer: Json = Storage.serializer): T? = try {
+        val encoded = serializer.encodeToString(this)
+        serializer.decodeFromString(encoded)
+    } catch (e: Exception) {
+        null
+    }
+
     inline fun <reified T> T.prepareSave(serializer: Json = Storage.serializer): String = try {
         serializer.encodeToString(this)
     } catch (e: Exception) {

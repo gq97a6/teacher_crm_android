@@ -100,14 +100,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui:1.9.5")
 
-    //SQLDelight
-    implementation("app.cash.sqldelight:android-driver:2.2.1")
-    implementation("androidx.room:room-ktx:2.8.4")
-    debugImplementation("app.cash.sqldelight:sqlite-driver:2.2.1")
-    implementation("app.cash.sqldelight:coroutines-extensions:2.2.1")
-
     //Shared
-    implementation("org.labcluster.crm:shared:1.0.22-SNAPSHOT")
+    implementation("org.labcluster.crm:shared:2.0.1")
 
     //Ktor
     implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
