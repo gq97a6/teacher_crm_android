@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "org.labcluster.crm"
+    namespace = "org.labcluster.crm.android"
     compileSdk {
         version = release(36)
     }
