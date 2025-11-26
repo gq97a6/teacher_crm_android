@@ -25,7 +25,6 @@ class App : Application() {
         val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
 
         //Recover state dump or create new one
-        state = AppState()
         state = getFromFile(dumpPath) ?: AppState()
         state.dumpPath = dumpPath
         api = AppApi(state, "https://crm.labcluster.org/api")
@@ -49,7 +48,7 @@ class App : Application() {
 
     suspend fun onColdStart() {
         //Fetch update
-        if (!state.login.isAuthorized.value) {
+        if (state.login.isAuthorized.value) {
             state.calendar.fetch()
             state.groupList.fetch()
         }
