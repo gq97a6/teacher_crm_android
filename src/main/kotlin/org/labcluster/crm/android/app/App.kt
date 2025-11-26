@@ -8,14 +8,13 @@ import kotlinx.coroutines.launch
 import org.labcluster.crm.android.CalendarViewKey
 import org.labcluster.crm.android.LoginViewKey
 import org.labcluster.crm.android.Storage.getFromFile
-import org.labcluster.crm.shared.model.Lesson
 
 
 class App : Application() {
     internal companion object {
-        var app = App()
-        var state = AppState()
-        var api = AppApi(state)
+        lateinit var app: App
+        lateinit var state: AppState
+        lateinit var api: AppApi
     }
 
     override fun onCreate() {
@@ -26,20 +25,21 @@ class App : Application() {
         val dumpPath = "${app.filesDir.canonicalPath}/stateDump"
 
         //Recover state dump or create new one
+        state = AppState()
         state = getFromFile(dumpPath) ?: AppState()
         state.dumpPath = dumpPath
-        api = AppApi(state)
+        api = AppApi(state, "https://crm.labcluster.org/api")
 
         CoroutineScope(Dispatchers.IO).launch {
-            val minDuration = launch { delay(1000) }
+            val timerJob = launch { delay(1000) }
             onColdStart()
-            minDuration.join()
+            timerJob.join()
 
-            val isAuthorized = state.login.isAuthorized.value
-            if (isAuthorized) {
+            //Check if already authorized
+            if (state.login.isAuthorized.value) {
                 state.backstack.value.clear()
-                state.isNavigationEnabled.value = true
                 state.backstack.value.add(CalendarViewKey())
+                state.isNavigationEnabled.value = true
             } else {
                 state.backstack.value.clear()
                 state.backstack.value.add(LoginViewKey())
@@ -49,17 +49,9 @@ class App : Application() {
 
     suspend fun onColdStart() {
         //Fetch update
-        if (state.login.isAuthorized.value) {
-            val currentTeacherUuid = state.login.teacher.value.uuid
-            val fetchedGroups = api.fetchGroupsTaughtBy(currentTeacherUuid)
-            state.groupList.groups.value = fetchedGroups
-
-            val newLessonMap = mutableMapOf<String, Lesson?>()
-            fetchedGroups.forEach { group ->
-                val nextLesson = api.fetchGroupNextLesson(group.uuid)
-                newLessonMap[group.uuid] = nextLesson
-            }
-            state.groupList.lessons.value = newLessonMap
+        if (!state.login.isAuthorized.value) {
+            state.calendar.fetch()
+            state.groupList.fetch()
         }
     }
 }

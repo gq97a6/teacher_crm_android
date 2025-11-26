@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
@@ -15,7 +16,7 @@ import org.labcluster.crm.shared.model.Lesson
 @Open
 class AppApi(
     private val state: AppState,
-    private val url: String = "https://crm.labcluster.org/api"
+    private val url: String
 ) {
     @Open
     @Serializable
@@ -35,87 +36,58 @@ class AppApi(
         }
     }
 
-    suspend fun fetchTeacherTimetable(teacherUuid: String): List<Lesson> {
-        return try {
-            val response = client.get("$url/api/lesson/teacherTimetable/$teacherUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
-            else listOf()
-        } catch (e: Exception) {
-            listOf()
-        }
-    }
+    suspend fun fetchTeacherTimetable(teacherUuid: String): List<Lesson> = basicGet(
+        response = { client.get("$url/lesson/teacherTimetable/$teacherUuid") },
+        onSuccess = { it.body<List<Lesson>>() },
+        onFailure = { listOf() },
+        onException = { listOf() }
+    )
 
-    suspend fun fetchGroupTimetable(teacherUuid: String): List<Lesson> {
-        return try {
-            val response = client.get("$url/api/lesson/groupTimetable/$teacherUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
-            else listOf()
-        } catch (e: Exception) {
-            listOf()
-        }
-    }
+    suspend fun fetchGroupTimetable(teacherUuid: String): List<Lesson> = basicGet(
+        response = { client.get("$url/lesson/groupTimetable/$teacherUuid") },
+        onSuccess = { it.body<List<Lesson>>() },
+        onFailure = { listOf() },
+        onException = { listOf() }
+    )
 
-    suspend fun fetchGroupNextLesson(groupUuid: String): Lesson? {
-        return try {
-            val response = client.get("$url/api/lesson/groupNextLesson/$groupUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<Lesson>()
-            else null
-        } catch (e: Exception) {
-            null
-        }
-    }
+    suspend fun fetchGroupNextLesson(groupUuid: String): Lesson? = basicGet(
+        response = { client.get("$url/lesson/groupNextLesson/$groupUuid") },
+        onSuccess = { it.body<Lesson>() },
+        onFailure = { null },
+        onException = { null }
+    )
 
-    suspend fun fetchGroupsTaughtBy(teacherUuid: String): List<Group> {
-        return try {
-            val response = client.get("$url/api/group/taughtBy/$teacherUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<List<Group>>()
-            else listOf()
-        } catch (e: Exception) {
-            listOf()
-        }
-    }
+    suspend fun fetchGroupsTaughtBy(teacherUuid: String): List<Group> = basicGet(
+        response = { client.get("$url/group/taughtBy/$teacherUuid") },
+        onSuccess = { it.body<List<Group>>() },
+        onFailure = { listOf() },
+        onException = { listOf() }
+    )
 
-    suspend fun healthCheck(): Boolean {
-        return try {
-            val response = client.get("$url/api/health")
-            return response.status == HttpStatusCode.OK
-        } catch (e: Exception) {
-            false
-        }
-    }
+    suspend fun healthCheck(): Boolean = basicGet(
+        response = { client.get("$url/health") },
+        onSuccess = { true },
+        onFailure = { false },
+        onException = { false }
+    )
 
-    fun authorize(): Boolean {
-        return true
-    }
+    suspend fun authorize(): Boolean = basicGet(
+        response = { client.get("$url/health") },
+        onSuccess = { true },
+        onFailure = { true },
+        onException = { true }
+    )
 
-    /*
-    suspend fun postMatch(index: Int) {
-        try {
-            val response = client.post("$URL/api/match/current") {
-                setBody("$index")
-            }
-            window.alert(if (response.status == HttpStatusCode.OK) "OK" else "ERROR")
-        } catch (e: Exception) {
-            println(e.message)
-            window.alert("ERROR")
-        }
+    private suspend fun <T> basicGet(
+        response: suspend () -> HttpResponse,
+        onSuccess: suspend (HttpResponse) -> T,
+        onFailure: suspend (HttpResponse) -> T,
+        onException: suspend (Exception) -> T,
+    ): T = try {
+        val response = response()
+        if (response.status == HttpStatusCode.OK) onSuccess(response)
+        else onFailure(response)
+    } catch (e: Exception) {
+        onException(e)
     }
-
-    @OptIn(InternalAPI::class)
-    suspend fun postPlayers(players: List<Player>) {
-        try {
-            // Manually serialize the user object to JSON string
-            val jsonBody = Json.encodeToString(ListSerializer(Player.serializer()), players)
-
-            val response = client.post("$URL/api/player") {
-                contentType(ContentType.Application.Json)
-                body = jsonBody
-            }
-            window.alert(if (response.status == HttpStatusCode.OK) "OK" else "ERROR")
-        } catch (e: Exception) {
-            println(e.message)
-            window.alert("ERROR")
-        }
-    }
-     */
 }

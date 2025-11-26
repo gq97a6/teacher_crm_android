@@ -1,10 +1,13 @@
 package org.labcluster.crm.android.screen.splash
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +47,14 @@ fun SplashView() {
             color = cs.tertiary,
             modifier = Modifier.offset(y = (-20).dp)
         )
-        CircularWavyProgressIndicator()
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .height(140.dp)
+                .padding(top = 10.dp)
+        ) {
+            CircularWavyProgressIndicator()
+        }
     }
 }

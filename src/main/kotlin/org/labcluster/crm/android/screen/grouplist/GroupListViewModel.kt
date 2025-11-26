@@ -1,5 +1,3 @@
-@file:UseContextualSerialization(MutableStateFlow::class)
-
 package org.labcluster.crm.android.screen.grouplist
 
 import androidx.lifecycle.ViewModel
@@ -7,15 +5,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.android.GroupViewKey
 import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.shared.model.Group
-import org.labcluster.crm.shared.model.Lesson
 
 @Open
 class GroupListViewModel(
@@ -23,44 +18,27 @@ class GroupListViewModel(
     val api: AppApi = App.api
 ) : ViewModel() {
 
-    @Open
-    @Serializable
-    class State() {
-        val groups = MutableStateFlow(listOf<Group>())
-        val lessons = MutableStateFlow(mapOf<String, Lesson?>())
-    }
-
     val isLoadingShown = MutableStateFlow(false)
 
     fun groupOnClick(clickedGroup: Group) {
         viewModelScope.launch {
             isLoadingShown.value = true
-            val timetable = api.fetchGroupTimetable(clickedGroup.uuid)
 
-            state.alter {
-                group.group.value = clickedGroup
-                group.lessons.value = timetable
-                backstack.value.add(GroupViewKey())
-            }
+            state.alter(viewModelScope) { group.fetch(clickedGroup) }.join()
 
             delay(100)
             isLoadingShown.value = false
+
+            //Navigate to group view
+            state.alter(viewModelScope) {
+                state.backstack.value.add(GroupViewKey())
+            }
         }
     }
 
     fun onRefreshClicked() {
         val alterJob = state.alter(viewModelScope) {
-            val currentTeacherUuid = login.teacher.value.uuid
-            val fetchedGroups = api.fetchGroupsTaughtBy(currentTeacherUuid)
-
-            groupList.groups.value = fetchedGroups
-
-            val newLessonMap = mutableMapOf<String, Lesson?>()
-            fetchedGroups.forEach { group ->
-                val nextLesson = api.fetchGroupNextLesson(group.uuid)
-                newLessonMap[group.uuid] = nextLesson
-            }
-            groupList.lessons.value = newLessonMap
+            state.groupList.fetch()
         }
 
         viewModelScope.launch {

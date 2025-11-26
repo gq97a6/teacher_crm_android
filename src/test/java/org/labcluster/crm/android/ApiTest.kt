@@ -10,7 +10,7 @@ class ApiTest {
     @Test
     fun testApi() = runBlocking {
         val state = AppState()
-        val api = AppApi(state, "http://localhost")
+        val api = AppApi(state, "http://192.168.0.62/api")
         assert(api.healthCheck())
     }
 }

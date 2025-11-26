@@ -1,5 +1,3 @@
-@file:UseContextualSerialization(MutableStateFlow::class)
-
 package org.labcluster.crm.android.screen.lesson
 
 import androidx.compose.ui.state.ToggleableState
@@ -10,29 +8,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseContextualSerialization
 import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.Storage.deepCopy
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppState
-import org.labcluster.crm.shared.model.Lesson
 import kotlin.time.Clock
 
 @Open
 class LessonViewModel(val state: AppState = App.state) : ViewModel() {
-
-    @Open
-    @Serializable
-    class State() {
-        val isLessonSet = MutableStateFlow(false)
-        val lesson = MutableStateFlow(Lesson())
-
-        fun setLesson(lesson: Lesson) {
-            this.lesson.value = lesson
-            isLessonSet.value = true
-        }
-    }
 
     val attendance: StateFlow<List<ToggleableState>> = state.lesson.lesson.map { lesson ->
         lesson.students.map { student ->

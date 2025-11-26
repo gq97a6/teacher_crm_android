@@ -30,11 +30,11 @@ import org.labcluster.crm.android.composable.PreviewSimple
 import org.labcluster.crm.android.cs
 import org.labcluster.crm.android.dateFormat
 import org.labcluster.crm.android.dayFormat
+import org.labcluster.crm.android.timeFormat
 import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeEnd
 import org.labcluster.crm.shared.timeStart
-import org.labcluster.crm.android.timeFormat
 
 @Preview
 @Composable

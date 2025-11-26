@@ -1,12 +1,15 @@
 package org.labcluster.crm.android.screen.login.compose
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -26,9 +29,11 @@ private fun Preview() = PreviewScaffold(showAppBar = false) { LoginScreen() }
 
 @Composable
 fun LoginScreen(
-    onLogin: () -> Unit = {},
-    onRegister: () -> Unit = {}
+    isLoading: Boolean = false,
+    onLogin: () -> Unit = {}
 ) {
+
+
     Column(
         Modifier
             .fillMaxSize()
@@ -51,13 +56,20 @@ fun LoginScreen(
             modifier = Modifier.offset(y = (-20).dp)
         )
 
-        OutlinedButton(
-            onClick = onLogin,
-            shape = ShapeDefaults.ExtraExtraLarge,
-            contentPadding = PaddingValues(40.dp),
-            modifier = Modifier.padding(top = 10.dp)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .height(140.dp)
+                .padding(top = 10.dp)
         ) {
-            Text("Zaloguj się")
+            if (isLoading) CircularWavyProgressIndicator()
+            else OutlinedButton(
+                onClick = onLogin,
+                shape = ShapeDefaults.ExtraExtraLarge,
+                contentPadding = PaddingValues(40.dp)
+            ) {
+                Text("Zaloguj się")
+            }
         }
 
         //Button(
