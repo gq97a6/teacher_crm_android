@@ -14,8 +14,8 @@ import org.labcluster.crm.shared.model.Lesson
 
 @Open
 class AppApi(
-    val state: AppState,
-    val url: String = "https://crm.labcluster.org"
+    private val state: AppState,
+    private val url: String = "https://crm.labcluster.org/api"
 ) {
     @Open
     @Serializable
@@ -72,6 +72,15 @@ class AppApi(
             else listOf()
         } catch (e: Exception) {
             listOf()
+        }
+    }
+
+    suspend fun healthCheck(): Boolean {
+        return try {
+            val response = client.get("$url/api/health")
+            return response.status == HttpStatusCode.OK
+        } catch (e: Exception) {
+            false
         }
     }
 
