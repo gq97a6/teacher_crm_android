@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -80,15 +79,16 @@ class CalendarViewModel(val state: AppState = App.state) : ViewModel() {
 
     fun onRefreshClicked() {
         viewModelScope.launch {
+            val timer = launch { delay(1000) }
             isLoadingShown.value = true
 
-            state.calendar.lessons.update {
-                api.fetchTeacherTimetable(
-                    teacherUuid = state.login.teacher.value.uuid
-                )
+            api.fetchTeacherTimetable(
+                teacherUuid = state.login.teacher.value.uuid
+            ).let {
+                state.calendar.lessons.value = it
             }
 
-            delay(1000)
+            timer.join()
             isLoadingShown.value = false
         }
     }

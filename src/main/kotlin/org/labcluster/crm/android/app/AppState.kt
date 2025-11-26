@@ -2,10 +2,14 @@ package org.labcluster.crm.android.app
 
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.labcluster.crm.android.Open
@@ -46,10 +50,22 @@ class AppState {
 
     @Transient
     private val aLock = Mutex(false)
-    fun alter(action: suspend AppState.() -> Unit) {
+    fun alter(action: AppState.() -> Unit) {
         runBlocking {
-            aLock.withLock {
-                this@AppState.action()
+            withTimeoutOrNull(5000) {
+                aLock.withLock {
+                    this@AppState.action()
+                }
+            }
+        }
+    }
+
+    fun alter(scope: CoroutineScope, action: suspend AppState.() -> Unit): Job {
+        return scope.launch {
+            withTimeoutOrNull(5000) {
+                aLock.withLock {
+                    this@AppState.action()
+                }
             }
         }
     }

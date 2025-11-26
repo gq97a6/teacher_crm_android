@@ -9,7 +9,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.labcluster.crm.android.Open
-import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
 
@@ -36,7 +35,7 @@ class AppApi(
         }
     }
 
-    suspend fun fetchTeacherTimetable2(teacherUuid: String): List<Lesson> {
+    suspend fun fetchTeacherTimetable(teacherUuid: String): List<Lesson> {
         return try {
             val response = client.get("$url/api/lesson/teacherTimetable/$teacherUuid")
             return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
@@ -46,7 +45,7 @@ class AppApi(
         }
     }
 
-    suspend fun fetchGroupTimetable2(teacherUuid: String): List<Lesson> {
+    suspend fun fetchGroupTimetable(teacherUuid: String): List<Lesson> {
         return try {
             val response = client.get("$url/api/lesson/groupTimetable/$teacherUuid")
             return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
@@ -56,30 +55,25 @@ class AppApi(
         }
     }
 
-    suspend fun fetchGroupNextLesson2(groupUuid: String): List<Lesson> {
+    suspend fun fetchGroupNextLesson(groupUuid: String): Lesson? {
         return try {
             val response = client.get("$url/api/lesson/groupNextLesson/$groupUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
-            else listOf()
+            return if (response.status == HttpStatusCode.OK) response.body<Lesson>()
+            else null
         } catch (e: Exception) {
-            listOf()
+            null
         }
     }
 
-    suspend fun fetchGroupsTaughtBy2(teacherUuid: String): List<Lesson> {
+    suspend fun fetchGroupsTaughtBy(teacherUuid: String): List<Group> {
         return try {
             val response = client.get("$url/api/group/taughtBy/$teacherUuid")
-            return if (response.status == HttpStatusCode.OK) response.body<List<Lesson>>()
+            return if (response.status == HttpStatusCode.OK) response.body<List<Group>>()
             else listOf()
         } catch (e: Exception) {
             listOf()
         }
     }
-
-    fun fetchTeacherTimetable(teacherUuid: String): List<Lesson> = Mock.lessons
-    fun fetchGroupTimetable(groupUuid: String): List<Lesson> = Mock.lessons
-    fun fetchGroupsTaughtBy(teacherUuid: String): List<Group> = Mock.groups
-    fun fetchGroupNextLesson(groupUuid: String): Lesson? = Mock.lessons.random()
 
     fun authorize(): Boolean {
         return true

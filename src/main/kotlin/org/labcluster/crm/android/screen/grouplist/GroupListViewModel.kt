@@ -35,10 +35,11 @@ class GroupListViewModel(
     fun groupOnClick(clickedGroup: Group) {
         viewModelScope.launch {
             isLoadingShown.value = true
+            val timetable = api.fetchGroupTimetable(clickedGroup.uuid)
 
             state.alter {
                 group.group.value = clickedGroup
-                group.lessons.value = api.fetchGroupTimetable(clickedGroup.uuid)
+                group.lessons.value = timetable
                 backstack.value.add(GroupViewKey())
             }
 
@@ -48,23 +49,25 @@ class GroupListViewModel(
     }
 
     fun onRefreshClicked() {
-        viewModelScope.launch {
-            isLoadingShown.value = true
+        val alterJob = state.alter(viewModelScope) {
+            val currentTeacherUuid = login.teacher.value.uuid
+            val fetchedGroups = api.fetchGroupsTaughtBy(currentTeacherUuid)
 
-            state.alter {
-                val currentTeacherUuid = login.teacher.value.uuid
-                val fetchedGroups = api.fetchGroupsTaughtBy(currentTeacherUuid)
-                groupList.groups.value = fetchedGroups
+            groupList.groups.value = fetchedGroups
 
-                val newLessonMap = mutableMapOf<String, Lesson?>()
-                fetchedGroups.forEach { group ->
-                    val nextLesson = api.fetchGroupNextLesson(group.uuid)
-                    newLessonMap[group.uuid] = nextLesson
-                }
-                groupList.lessons.value = newLessonMap
+            val newLessonMap = mutableMapOf<String, Lesson?>()
+            fetchedGroups.forEach { group ->
+                val nextLesson = api.fetchGroupNextLesson(group.uuid)
+                newLessonMap[group.uuid] = nextLesson
             }
+            groupList.lessons.value = newLessonMap
+        }
 
-            delay(1000)
+        viewModelScope.launch {
+            val timerJob = launch { delay(1000) }
+            isLoadingShown.value = true
+            alterJob.join()
+            timerJob.join()
             isLoadingShown.value = false
         }
     }

@@ -58,7 +58,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
 
             //Create new lesson
             val newLesson = lesson.deepCopy() ?: return@alter
-            newLesson.attendance = newList
+            newLesson.attendance = newList.toMutableList()
 
             //Apply change
             this.lesson.setLesson(newLesson)
@@ -84,7 +84,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
         state.alter {
             val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
             newLesson.epochBegin = null
-            newLesson.attendance = listOf()
+            newLesson.attendance = mutableListOf()
             lesson.setLesson(newLesson)
         }
     }

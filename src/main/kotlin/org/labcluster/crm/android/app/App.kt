@@ -47,7 +47,7 @@ class App : Application() {
         }
     }
 
-    fun onColdStart() {
+    suspend fun onColdStart() {
         //Fetch update
         if (state.login.isAuthorized.value) {
             val currentTeacherUuid = state.login.teacher.value.uuid

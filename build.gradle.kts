@@ -37,7 +37,7 @@ android {
         }
 
         debug {
-            isDebuggable = true
+            isDebuggable = false
         }
     }
 
@@ -101,7 +101,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.9.5")
 
     //Shared
-    implementation("org.labcluster.crm:shared:2.0.1")
+    implementation("org.labcluster.crm:shared:2.0.6")
 
     //Ktor
     implementation("io.ktor:ktor-client-content-negotiation:3.3.2")

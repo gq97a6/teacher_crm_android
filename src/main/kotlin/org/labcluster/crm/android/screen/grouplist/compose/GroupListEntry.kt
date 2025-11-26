@@ -30,10 +30,10 @@ import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.composable.PreviewSimple
 import org.labcluster.crm.android.cs
 import org.labcluster.crm.android.polishDayOfWeekNames
+import org.labcluster.crm.android.timeFormat
 import org.labcluster.crm.shared.Mock
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
-import org.labcluster.crm.android.timeFormat
 import kotlin.time.Instant
 
 @Preview
@@ -50,7 +50,7 @@ fun GroupListEntry(
 ) {
     val dayText = remember { polishDayOfWeekNames.names[group.dayIndex.toInt()] }
     val timeText = remember {
-        Instant.fromEpochSeconds(group.epoch)
+        Instant.fromEpochSeconds(group.timeEpoch)
             .toLocalDateTime(timeZone)
             .format(timeFormat)
     }
