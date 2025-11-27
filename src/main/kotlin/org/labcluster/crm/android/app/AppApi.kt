@@ -4,8 +4,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -36,49 +40,56 @@ class AppApi(
         }
     }
 
-    suspend fun fetchTeacherTimetable(teacherUuid: String): List<Lesson> = basicGet(
+    suspend fun getTeacherTimetable(teacherUuid: String): List<Lesson> = request(
         response = { client.get("$url/lesson/teacherTimetable/$teacherUuid") },
         onSuccess = { it.body<List<Lesson>>() },
         onFailure = { listOf() },
         onException = { listOf() }
     )
 
-    suspend fun fetchGroupTimetable(teacherUuid: String): List<Lesson> = basicGet(
+    suspend fun getGroupTimetable(teacherUuid: String): List<Lesson> = request(
         response = { client.get("$url/lesson/groupTimetable/$teacherUuid") },
         onSuccess = { it.body<List<Lesson>>() },
         onFailure = { listOf() },
         onException = { listOf() }
     )
 
-    suspend fun fetchGroupNextLesson(groupUuid: String): Lesson? = basicGet(
+    suspend fun getGroupNextLesson(groupUuid: String): Lesson? = request(
         response = { client.get("$url/lesson/groupNextLesson/$groupUuid") },
         onSuccess = { it.body<Lesson>() },
         onFailure = { null },
         onException = { null }
     )
 
-    suspend fun fetchGroupsTaughtBy(teacherUuid: String): List<Group> = basicGet(
+    suspend fun getGroupsTaughtBy(teacherUuid: String): List<Group> = request(
         response = { client.get("$url/group/taughtBy/$teacherUuid") },
         onSuccess = { it.body<List<Group>>() },
         onFailure = { listOf() },
         onException = { listOf() }
     )
 
-    suspend fun healthCheck(): Boolean = basicGet(
-        response = { client.get("$url/health") },
-        onSuccess = { true },
-        onFailure = { false },
-        onException = { false }
-    )
-
-    suspend fun authorize(): Boolean = basicGet(
+    suspend fun getAuthorize(): Boolean = request(
         response = { client.get("$url/health") },
         onSuccess = { true },
         onFailure = { true },
         onException = { true }
     )
 
-    private suspend fun <T> basicGet(
+    suspend fun putLesson(): Boolean = request(
+        response = { client.get("$url/health") },
+        onSuccess = { true },
+        onFailure = { true },
+        onException = { true }
+    )
+
+    suspend fun getHealth(): Boolean = request(
+        response = { client.get("$url/health") },
+        onSuccess = { true },
+        onFailure = { false },
+        onException = { false }
+    )
+
+    private suspend fun <T> request(
         response: suspend () -> HttpResponse,
         onSuccess: suspend (HttpResponse) -> T,
         onFailure: suspend (HttpResponse) -> T,
@@ -90,4 +101,16 @@ class AppApi(
     } catch (e: Exception) {
         onException(e)
     }
+
+    suspend fun putLesson(lesson: Lesson): Boolean = request(
+        response = {
+            client.put("/lessons/") {
+                contentType(ContentType.Application.Json)
+                setBody(lesson)
+            }
+        },
+        onSuccess = { true },
+        onFailure = { false },
+        onException = { false }
+    )
 }

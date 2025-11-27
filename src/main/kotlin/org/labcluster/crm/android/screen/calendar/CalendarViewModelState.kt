@@ -18,7 +18,7 @@ class CalendarViewModelState() {
     val lessons = MutableStateFlow(listOf<Lesson>())
 
     suspend fun fetch(state: AppState = App.state, api: AppApi = App.api) {
-        api.fetchTeacherTimetable(state.login.teacher.value.uuid).let {
+        api.getTeacherTimetable(state.login.teacher.value.uuid).let {
             lessons.value = it
         }
     }

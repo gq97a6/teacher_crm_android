@@ -11,6 +11,6 @@ class ApiTest {
     fun testApi() = runBlocking {
         val state = AppState()
         val api = AppApi(state, "http://192.168.0.62/api")
-        assert(api.healthCheck())
+        assert(api.getHealth())
     }
 }

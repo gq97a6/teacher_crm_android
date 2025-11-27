@@ -19,7 +19,7 @@ class GroupViewModelState() {
 
     suspend fun fetch(group: Group, api: AppApi = App.api) {
         this.group.value = group
-        api.fetchGroupTimetable(group.uuid).let {
+        api.getGroupTimetable(group.uuid).let {
             lessons.value = it
         }
     }

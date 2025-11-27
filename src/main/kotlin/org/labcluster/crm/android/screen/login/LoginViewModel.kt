@@ -29,7 +29,7 @@ class LoginViewModel(
             //Login
             state.alter(viewModelScope) {
                 login.teacher.update { Teacher() }
-                login.isAuthorized.update { api.authorize() }
+                login.isAuthorized.update { api.getAuthorize() }
             }.join()
 
             //If authorized fetch updates and redirect

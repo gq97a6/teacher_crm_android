@@ -19,13 +19,13 @@ class GroupListViewModelState() {
     val lessons = MutableStateFlow(mapOf<String, Lesson?>())
 
     suspend fun fetch(state: AppState = App.state, api: AppApi = App.api) {
-        api.fetchGroupsTaughtBy(state.login.teacher.value.uuid).let {
+        api.getGroupsTaughtBy(state.login.teacher.value.uuid).let {
             groups.value = it
         }
 
         buildMap {
             groups.value.forEach { group ->
-                val nextLesson = api.fetchGroupNextLesson(group.uuid)
+                val nextLesson = api.getGroupNextLesson(group.uuid)
                 set(group.uuid, nextLesson)
             }
         }.let { lessons.value = it }
