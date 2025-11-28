@@ -18,15 +18,13 @@ import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
 
 @Open
-class AppApi(
-    private val state: AppState,
-    private val url: String
-) {
+class AppApi(private val state: AppState, private val url: String) {
+
     @Open
     @Serializable
     class State()
 
-    val client = HttpClient {
+    val client: HttpClient = HttpClient {
         install(ContentNegotiation) {
             json(Json {
                 encodeDefaults = true
@@ -89,6 +87,18 @@ class AppApi(
         onException = { false }
     )
 
+    suspend fun putLesson(lesson: Lesson): Boolean = request(
+        response = {
+            client.put("$url/lesson/${lesson.uuid}") {
+                contentType(ContentType.Application.Json)
+                setBody(lesson)
+            }
+        },
+        onSuccess = { true },
+        onFailure = { false },
+        onException = { false }
+    )
+
     private suspend fun <T> request(
         response: suspend () -> HttpResponse,
         onSuccess: suspend (HttpResponse) -> T,
@@ -101,16 +111,4 @@ class AppApi(
     } catch (e: Exception) {
         onException(e)
     }
-
-    suspend fun putLesson(lesson: Lesson): Boolean = request(
-        response = {
-            client.put("/lessons/") {
-                contentType(ContentType.Application.Json)
-                setBody(lesson)
-            }
-        },
-        onSuccess = { true },
-        onFailure = { false },
-        onException = { false }
-    )
 }

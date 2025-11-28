@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.labcluster.crm.android.Mock
 import org.labcluster.crm.android.app.App.Companion.state
 import org.labcluster.crm.android.cs
+import org.labcluster.crm.android.mock.Mock
 import org.labcluster.crm.android.theme.Theme
 import org.labcluster.crm.android.theme.darkColorScheme
 

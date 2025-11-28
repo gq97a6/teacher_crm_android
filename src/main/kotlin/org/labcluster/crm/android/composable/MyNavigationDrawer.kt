@@ -7,10 +7,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Group
+import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -51,6 +53,7 @@ fun MyNavigationDrawer(
 
     val isLessonSet by state.lesson.isLessonSet.collectAsStateWithLifecycle()
     val isTopicSet by state.topic.isTopicSet.collectAsStateWithLifecycle()
+    val isGroupSet by state.group.isGroupSet.collectAsStateWithLifecycle()
     val isNavigationEnabled by state.isNavigationEnabled.collectAsStateWithLifecycle()
 
     fun onClick(key: NavKey) {
@@ -80,9 +83,21 @@ fun MyNavigationDrawer(
                         label = "Temat"
                     ) { onClick(TopicViewKey()) }
 
-                    MyNavigationDrawerItem(
+                    if (isGroupSet) MyNavigationDrawerItem(
                         selected = backstack?.last() is GroupViewKey,
                         icon = Group,
+                        label = "Grupa"
+                    ) { onClick(GroupViewKey()) }
+
+                    if (isLessonSet || isTopicSet || isGroupSet) HorizontalDivider(
+                        Modifier
+                            .padding(horizontal = 15.dp)
+                            .padding(vertical = 10.dp)
+                    )
+
+                    MyNavigationDrawerItem(
+                        selected = backstack?.last() is GroupListViewKey,
+                        icon = Groups,
                         label = "Grupy"
                     ) { onClick(GroupListViewKey()) }
 

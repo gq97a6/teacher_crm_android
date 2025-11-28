@@ -28,6 +28,7 @@ private fun Preview() = PreviewScaffold(false) { GroupView() }
 
 @Composable
 fun GroupView(vm: GroupViewModel = viewModel()) {
+
     val group by vm.state.group.group.collectAsStateWithLifecycle()
     val lessons by vm.state.group.lessons.collectAsStateWithLifecycle()
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
@@ -41,7 +42,7 @@ fun GroupView(vm: GroupViewModel = viewModel()) {
                 group = group,
                 nextLesson = lessons.firstOrNull { it.epochBegin == null } ?: Lesson(),
                 timeZone = timeZone,
-                onBackClick = vm::onBackClicked
+                onCopyUuid = vm::onCopyUuid
             )
         },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)

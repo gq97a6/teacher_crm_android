@@ -15,8 +15,9 @@ import org.labcluster.crm.shared.model.Lesson
 @Open
 @Serializable
 class GroupListViewModelState() {
+
     val groups = MutableStateFlow(listOf<Group>())
-    val lessons = MutableStateFlow(mapOf<String, Lesson?>())
+    val nextLessons = MutableStateFlow(mapOf<String, Lesson?>())
 
     suspend fun fetch(state: AppState = App.state, api: AppApi = App.api) {
         api.getGroupsTaughtBy(state.login.teacher.value.uuid).let {
@@ -28,6 +29,6 @@ class GroupListViewModelState() {
                 val nextLesson = api.getGroupNextLesson(group.uuid)
                 set(group.uuid, nextLesson)
             }
-        }.let { lessons.value = it }
+        }.let { nextLessons.value = it }
     }
 }

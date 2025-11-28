@@ -1,4 +1,4 @@
-package org.labcluster.crm.android
+package org.labcluster.crm.android.mock
 
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.shared.Mock
@@ -10,7 +10,7 @@ object Mock {
         topic.setTopic(Mock.topics.random())
         group.group.value = Mock.groups.random()
 
-        groupList.lessons.value = Mock.groups.map { it.uuid }.associateWith {
+        groupList.nextLessons.value = Mock.groups.map { it.uuid }.associateWith {
             Mock.lessons.random()
         }
 

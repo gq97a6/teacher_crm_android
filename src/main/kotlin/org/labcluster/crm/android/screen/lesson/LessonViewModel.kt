@@ -1,21 +1,31 @@
 package org.labcluster.crm.android.screen.lesson
 
+import android.content.ClipData
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.labcluster.crm.android.Open
-import org.labcluster.crm.android.Storage.deepCopy
+import org.labcluster.crm.android.TopicViewKey
 import org.labcluster.crm.android.app.App
+import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
+import org.labcluster.crm.android.storage.Storage.deepCopy
 import kotlin.time.Clock
 
 @Open
-class LessonViewModel(val state: AppState = App.state) : ViewModel() {
+class LessonViewModel(
+    val state: AppState = App.state,
+    val api: AppApi = App.api
+) : ViewModel() {
 
     val attendance: StateFlow<List<ToggleableState>> = state.lesson.lesson.map { lesson ->
         lesson.students.map { student ->
@@ -28,6 +38,7 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     )
 
     val isEditable = MutableStateFlow(false)
+    val isLoading = MutableStateFlow(false)
     val clock = state.chronos.clock(viewModelScope)
 
     fun onStudentCheckbox(index: Int) {
@@ -49,6 +60,20 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     }
 
     fun onShowTopic() {
+        state.alter {
+            state.lesson.lesson.value.topic?.let {
+                state.topic.setTopic(it)
+                backstack.value.add(TopicViewKey())
+            }
+        }
+    }
+
+    fun onCopyUuid(clipboard: Clipboard) {
+        viewModelScope.launch {
+            val data = ClipData.newPlainText("uuid", state.lesson.lesson.value.uuid)
+            val entry = ClipEntry(data)
+            clipboard.setClipEntry(entry)
+        }
     }
 
     fun onShowCourse() {
@@ -73,13 +98,19 @@ class LessonViewModel(val state: AppState = App.state) : ViewModel() {
     }
 
     fun onConfirmClicked() {
-        state.alter {
+        state.alter(viewModelScope) {
+            isLoading.value = true
+            val timerJob = viewModelScope.launch { delay(1000) }
+
             val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
             newLesson.epochBegin = Clock.System.now().epochSeconds
-            lesson.setLesson(newLesson)
+            val isSuccessful = api.putLesson(newLesson)
 
+            if (isSuccessful) lesson.setLesson(newLesson)
+
+            timerJob.join()
             isEditable.value = false
-            //save lessons to local and push to remote
+            isLoading.value = false
         }
     }
 }

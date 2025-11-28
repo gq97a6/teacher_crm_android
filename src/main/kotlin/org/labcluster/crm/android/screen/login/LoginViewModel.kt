@@ -28,7 +28,7 @@ class LoginViewModel(
 
             //Login
             state.alter(viewModelScope) {
-                login.teacher.update { Teacher() }
+                login.teacher.update { Teacher(uuid = "01ef4c39-9577-4eeb-a017-b3e1a9e38864") }
                 login.isAuthorized.update { api.getAuthorize() }
             }.join()
 

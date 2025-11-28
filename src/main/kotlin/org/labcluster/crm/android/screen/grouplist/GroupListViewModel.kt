@@ -26,13 +26,15 @@ class GroupListViewModel(
 
             state.alter(viewModelScope) { group.fetch(clickedGroup) }.join()
 
-            delay(100)
-            isLoadingShown.value = false
-
             //Navigate to group view
             state.alter(viewModelScope) {
                 state.backstack.value.add(GroupViewKey())
             }
+
+            //Prevent list entry flash
+            delay(50)
+
+            isLoadingShown.value = false
         }
     }
 

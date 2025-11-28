@@ -1,10 +1,13 @@
 package org.labcluster.crm.android
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
 
+@RunWith(AndroidJUnit4::class)
 class ApiTest {
 
     @Test

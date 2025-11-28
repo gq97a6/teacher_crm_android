@@ -5,8 +5,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,11 +18,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.datetime.toInstant
+import org.labcluster.crm.android.composable.Loading
 import org.labcluster.crm.android.composable.PreviewScaffold
 import org.labcluster.crm.android.screen.lesson.compose.LessonAppBar
 import org.labcluster.crm.android.screen.lesson.compose.LessonContent
@@ -42,6 +48,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
     val clock by vm.clock.collectAsStateWithLifecycle()
     val attendance by vm.attendance.collectAsStateWithLifecycle()
     val isEditable by vm.isEditable.collectAsStateWithLifecycle()
+    val isLoading by vm.isLoading.collectAsStateWithLifecycle()
 
     val isLive by remember {
         derivedStateOf {
@@ -50,14 +57,14 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
     }
 
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier.blur(if (isLoading) 5.dp else 0.dp),
         topBar = {
             LessonAppBar(
                 lesson = lesson,
                 timeZone = timeZone,
                 isLive = isLive,
                 onShowTopic = vm::onShowTopic,
-                onShowCourse = vm::onShowCourse,
+                onCopyUuid = vm::onCopyUuid,
             )
         },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
@@ -77,7 +84,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
     //Has begin and is not being edited (10)
     AnimatedVisibility(
-        visible = lesson.epochBegin != null && !isEditable,
+        visible = lesson.epochBegin != null && !isEditable && !isLoading,
         enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
         modifier = Modifier
@@ -93,7 +100,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
     //Has not begin and not being edited (00)
     AnimatedVisibility(
-        visible = lesson.epochBegin == null && !isEditable,
+        visible = lesson.epochBegin == null && !isEditable && !isLoading,
         enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
         modifier = Modifier
@@ -110,7 +117,7 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
     //Has not begin but is being edited (01)
     //Has begin and is being edited (11)
     AnimatedVisibility(
-        visible = isEditable,
+        visible = isEditable && !isLoading,
         enter = slideInVertically() + fadeIn(initialAlpha = 0.3f),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
         modifier = Modifier
@@ -121,5 +128,13 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
             onConfirmClicked = vm::onConfirmClicked,
             onCancelClicked = vm::onCancelClicked
         )
+    }
+
+    if (isLoading) Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(0.2f))
+    ) {
+        Loading()
     }
 }

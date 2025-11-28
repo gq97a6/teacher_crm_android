@@ -15,9 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.labcluster.crm.android.Mock.lorem
 import org.labcluster.crm.android.composable.PreviewScaffold
 import org.labcluster.crm.android.cs
+import org.labcluster.crm.android.mock.Mock.lorem
 import org.labcluster.crm.android.screen.topic.compose.TopicAppBar
 import kotlin.random.Random
 

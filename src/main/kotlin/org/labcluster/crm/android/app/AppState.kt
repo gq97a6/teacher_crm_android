@@ -29,24 +29,31 @@ class AppState {
     var dumpPath: String? = null
 
     @Transient
-    val chronos = Chronos()
+    var chronos = Chronos()
 
     @Transient
-    val backstack = MutableStateFlow(NavBackStack<NavKey>(SplashViewKey()))
+    var backstack = MutableStateFlow(NavBackStack<NavKey>(SplashViewKey()))
 
     @Transient
-    val isNavigationEnabled = MutableStateFlow(false)
+    var isNavigationEnabled = MutableStateFlow(false)
 
-    //Screen related global state
-    val calendar = CalendarViewModelState()
-    val group = GroupViewModelState()
-    val groupList = GroupListViewModelState()
-    val lesson = LessonViewModelState()
-    val topic = TopicViewModelState()
-    val login = LoginViewModelState()
+    //Screen related global state =================================================================
+
+    @Transient
+    var calendar = CalendarViewModelState()
+
+    @Transient
+    var groupList = GroupListViewModelState()
+
+    var lesson = LessonViewModelState()
+    var topic = TopicViewModelState()
+    var group = GroupViewModelState()
+    var login = LoginViewModelState()
+
+    //====================================================================================
 
     //Api persistent state
-    val apiState = AppApi.State()
+    var apiState = AppApi.State()
 
     @Transient
     private val aLock = Mutex(false)

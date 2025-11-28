@@ -1,8 +1,9 @@
-package org.labcluster.crm.android
+package org.labcluster.crm.android.storage
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import org.labcluster.crm.android.StateFlowSerializer
 import java.io.File
 import java.io.FileReader
 

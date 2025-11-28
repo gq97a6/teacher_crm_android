@@ -28,9 +28,10 @@ private fun Preview() = PreviewScaffold(false) { GroupListView() }
 
 @Composable
 fun GroupListView(vm: GroupListViewModel = viewModel()) {
+
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
     val groups by vm.state.groupList.groups.collectAsStateWithLifecycle()
-    val lessons by vm.state.groupList.lessons.collectAsStateWithLifecycle()
+    val lessons by vm.state.groupList.nextLessons.collectAsStateWithLifecycle()
     val isLoadingShown by vm.isLoadingShown.collectAsStateWithLifecycle()
 
     Scaffold(

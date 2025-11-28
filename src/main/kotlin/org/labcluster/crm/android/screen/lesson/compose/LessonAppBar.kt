@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.outlined.Book
+import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Topic
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -56,7 +58,7 @@ fun LessonAppBar(
     timeZone: TimeZone = TimeZone.of("Europe/Warsaw"),
     isLive: Boolean = false,
     onShowTopic: () -> Unit = {},
-    onShowCourse: () -> Unit = {}
+    onCopyUuid: (Clipboard) -> Unit = {}
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val dotAlpha by infiniteTransition.animateFloat(
@@ -85,6 +87,8 @@ fun LessonAppBar(
             append(lesson.timeEnd(timeZone).format(timeFormat))
         }
     }
+
+    val clipboard = LocalClipboard.current
 
     TopAppBar(
         title = {
@@ -141,14 +145,14 @@ fun LessonAppBar(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Pokaż kurs") },
+                        text = { Text("Kopiuj UUID") },
                         onClick = {
                             isMenuExpanded = false
-                            onShowCourse()
+                            onCopyUuid(clipboard)
                         },
                         leadingIcon = {
                             Icon(
-                                imageVector = Icons.Outlined.Book,
+                                imageVector = Icons.Outlined.Fingerprint,
                                 contentDescription = ""
                             )
                         }

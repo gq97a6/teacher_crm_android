@@ -45,6 +45,7 @@ fun SettingScreen(
     newPassword2: TextFieldState = TextFieldState(""),
     onSaveClicked: () -> Unit = {},
     onChangePasswordClicked: () -> Unit = {},
+    onLogout: () -> Unit = {},
 ) {
     Column(
         Modifier
@@ -173,6 +174,22 @@ fun SettingScreen(
         Spacer(Modifier.height(8.dp))
 
         ElevatedButton(onChangePasswordClicked, Modifier.fillMaxWidth()) { Text("Zmień hasło") }
+
+        Spacer(Modifier.height(30.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Konto", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = cs.primary)
+
+            WavyDivider(
+                modifier = Modifier
+                    .padding(start = 10.dp)
+                    .height(10.dp),
+                thickness = 3.dp,
+                wavelength = 25.dp
+            )
+        }
+        Spacer(Modifier.height(5.dp))
+
+        ElevatedButton(onLogout, Modifier.fillMaxWidth()) { Text("Wyloguj") }
 
         Spacer(Modifier.height(20.dp))
     }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
@@ -32,7 +33,6 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
-import org.labcluster.crm.android.Storage.dumpToFile
 import org.labcluster.crm.android.app.App.Companion.state
 import org.labcluster.crm.android.composable.MyNavigationDrawer
 import org.labcluster.crm.android.composable.PreviewScaffold
@@ -44,6 +44,7 @@ import org.labcluster.crm.android.screen.login.LoginView
 import org.labcluster.crm.android.screen.setting.SettingView
 import org.labcluster.crm.android.screen.splash.SplashView
 import org.labcluster.crm.android.screen.topic.TopicView
+import org.labcluster.crm.android.storage.Storage.dumpToFile
 import org.labcluster.crm.android.theme.Theme
 
 class MainActivity : ComponentActivity() {
@@ -68,7 +69,13 @@ class MainActivity : ComponentActivity() {
             addAction(Intent.ACTION_TIMEZONE_CHANGED)
             addAction(Intent.ACTION_TIME_CHANGED)
             addAction(Intent.ACTION_DATE_CHANGED)
-        }.let { registerReceiver(timeChangedReceiver, it) }
+        }.let {
+            ContextCompat.registerReceiver(
+                this, timeChangedReceiver,
+                it,
+                ContextCompat.RECEIVER_EXPORTED
+            )
+        }
     }
 
     override fun onPause() {

@@ -58,6 +58,7 @@ fun SettingView(vm: SettingViewModel = viewModel()) {
             nip = nip,
             onSaveClicked = vm::onSavedClicked,
             onChangePasswordClicked = vm::onChangePasswordClicked,
+            onLogout = vm::onLogout,
         )
     }
 }
