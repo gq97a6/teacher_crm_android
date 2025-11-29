@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,12 +39,12 @@ import org.labcluster.crm.shared.model.Teacher
 
 @Preview
 @Composable
-private fun Preview() = PreviewScaffold(false) { LessonView() }
+private fun Preview() = PreviewScaffold(false, doMock = true) { LessonView() }
 
 @Composable
 fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
 
-    val lesson by vm.state.lesson.lesson.collectAsStateWithLifecycle()
+    val lesson by vm.displayedLesson.collectAsStateWithLifecycle()
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
     val clock by vm.clock.collectAsStateWithLifecycle()
     val attendance by vm.attendance.collectAsStateWithLifecycle()
@@ -69,17 +70,18 @@ fun BoxScope.LessonView(vm: LessonViewModel = viewModel()) {
         },
         contentWindowInsets = WindowInsets(left = 15.dp, right = 15.dp)
     ) { paddingValues ->
-        LessonContent(
-            paddingValues = paddingValues,
-            teacher = lesson.teacher1 ?: Teacher(),
-            students = lesson.students,
-            attendance = attendance,
-            hasBegun = lesson.epochBegin != null,
-            isEditable = isEditable,
-            course = lesson.course ?: Course(),
-            topic = lesson.topic?.name ?: "",
-            onStudentCheckbox = vm::onStudentCheckbox
-        )
+        Column(Modifier.padding(paddingValues)) {
+            LessonContent(
+                students = lesson.students,
+                attendance = attendance,
+                hasBegun = lesson.epochBegin != null,
+                isEditable = isEditable,
+                onStudentCheckbox = vm::onStudentCheckbox,
+                teacher = lesson.teacher1 ?: Teacher("Brak nauczyciela lekcji"),
+                course = lesson.course ?: Course("Brak kursu lekcji"),
+                topic = lesson.topic?.name ?: "Brak tematu lekcji"
+            )
+        }
     }
 
     //Has begin and is not being edited (10)

@@ -2,9 +2,7 @@ package org.labcluster.crm.android.screen.setting
 
 import androidx.lifecycle.ViewModel
 import org.labcluster.crm.android.LoginViewKey
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.app.App
-import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.android.screen.calendar.CalendarViewModelState
 import org.labcluster.crm.android.screen.group.GroupViewModelState
@@ -13,6 +11,7 @@ import org.labcluster.crm.android.screen.lesson.LessonViewModelState
 import org.labcluster.crm.android.screen.login.LoginViewModelState
 import org.labcluster.crm.android.screen.topic.TopicViewModelState
 import org.labcluster.crm.android.storage.Storage.dumpToFile
+import org.labcluster.crm.shared.Open
 
 @Open
 class SettingViewModel(val state: AppState = App.state) : ViewModel() {
@@ -34,7 +33,6 @@ class SettingViewModel(val state: AppState = App.state) : ViewModel() {
             lesson = LessonViewModelState()
             topic = TopicViewModelState()
             login = LoginViewModelState()
-            apiState = AppApi.State()
 
             state.dumpPath?.ifBlank { null }?.let {
                 state.dumpToFile(it)

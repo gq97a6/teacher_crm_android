@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.UseContextualSerialization
-import org.labcluster.crm.android.Open
+import org.labcluster.crm.shared.Open
 import org.labcluster.crm.shared.model.Lesson
 
 @Open

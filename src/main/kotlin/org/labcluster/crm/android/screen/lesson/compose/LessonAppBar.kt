@@ -73,19 +73,17 @@ fun LessonAppBar(
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     //12.03.2025
-    val title = remember { lesson.timeStart(timeZone).format(dateFormat) }
+    val title = lesson.timeStart(timeZone).format(dateFormat)
 
     //Friday - 10:00 - 11:35
-    val subtitle = remember {
-        buildString {
-            lesson.timeStart(timeZone).run {
-                append(format(dayFormat))
-                append(" - ")
-                append(format(timeFormat))
-            }
+    val subtitle = buildString {
+        lesson.timeStart(timeZone).run {
+            append(format(dayFormat))
             append(" - ")
-            append(lesson.timeEnd(timeZone).format(timeFormat))
+            append(format(timeFormat))
         }
+        append(" - ")
+        append(lesson.timeEnd(timeZone).format(timeFormat))
     }
 
     val clipboard = LocalClipboard.current

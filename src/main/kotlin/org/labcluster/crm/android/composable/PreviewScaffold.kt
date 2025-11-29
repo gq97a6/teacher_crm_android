@@ -29,10 +29,11 @@ import org.labcluster.crm.android.theme.darkColorScheme
 fun PreviewScaffold(
     showAppBar: Boolean = true,
     scheme: ColorScheme = darkColorScheme,
+    doMock: Boolean = false,
     content: @Composable BoxScope.(PaddingValues) -> Unit
 ) {
     //Mock app state
-    state = Mock.state
+    if (doMock) state = Mock.state
 
     Theme(scheme) {
         Scaffold(

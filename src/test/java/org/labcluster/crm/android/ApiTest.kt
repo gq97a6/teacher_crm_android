@@ -9,8 +9,8 @@ class ApiTest {
 
     @Test
     fun testApi() = runBlocking {
-        val state = AppState()
-        val api = AppApi(state, "https://crm.labcluster.org/api")
+        AppState()
+        val api = AppApi("https://crm.labcluster.org/api")
         val tt = api.getTeacherTimetable("01ef4c39-9577-4eeb-a017-b3e1a9e38864")
         print(tt)
         assert(tt.isNotEmpty())

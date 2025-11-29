@@ -16,10 +16,10 @@ import kotlinx.datetime.format
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import org.labcluster.crm.android.LessonViewKey
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.android.monthFormat
+import org.labcluster.crm.shared.Open
 import org.labcluster.crm.shared.model.Lesson
 import org.labcluster.crm.shared.timeStart
 

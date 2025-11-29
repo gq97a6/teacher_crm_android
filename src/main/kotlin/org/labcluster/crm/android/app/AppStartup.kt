@@ -10,11 +10,17 @@ import org.labcluster.crm.android.storage.Storage.getFromFile
 
 object AppStartup {
 
+    //Run on app boot
     suspend fun boot() {
         setupState()
+        start()
+    }
+
+    //Run after login
+    suspend fun start() {
         displaySplash()
         setupApi()
-        authorize()
+        login()
         updateState()
         navigate()
     }
@@ -34,22 +40,44 @@ object AppStartup {
     }
 
     private fun setupApi() {
-        api = AppApi(state, "https://crm.labcluster.org/api")
+        api = AppApi("https://crm.labcluster.org/api")
     }
 
-    private suspend fun authorize() {
-        state.login.isAuthorized.value = api.getAuthorize()
+    private suspend fun login() {
+        state.login.login()
     }
 
     private suspend fun updateState() {
+        if (state.login.authToken.value.isEmpty()) return
+
         state.calendar.fetch()
         state.groupList.fetch()
+
+        //Refetch lesson
+        api.getLesson(state.lesson.lesson.value.uuid)?.let {
+            state.lesson.setLesson(it)
+        }
+
+        //Refetch topic
+        api.getTopic(state.topic.topic.value.uuid)?.let {
+            state.topic.setTopic(it)
+        }
+
+        //Refetch group
+        api.getGroup(state.group.group.value.uuid)?.let {
+            state.group.setGroup(it)
+        }
     }
 
     private fun navigate() {
-        state.isNavigationEnabled.value = true
-        state.backstack.value.clear()
-        state.backstack.value.add(CalendarViewKey())
-        state.backstack.value.add(LoginViewKey())
+        if (state.login.authToken.value.isEmpty()) {
+            state.isNavigationEnabled.value = false
+            state.backstack.value.clear()
+            state.backstack.value.add(LoginViewKey())
+        } else {
+            state.backstack.value.clear()
+            state.backstack.value.add(CalendarViewKey())
+            state.isNavigationEnabled.value = true
+        }
     }
 }

@@ -4,14 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.labcluster.crm.android.CalendarViewKey
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppApi
+import org.labcluster.crm.android.app.AppStartup
 import org.labcluster.crm.android.app.AppState
-import org.labcluster.crm.shared.model.Teacher
+import org.labcluster.crm.shared.Open
 
 @Open
 class LoginViewModel(
@@ -28,25 +26,11 @@ class LoginViewModel(
 
             //Login
             state.alter(viewModelScope) {
-                login.teacher.update { Teacher(uuid = "01ef4c39-9577-4eeb-a017-b3e1a9e38864") }
-                login.isAuthorized.update { api.getAuthorize() }
-            }.join()
+                login.login()
+            }
 
-            //If authorized fetch updates and redirect
-            if (state.login.isAuthorized.value) state.alter(viewModelScope) {
-                state.calendar.fetch()
-                state.groupList.fetch()
-                backstack.value.clear()
-                backstack.value.add(CalendarViewKey())
-                isNavigationEnabled.value = true
-            }.join()
-
+            AppStartup.start()
             timerJob.join()
-
-            //Prevent login button flash
-            delay(50)
-
-            isLoading.value = false
         }
     }
 

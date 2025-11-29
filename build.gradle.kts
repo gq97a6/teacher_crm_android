@@ -65,7 +65,7 @@ android {
 }
 
 allOpen {
-    annotation("org.labcluster.crm.Open")
+    annotation("org.labcluster.crm.shared.Open")
 }
 
 //noinspection UseTomlInstead

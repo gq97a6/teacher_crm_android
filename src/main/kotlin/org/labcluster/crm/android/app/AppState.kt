@@ -12,7 +12,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.SplashViewKey
 import org.labcluster.crm.android.chronos.Chronos
 import org.labcluster.crm.android.screen.calendar.CalendarViewModelState
@@ -21,6 +20,7 @@ import org.labcluster.crm.android.screen.grouplist.GroupListViewModelState
 import org.labcluster.crm.android.screen.lesson.LessonViewModelState
 import org.labcluster.crm.android.screen.login.LoginViewModelState
 import org.labcluster.crm.android.screen.topic.TopicViewModelState
+import org.labcluster.crm.shared.Open
 
 @Open
 @Serializable
@@ -39,10 +39,10 @@ class AppState {
 
     //Screen related global state =================================================================
 
-    @Transient
+    @Transient //Always fetch new on boot
     var calendar = CalendarViewModelState()
 
-    @Transient
+    @Transient //Always fetch new on boot
     var groupList = GroupListViewModelState()
 
     var lesson = LessonViewModelState()
@@ -51,9 +51,6 @@ class AppState {
     var login = LoginViewModelState()
 
     //====================================================================================
-
-    //Api persistent state
-    var apiState = AppApi.State()
 
     @Transient
     private val aLock = Mutex(false)

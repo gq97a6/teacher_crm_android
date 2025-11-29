@@ -91,5 +91,3 @@ class StateFlowSerializer<T>(private val s: KSerializer<T>) : KSerializer<Mutabl
 
     override fun deserialize(decoder: Decoder) = MutableStateFlow(s.deserialize(decoder))
 }
-
-annotation class Open

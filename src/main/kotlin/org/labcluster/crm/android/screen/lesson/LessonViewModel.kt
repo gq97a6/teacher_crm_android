@@ -1,6 +1,7 @@
 package org.labcluster.crm.android.screen.lesson
 
 import android.content.ClipData
+import android.widget.Toast
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.state.ToggleableState
@@ -10,24 +11,47 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.TopicViewKey
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
 import org.labcluster.crm.android.storage.Storage.deepCopy
+import org.labcluster.crm.shared.Open
+import org.labcluster.crm.shared.model.Lesson
 import kotlin.time.Clock
 
 @Open
 class LessonViewModel(
     val state: AppState = App.state,
-    val api: AppApi = App.api
+    val api: AppApi = App.api,
+    val app: App = App.app
 ) : ViewModel() {
 
-    val attendance: StateFlow<List<ToggleableState>> = state.lesson.lesson.map { lesson ->
+    val isEditable = MutableStateFlow(false)
+    val isLoading = MutableStateFlow(false)
+    val clock = state.chronos.clock(viewModelScope)
+    val editLesson = MutableStateFlow(Lesson())
+
+    //Display editable or real lesson based on isEditable
+    val displayedLesson: StateFlow<Lesson> = combine(
+        isEditable,
+        editLesson,
+        state.lesson.lesson
+    ) { isEditable, editLesson, theLesson ->
+        if (isEditable) editLesson
+        else theLesson
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = Lesson()
+    )
+
+    //Map attendance list derived from display lesson
+    val attendance: StateFlow<List<ToggleableState>> = displayedLesson.map { lesson ->
         lesson.students.map { student ->
             ToggleableState(student.uuid in lesson.attendance)
         }
@@ -37,13 +61,9 @@ class LessonViewModel(
         initialValue = emptyList()
     )
 
-    val isEditable = MutableStateFlow(false)
-    val isLoading = MutableStateFlow(false)
-    val clock = state.chronos.clock(viewModelScope)
-
     fun onStudentCheckbox(index: Int) {
         state.alter {
-            val lesson = lesson.lesson.value
+            val lesson = editLesson.value
             val student = lesson.students[index]
 
             //Build new attendance list
@@ -55,7 +75,7 @@ class LessonViewModel(
             newLesson.attendance = newList.toMutableList()
 
             //Apply change
-            this.lesson.setLesson(newLesson)
+            editLesson.value = newLesson
         }
     }
 
@@ -81,20 +101,16 @@ class LessonViewModel(
 
     fun onStartClicked() {
         isEditable.value = true
+        editLesson.value = state.lesson.lesson.value.deepCopy() ?: Lesson()
     }
 
     fun onEditClicked() {
         isEditable.value = true
+        editLesson.value = state.lesson.lesson.value.deepCopy() ?: Lesson()
     }
 
     fun onCancelClicked() {
         isEditable.value = false
-        state.alter {
-            val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
-            newLesson.epochBegin = null
-            newLesson.attendance = mutableListOf()
-            lesson.setLesson(newLesson)
-        }
     }
 
     fun onConfirmClicked() {
@@ -102,14 +118,16 @@ class LessonViewModel(
             isLoading.value = true
             val timerJob = viewModelScope.launch { delay(1000) }
 
-            val newLesson = lesson.lesson.value.deepCopy() ?: return@alter
-            newLesson.epochBegin = Clock.System.now().epochSeconds
-            val isSuccessful = api.putLesson(newLesson)
+            val uncommitedLesson = editLesson.value.deepCopy() ?: return@alter
+            uncommitedLesson.epochBegin = Clock.System.now().epochSeconds
 
-            if (isSuccessful) lesson.setLesson(newLesson)
+            val hasBeenCommited = api.putLesson(uncommitedLesson)
+            if (hasBeenCommited) lesson.setLesson(uncommitedLesson)
+            else Toast.makeText(app, "Wystąpił błąd", Toast.LENGTH_LONG).show()
 
             timerJob.join()
-            isEditable.value = false
+
+            isEditable.value = !hasBeenCommited
             isLoading.value = false
         }
     }

@@ -11,18 +11,15 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import org.labcluster.crm.android.Open
+import org.labcluster.crm.shared.Open
 import org.labcluster.crm.shared.model.Group
 import org.labcluster.crm.shared.model.Lesson
+import org.labcluster.crm.shared.model.Teacher
+import org.labcluster.crm.shared.model.Topic
 
 @Open
-class AppApi(private val state: AppState, private val url: String) {
-
-    @Open
-    @Serializable
-    class State()
+class AppApi(private val url: String) {
 
     val client: HttpClient = HttpClient {
         install(ContentNegotiation) {
@@ -66,18 +63,11 @@ class AppApi(private val state: AppState, private val url: String) {
         onException = { listOf() }
     )
 
-    suspend fun getAuthorize(): Boolean = request(
+    suspend fun getAuthToken(): String = request(
         response = { client.get("$url/health") },
-        onSuccess = { true },
-        onFailure = { true },
-        onException = { true }
-    )
-
-    suspend fun putLesson(): Boolean = request(
-        response = { client.get("$url/health") },
-        onSuccess = { true },
-        onFailure = { true },
-        onException = { true }
+        onSuccess = { "123" },
+        onFailure = { "123" },
+        onException = { "123" }
     )
 
     suspend fun getHealth(): Boolean = request(
@@ -97,6 +87,34 @@ class AppApi(private val state: AppState, private val url: String) {
         onSuccess = { true },
         onFailure = { false },
         onException = { false }
+    )
+
+    suspend fun getLesson(uuid: String): Lesson? = request(
+        response = { client.get("$url/lesson/$uuid") },
+        onSuccess = { it.body<Lesson>() },
+        onFailure = { null },
+        onException = { null }
+    )
+
+    suspend fun getTopic(uuid: String): Topic? = request(
+        response = { client.get("$url/topic/$uuid") },
+        onSuccess = { it.body<Topic>() },
+        onFailure = { null },
+        onException = { null }
+    )
+
+    suspend fun getGroup(uuid: String): Group? = request(
+        response = { client.get("$url/group/$uuid") },
+        onSuccess = { it.body<Group>() },
+        onFailure = { null },
+        onException = { null }
+    )
+
+    suspend fun getTeacher(uuid: String): Teacher? = request(
+        response = { client.get("$url/teacher/$uuid") },
+        onSuccess = { it.body<Teacher>() },
+        onFailure = { null },
+        onException = { null }
     )
 
     private suspend fun <T> request(

@@ -20,7 +20,7 @@ private fun Preview() = PreviewScaffold(showAppBar = false) { TopicAppBar() }
 @Composable
 fun TopicAppBar(
     title: String = "Introduction to Programming with Python and Kotlin",
-    subtitle: String? = "10 tematów"
+    subtitle: String? = null
 ) {
     TopAppBar(
         title = {

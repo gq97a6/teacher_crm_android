@@ -48,7 +48,7 @@ fun GroupListEntry(
     timeZone: TimeZone = App.state.chronos.timeZone.value,
     onClick: (Group) -> Unit = {}
 ) {
-    val dayText = remember { polishDayOfWeekNames.names[group.dayIndex.toInt()] }
+    val dayText = remember { polishDayOfWeekNames.names[group.dayIndex] }
     val timeText = remember {
         Instant.fromEpochSeconds(group.timeEpoch)
             .toLocalDateTime(timeZone)
@@ -69,7 +69,7 @@ fun GroupListEntry(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = nextLesson?.course?.name ?: "Nie znaleziono kursu",
+                text = nextLesson?.course?.name ?: "Brak kursu grupy",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = cs.tertiary,
@@ -79,7 +79,7 @@ fun GroupListEntry(
                 )
             )
             Text(
-                text = nextLesson?.topic?.name ?: "Nie znaleziono tematu lekcji",
+                text = nextLesson?.topic?.name ?: "Brak tematu lekcji",
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 color = cs.primary,

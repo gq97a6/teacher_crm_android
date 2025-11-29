@@ -6,10 +6,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.labcluster.crm.android.GroupViewKey
-import org.labcluster.crm.android.Open
 import org.labcluster.crm.android.app.App
 import org.labcluster.crm.android.app.AppApi
 import org.labcluster.crm.android.app.AppState
+import org.labcluster.crm.shared.Open
 import org.labcluster.crm.shared.model.Group
 
 @Open
@@ -24,7 +24,7 @@ class GroupListViewModel(
         viewModelScope.launch {
             isLoadingShown.value = true
 
-            state.alter(viewModelScope) { group.fetch(clickedGroup) }.join()
+            state.alter(viewModelScope) { group.setGroup(clickedGroup) }.join()
 
             //Navigate to group view
             state.alter(viewModelScope) {

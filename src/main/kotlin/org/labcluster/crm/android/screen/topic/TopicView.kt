@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.labcluster.crm.android.composable.PreviewScaffold
 import org.labcluster.crm.android.cs
-import org.labcluster.crm.android.mock.Mock.lorem
+import org.labcluster.crm.android.mock.Mock.LOREM
 import org.labcluster.crm.android.screen.topic.compose.TopicAppBar
 import kotlin.random.Random
 
@@ -38,13 +38,13 @@ fun TopicView(vm: TopicViewModel = viewModel()) {
         LazyColumn(Modifier.padding(paddingValues)) {
             items(20) {
                 Text(
-                    text = lorem.take(11),
+                    text = LOREM.take(11),
                     color = cs.onBackground,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = lorem.take(Random.nextInt(50, 400)),
+                    text = LOREM.take(Random.nextInt(50, 400)),
                     color = cs.onBackground
                 )
 
