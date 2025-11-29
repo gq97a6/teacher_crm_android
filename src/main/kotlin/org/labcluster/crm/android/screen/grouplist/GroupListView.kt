@@ -30,8 +30,7 @@ private fun Preview() = PreviewScaffold(false) { GroupListView() }
 fun GroupListView(vm: GroupListViewModel = viewModel()) {
 
     val timeZone by vm.state.chronos.timeZone.collectAsStateWithLifecycle()
-    val groups by vm.state.groupList.groups.collectAsStateWithLifecycle()
-    val lessons by vm.state.groupList.nextLessons.collectAsStateWithLifecycle()
+    val groupLesson by vm.groupLesson.collectAsStateWithLifecycle()
     val isLoadingShown by vm.isLoadingShown.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -44,11 +43,11 @@ fun GroupListView(vm: GroupListViewModel = viewModel()) {
 
         if (isLoadingShown) Loading()
         else LazyColumn(Modifier.padding(top = topPadding)) {
-            items(groups) { group ->
+            items(groupLesson) { pair ->
                 GroupListEntry(
                     horizontalPadding = horizontal,
-                    group = group,
-                    nextLesson = lessons[group.uuid],
+                    group = pair.first,
+                    nextLesson = pair.second,
                     timeZone = timeZone,
                     onClick = vm::groupOnClick
                 )

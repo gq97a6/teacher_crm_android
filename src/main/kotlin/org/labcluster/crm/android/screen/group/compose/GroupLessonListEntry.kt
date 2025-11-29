@@ -49,7 +49,7 @@ fun GroupLessonListEntry(
     onClick: (Lesson) -> Unit = {}
 ) {
     val dayText = remember {
-        lesson.timeStart(timeZone).format(dayFormat)
+        lesson.timeStart(timeZone).date.format(dayFormat)
     }
 
     val timeText = remember {

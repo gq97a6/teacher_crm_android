@@ -27,7 +27,7 @@ val polishDayOfWeekNames = DayOfWeekNames(
     "Niedziela"
 )
 
-val dayFormat = LocalDateTime.Format {
+val dayFormat = LocalDate.Format {
     dayOfWeek(polishDayOfWeekNames)
 }
 
@@ -64,7 +64,7 @@ val monthFormat = LocalDate.Format {
     )
 }
 
-val shortDateFormat = LocalDateTime.Format {
+val shortDateFormat = LocalDate.Format {
     day()
     char('.')
     monthNumber()

@@ -41,13 +41,15 @@ private fun Preview() = PreviewScaffold { CalendarContent(it) }
 @Composable
 fun CalendarContent(
     paddingValues: PaddingValues = PaddingValues(),
-    lessons: List<Lesson> = Mock.lessons,
+    lessons: List<Lesson> = Mock.lessons.sortedBy { it.epochBegin },
     timeZone: TimeZone = App.state.chronos.timeZone.value,
     onLessonClicked: (Lesson) -> Unit = {},
 ) {
     val lessons = remember(lessons) {
         lessons.groupBy {
-            it.timeStart(timeZone)
+            it.timeStart(timeZone).date
+        }.mapValues { entry ->
+            entry.value.sortedBy { it.epochStart }
         }
     }
 

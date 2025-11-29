@@ -78,7 +78,7 @@ fun LessonAppBar(
     //Friday - 10:00 - 11:35
     val subtitle = buildString {
         lesson.timeStart(timeZone).run {
-            append(format(dayFormat))
+            append(date.format(dayFormat))
             append(" - ")
             append(format(timeFormat))
         }

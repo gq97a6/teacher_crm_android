@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.labcluster.crm.android.TopicViewKey
 import org.labcluster.crm.android.app.App
@@ -122,8 +123,19 @@ class LessonViewModel(
             uncommitedLesson.epochBegin = Clock.System.now().epochSeconds
 
             val hasBeenCommited = api.putLesson(uncommitedLesson)
-            if (hasBeenCommited) lesson.setLesson(uncommitedLesson)
-            else Toast.makeText(app, "Wystąpił błąd", Toast.LENGTH_LONG).show()
+            if (hasBeenCommited) {
+                lesson.setLesson(uncommitedLesson)
+
+                //Update lesson in group list
+                group.lessons.update { groupLessons ->
+                    groupLessons.map { if (it.uuid == uncommitedLesson.uuid) uncommitedLesson else it }
+                }
+
+                //Update lesson in calendar list
+                calendar.lessons.update { calendarLessons ->
+                    calendarLessons.map { if (it.uuid == uncommitedLesson.uuid) uncommitedLesson else it }
+                }
+            } else Toast.makeText(app, "Wystąpił błąd", Toast.LENGTH_LONG).show()
 
             timerJob.join()
 
