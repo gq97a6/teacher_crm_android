@@ -26,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.SaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.labcluster.crm.android.app.App.Companion.state
 import org.labcluster.crm.android.composable.MyNavigationDrawer
@@ -58,6 +60,22 @@ class MainActivity : ComponentActivity() {
             Theme(isSystemInDarkTheme()) {
                 Box(Modifier.background(cs.background)) {
                     ScreenContent()
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        //Get optional extra sent from widget
+        val screen = intent.getStringExtra("screen")
+        if (screen != null) lifecycleScope.launch {
+            state.alter {
+                backstack.value.clear()
+                when (screen) {
+                    "calendar" -> backstack.value.addFirst(CalendarViewKey())
+                    "groups" -> backstack.value.addFirst(GroupListViewKey())
                 }
             }
         }

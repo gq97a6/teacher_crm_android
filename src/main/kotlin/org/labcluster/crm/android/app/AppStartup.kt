@@ -18,11 +18,13 @@ object AppStartup {
 
     //Run after login
     suspend fun start() {
+        state.lockState()
         displaySplash()
         setupApi()
         login()
         updateState()
         navigate()
+        state.unlockState()
     }
 
     private fun setupState() {

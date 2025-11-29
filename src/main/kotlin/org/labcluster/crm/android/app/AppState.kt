@@ -54,6 +54,10 @@ class AppState {
 
     @Transient
     private val aLock = Mutex(false)
+
+    suspend fun lockState() = aLock.lock()
+    suspend fun unlockState() = aLock.unlock()
+
     fun alter(action: AppState.() -> Unit) {
         runBlocking {
             withTimeoutOrNull(50000) {

@@ -15,10 +15,11 @@ import org.labcluster.crm.android.theme.darkColorScheme
 @Composable
 fun PreviewSimple(
     scheme: ColorScheme = darkColorScheme,
+    doMock: Boolean = false,
     content: @Composable BoxScope.() -> Unit
 ) {
     //Mock app state
-    state = Mock.state
+    if (doMock) state = Mock.state
 
     Theme(scheme) {
         Box(Modifier.background(cs.background)) {
