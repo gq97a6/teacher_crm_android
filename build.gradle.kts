@@ -101,7 +101,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.9.5")
 
     //Shared
-    implementation("org.labcluster.crm:shared:3.0.0")
+    implementation("org.labcluster.crm:shared:5.0.0")
 
     //Ktor
     implementation("io.ktor:ktor-client-content-negotiation:3.3.2")

@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -67,6 +68,7 @@ fun GroupLessonListEntry(
         Modifier
             .fillMaxWidth()
             .height(110.dp)
+            .alpha(if (lesson.epochBegin == null) 1f else 0.3f)
     ) {
         Column(
             modifier = Modifier

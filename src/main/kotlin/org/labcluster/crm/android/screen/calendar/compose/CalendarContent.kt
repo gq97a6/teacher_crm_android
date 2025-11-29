@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -83,7 +84,11 @@ fun CalendarContent(
                         val startTime = lesson.timeStart(timeZone).format(timeFormat)
                         val endTime = lesson.timeEnd(timeZone).format(timeFormat)
 
-                        OutlinedButton(
+                        if (lesson.epochBegin == null) OutlinedButton(
+                            onClick = { onLessonClicked(lesson) },
+                            modifier = Modifier.padding(end = 10.dp)
+                        ) { Text("$startTime - $endTime") }
+                        else FilledTonalButton(
                             onClick = { onLessonClicked(lesson) },
                             modifier = Modifier.padding(end = 10.dp)
                         ) { Text("$startTime - $endTime") }

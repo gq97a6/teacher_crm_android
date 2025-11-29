@@ -24,6 +24,6 @@ class LoginViewModelState() {
         authToken.update { api.getAuthToken() }
 
         //Refetch teacher
-        teacher.update { api.getTeacher("01ef4c39-9577-4eeb-a017-b3e1a9e38864") ?: Teacher() }
+        teacher.update { api.getTeacher("135d9da5-2770-437e-8d73-13a2c7d4f532") ?: Teacher() }
     }
 }
