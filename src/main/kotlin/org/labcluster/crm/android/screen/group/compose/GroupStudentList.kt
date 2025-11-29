@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.labcluster.crm.android.composable.PreviewScaffold
 import org.labcluster.crm.android.cs
-import org.labcluster.crm.shared.Mock
+import org.labcluster.crm.android.mock.Mock
 import org.labcluster.crm.shared.model.Student
 
 @Preview

@@ -19,7 +19,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
+        boot()
+    }
 
+    fun boot() {
         CoroutineScope(Dispatchers.IO).launch {
             AppStartup.boot()
         }

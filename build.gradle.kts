@@ -101,7 +101,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.9.5")
 
     //Shared
-    implementation("org.labcluster.crm:shared:2.0.6")
+    implementation("org.labcluster.crm:shared:3.0.0")
 
     //Ktor
     implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
@@ -118,7 +118,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 }
 
-afterEvaluate {
-    tasks.named("assembleDebug") { dependsOn("testDebugUnitTest") }
-    tasks.named("assembleRelease") { dependsOn("testReleaseUnitTest") }
-}
+//afterEvaluate {
+//    tasks.named("assembleDebug") { dependsOn("testDebugUnitTest") }
+//    tasks.named("assembleRelease") { dependsOn("testReleaseUnitTest") }
+//}

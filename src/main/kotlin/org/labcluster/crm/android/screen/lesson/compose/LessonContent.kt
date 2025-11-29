@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import org.labcluster.crm.android.composable.PreviewScaffold
 import org.labcluster.crm.android.composable.WavyDivider
 import org.labcluster.crm.android.cs
-import org.labcluster.crm.shared.Mock
+import org.labcluster.crm.android.mock.Mock
 import org.labcluster.crm.shared.model.Course
 import org.labcluster.crm.shared.model.Student
 import org.labcluster.crm.shared.model.Teacher

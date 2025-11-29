@@ -22,7 +22,7 @@ import org.labcluster.crm.android.screen.calendar.compose.CalendarToolbar
 
 @Preview
 @Composable
-private fun Preview() = PreviewScaffold(false) { CalendarView() }
+private fun Preview() = PreviewScaffold(false, doMock = true) { CalendarView() }
 
 @Composable
 fun BoxScope.CalendarView(vm: CalendarViewModel = viewModel()) {
