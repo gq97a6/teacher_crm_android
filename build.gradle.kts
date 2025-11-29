@@ -37,7 +37,7 @@ android {
         }
 
         debug {
-            isDebuggable = false
+            isDebuggable = true
         }
     }
 

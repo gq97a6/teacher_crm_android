@@ -15,5 +15,5 @@ private fun Preview() = PreviewScaffold(false) { LoginView() }
 @Composable
 fun LoginView(vm: LoginViewModel = viewModel()) {
     val isLoading by vm.isLoading.collectAsStateWithLifecycle()
-    LoginScreen(isLoading, vm::onLogin)
+    LoginScreen(isLoading, onLogin = vm::onLogin)
 }

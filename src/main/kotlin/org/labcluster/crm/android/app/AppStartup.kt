@@ -21,7 +21,6 @@ object AppStartup {
         state.lockState()
         displaySplash()
         setupApi()
-        login()
         updateState()
         navigate()
         state.unlockState()
@@ -43,10 +42,6 @@ object AppStartup {
 
     private fun setupApi() {
         api = AppApi("https://crm.labcluster.org/api")
-    }
-
-    private suspend fun login() {
-        state.login.login()
     }
 
     private suspend fun updateState() {

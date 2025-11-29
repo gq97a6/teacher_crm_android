@@ -1,7 +1,7 @@
 package org.labcluster.crm.android.screen.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -19,22 +19,19 @@ class LoginViewModel(
 
     val isLoading = MutableStateFlow(false)
 
-    fun onLogin() {
-        viewModelScope.launch {
+    fun onLogin(uuid: String) {
+        GlobalScope.launch {
             val timerJob = launch { delay(1000) }
             isLoading.value = true
 
-            //Login
-            state.alter(viewModelScope) {
-                login.login()
-            }
+            var loginResult = false
+            state.alter(GlobalScope) {
+                loginResult = login.login(uuid)
+            }.join()
 
-            AppStartup.start()
+            if (loginResult) AppStartup.start()
             timerJob.join()
+            isLoading.value = false
         }
-    }
-
-    fun onRegister() {
-
     }
 }

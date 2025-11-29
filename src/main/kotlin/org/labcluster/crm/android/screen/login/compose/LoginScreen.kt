@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +33,9 @@ private fun Preview() = PreviewScaffold(showAppBar = false) { LoginScreen() }
 @Composable
 fun LoginScreen(
     isLoading: Boolean = false,
-    onLogin: () -> Unit = {}
+    onLogin: (String) -> Unit = {}
 ) {
-
+    val uuid = rememberTextFieldState("3908cca5-3e59-42e7-bc44-f44b28827198")
 
     Column(
         Modifier
@@ -56,6 +59,13 @@ fun LoginScreen(
             modifier = Modifier.offset(y = (-20).dp)
         )
 
+        OutlinedTextField(
+            state = uuid,
+            modifier = Modifier.fillMaxWidth(.6f),
+            label = { Text("UUID") },
+            lineLimits = TextFieldLineLimits.SingleLine,
+        )
+
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -64,21 +74,12 @@ fun LoginScreen(
         ) {
             if (isLoading) CircularWavyProgressIndicator()
             else OutlinedButton(
-                onClick = onLogin,
-                shape = ShapeDefaults.ExtraExtraLarge,
+                onClick = { onLogin(uuid.text.toString()) },
+                shape = ShapeDefaults.Medium,
                 contentPadding = PaddingValues(40.dp)
             ) {
                 Text("Zaloguj się")
             }
         }
-
-        //Button(
-        //    onClick = onRegister,
-        //    modifier = Modifier
-        //        .fillMaxWidth(.4f)
-        //        .padding(top = 10.dp)
-        //) {
-        //    Text("Rejestracja")
-        //}
     }
 }
